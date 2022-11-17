@@ -2,11 +2,14 @@
 # Path: main.py
 # Author: @Eldar Aslanbeily
 
-# sets of possible math operators and operands
-operators = set('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!')
-operants = set('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '(', ')')
+from mathFunctions import *
+from generalEquationFunctions import *
 
-# map of proirities for the operators
+# sets of possible math operators and operands
+operators = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!')
+operands = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '(', ')', ' ')
+
+# dictionary of priorities for the operators
 priority = {'+': 1, '-': 1,
             '*': 2, '/': 2,
             '^': 3,
@@ -17,16 +20,12 @@ priority = {'+': 1, '-': 1,
 input_equation = input("Enter Equation:")
 
 # check if equation is valid
-for x in input_equation:
-    if x not in operators and x not in operants:
-        raise Exception('Invalid token: {}'.format(x))
+check_if_function_is_valid(input_equation, operators, operands)
 
-# check if equation is balanced
-if input_equation.count('(') != input_equation.count(')'):
-    raise Exception('Invalid syntax on token {}'.format(input_equation))
+# get rid of extra parentheses
+get_rid_of_extra_parentheses(input_equation)
 
-# check if ) appears  before ( 
-if input_equation.find(')') < input_equation.find('('):
-    raise Exception('Invalid syntax on token {}'.format(input_equation))
-
-print(eval(input_equation))
+# convert equation to list of tokens (operators and operands) and remove spaces
+equation = input_equation.replace(' ', '')
+equation = list(equation)
+print(equation)
