@@ -1,13 +1,24 @@
 # This is the main program for getting the equation from the user and printing the result
+# This is a runner program that runs the calculator using the functions from the other files
 # Path: main.py
 # Author: @Eldar Aslanbeily
 
+# imports the functions from the other files
 from mathFunctions import *
 from generalEquationFunctions import *
 
 # sets of possible math operators and operands
+# those sets also act as a list of possible tokens for the equation
 operators = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!')
 operands = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '(', ')', ' ')
+
+# set of binary operators
+# meaning that they take two operands in order to work
+binary_operators = ('+', '-', '*', '/', '^', '%', '$', '&', '@')
+
+# set of unary operators
+# meaning that they take one operand in order to work
+unary_operators = ('~', '!')
 
 # dictionary of priorities for the operators
 priority = {'+': 1, '-': 1,
@@ -17,15 +28,33 @@ priority = {'+': 1, '-': 1,
             '$': 5, '&': 5, '@': 5,
             '~': 6, '!': 6}
 
-input_equation = input("Enter Equation:")
+# define the equation
+input_equation = ""
+
+# try and get equation from user and catch any exceptions
+# try:
+#     input_equation = input("Enter Equation:")
+# except KeyboardInterrupt:
+#     print("\nprogram was interrupted by user")
+
+# simply check if equation is a number
+if is_number(input_equation):
+    print("Result: {}".format(input_equation))
+    exit()
+
+# else: the equation is not a number:
+# continue with the program
+
 
 # check if equation is valid
-check_if_function_is_valid(input_equation, operators, operands)
+input_equation = check_if_function_is_valid(input_equation, operators,
+                           operands, binary_operators, unary_operators, priority)
 
-# get rid of extra parentheses
-get_rid_of_extra_parentheses(input_equation)
+# simplify equation
+input_equation = simplify_equation(input_equation)
 
-# convert equation to list of tokens (operators and operands) and remove spaces
-equation = input_equation.replace(' ', '')
-equation = list(equation)
-print(equation)
+# calculate the result
+result = calculate_equation(input_equation, binary_operators, unary_operators, priority)
+
+# print the result of the equation
+# print("Result: {}".format(result))
