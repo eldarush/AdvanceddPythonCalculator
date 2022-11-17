@@ -1,17 +1,17 @@
 # AdvanceddPythonCalculator
-This is an advanced calculator repository for a project for omega <br />
-Author: @Eldar Aslanbeily (username on GitHub: eldarush) <br />
-Language: Python <br />
-Interpritor: Python-3.7 <br />
+## This is an advanced calculator repository for a project for omega <br />
+## Author: @Eldar Aslanbeily (username on GitHub: eldarush) <br />
+## Language: Python <br />
+## Interpritor: Python-3.7 <br />
 <br />
-This calculator while run through the "main.py" file will <br />
-ask the user to input a function, then the program will calculate the  <br />
-result of the equation that the user inputted, this result can be saved and used again <br />
-for further equations as 'ans'. <br />
-both input and output of an equation are in str type. <br />
+### This calculator while run through the "main.py" file will <br />
+### ask the user to input a function, then the program will calculate the  <br />
+### result of the equation that the user inputted, this result can be saved and used again <br />
+### for further equations as 'ans'. <br />
+### both input and output of an equation are in str type. <br />
 <br />
-This calculator has unique custom operators. <br />
-list of all operators:<br />
+## This calculator has unique custom operators. <br />
+### list of all operators:<br />
   addition (a+b) <br />
   subtraction (a-b) <br />
   multiplication (a*b) <br />
@@ -24,9 +24,9 @@ list of all operators:<br />
   tilde (~a) - returns the negative value of a <br />
   factorial (a!) <br />
   <br />
-priorotiy list for the operators: <br />
-// higher proiroty mreans that its done first in the calculation. <br />
-// if two operators have the same prioroty the one that comes first will be calculated first. <br />
+## priorotiy list for the operators: <br />
+### // higher proiroty mreans that its done first in the calculation. <br />
+### // if two operators have the same prioroty the one that comes first will be calculated first. <br />
   1: <br />
     addition (a+b) <br />
     subtraction (a-b) <br />
@@ -45,5 +45,5 @@ priorotiy list for the operators: <br />
     tilde (~a) <br />
     factorial (a!) <br />
   <br />
-This calculator only accepts digits (0-9) not variables (a-z) etc.  <br />
-This calculator only accepts round parentheses (), not any other kind - [] {}. <br />
+## This calculator only accepts digits (0-9) not variables (a-z) etc.  <br />
+## This calculator only accepts round parentheses (), not any other kind - [] {}. <br />
