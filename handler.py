@@ -1,12 +1,13 @@
 # This is the main program for getting the equation from the user and printing the result
 # This is a runner program that runs the calculator using the functions from the other files
-# Path: main.py
+# Path: handler.py
 # Author: @Eldar Aslanbeily
 
 # imports the functions from the other files
-from mathFunctions import *
-from generalEquationFunctions import *
+from operators import *
+from functions import *
 
+# TODO: when adding a new operator, add it to all of the sets and dictionaries below
 # sets of possible math operators and operands
 # those sets also act as a list of possible tokens for the equation
 operators = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!')
@@ -36,14 +37,6 @@ input_equation = ""
 #     input_equation = input("Enter Equation:")
 # except KeyboardInterrupt:
 #     print("\nprogram was interrupted by user")
-
-# simply check if equation is a number
-if is_number(input_equation):
-    print("Result: {}".format(input_equation))
-    exit()
-
-# else: the equation is not a number:
-# continue with the program
 
 
 # check if equation is valid
