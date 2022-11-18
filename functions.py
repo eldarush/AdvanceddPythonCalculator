@@ -76,9 +76,7 @@ def check_for_number_with_too_many_dots_in_them(equation: str) -> str:
             raise Exception('Invalid syntax - number with too many dots in it')
     return equation
 
-# print(check_for_number_with_too_many_dots_in_them('.3.'))
 
-# TODO: fix this function
 def add_zero_before_and_after_dot_integer(equation: str) -> str:
     """
     function that adds a zero before and after a dot
@@ -304,6 +302,64 @@ def put_multiplication_in_front_of_opening_parentheses(equation : str) -> str:
     return equation
 
 
+def find_closing_parentheses(equation: str, index: int) -> int:
+    """
+    this function gets an euqation, and a strting index
+    of the opening parantheses and returns the index of the
+    closing parentheses
+    :param equation: the equation
+    :param index: the index of the opening parentheses
+    :return: the index of the closing parentheses
+    """
+    # check if the character at the index is an opening parentheses
+    if equation[index] != '(':
+        raise Exception('Invalid syntax - the character at the index'
+                        ' is not an opening parentheses')
+
+    # check if the index is in the equation
+    if index >= len(equation):
+        raise Exception('Invalid syntax - the index is out of range')
+
+    # check if the index is not negative
+    if index < 0:
+        raise Exception('Invalid syntax - the index is negative')
+
+    # counter for the number of opening parentheses
+    counter_opening_parentheses = 0
+
+    # go over the equation from the index
+    for x in range(index, len(equation)):
+
+        # if the current character is an opening parentheses
+        if equation[x] == '(':
+            # increase the counter
+            counter_opening_parentheses += 1
+
+        # if the current character is a closing parentheses
+        if equation[x] == ')':
+            # decrease the counter
+            counter_opening_parentheses -= 1
+
+        # if the counter is 0
+        if counter_opening_parentheses == 0:
+            # return the index of the closing parentheses
+            return x
+
+        # if the counter is not 0
+        # it means that there is no closing parentheses
+        # for the opening parentheses at the index
+        if counter_opening_parentheses < 0:
+            raise Exception('Invalid syntax - no closing parentheses'
+                            ' for the opening parentheses at the index')
+
+    # if we reach end and counter is not 0, raise exception
+    # technically this should never happen because the function
+    # is run after the equation is checked for parentheses errors
+    # but just in case we will raise an exception
+    if counter_opening_parentheses != 0:
+        raise Exception('Invalid syntax - no closing parentheses'
+                        ' for the opening parentheses at the index')
+
 def simplify_equation(equation: str) -> str:
     """
     function that simplifies the equation
@@ -401,6 +457,29 @@ def calculate_equation(equation: str, binary_operators: set,
     #                     left_side_number = left_side[z] + left_side_number
     #                 else:
     #                     break
+
+    # TODO: implement the current parentheses handling somewhere here
+    # if we have parentheses in the equation, we find the matching closing parentheses,
+    # and we calculate the equation inside the parentheses, then we replace the parentheses
+    # with the result of the equation inside the parentheses, the calculation is done
+    # recursively until there are no parentheses left using the calculate_equation function
+    # if equation[y] == '(':
+    #     # get the index of the closing parentheses
+    #     closing_parentheses_index = find_closing_parentheses(equation, y)
+    #     # get the equation inside the parentheses
+    #     equation_inside_parentheses = equation[y + 1:closing_parentheses_index]
+    #
+    #     # save the equation before calculating the equation inside the parentheses
+    #     saved_equation_inside_parentheses = equation_inside_parentheses
+    #
+    #     # calculate the equation inside the parentheses
+    #     equation_inside_parentheses = calculate_equation(equation_inside_parentheses,
+    #                                                      binary_operators,
+    #                                                      unary_operators,
+    #                                                      priority)
+    #     # replace the equation inside the parentheses with the result
+    #     equation = equation.replace('(' + saved_equation_inside_parentheses + ')',
+    #                                 equation_inside_parentheses)
 
     # final check to see if the equation is a number
     # if it is a number, return it
