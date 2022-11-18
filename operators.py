@@ -62,10 +62,15 @@ def multiplication(a: str, b: str) -> str:
 def division(a: str, b: str) -> str:
     """
     divides a by b and returns the quotient
+    only works if b is not 0
     :param a:
     :param b:
     :return: a/b
     """
+    # check if b is zero
+    if b == 0:
+        raise ZeroDivisionError("Division by zero is not allowed.")
+
     return str(float(a) / float(b))
 
 
@@ -76,6 +81,10 @@ def modulo(a: str, b: str) -> str:
     :param b:
     :return: a%b
     """
+
+    # check if b is zero
+    if b == 0:
+        raise ZeroDivisionError("Modulo by zero is not allowed.")
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():

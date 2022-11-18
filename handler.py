@@ -36,12 +36,13 @@ input_equation = ""
 # try:
 #     input_equation = input("Enter Equation:")
 # except KeyboardInterrupt:
-#     print("\nprogram was interrupted by user")
+#     print("\n program was interrupted by user")
 
 
 # check if equation is valid
 input_equation = check_if_function_is_valid(input_equation, operators,
-                           operands, binary_operators, unary_operators, priority)
+                                            operands, binary_operators,
+                                            unary_operators, priority)
 
 # simplify equation
 input_equation = simplify_equation(input_equation)

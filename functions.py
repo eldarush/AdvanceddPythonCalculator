@@ -11,9 +11,13 @@ def is_number(s: str) -> bool:
     :param s:
     :return:
     """
+
+    # try to convert the string to a float, if it works then it is a number
     try:
         float(s)
         return True
+
+    # if the string is not a number, then return false
     except ValueError:
         return False
 
@@ -25,6 +29,8 @@ def doesnt_contain_numbers(equation: str) -> bool:
     :return:
     """
     for x in equation:
+
+        # if the equation contains a number than return false
         if x.isdigit():
             return False
     return True
@@ -40,6 +46,7 @@ def contains_number_after_closing_parentheses(equation: str) -> bool:
     :return: true if there is a number after a closing parentheses
     and false otherwise
     """
+
     # go over equation and check if there is a number
     # after a closing parentheses
     for x in range(len(equation) - 1):
@@ -58,7 +65,7 @@ def check_for_double_dots(equation: str) -> str:
     # go over equation and check if there are two dots in a row
     for x in range(len(equation) - 1):
         if equation[x] == '.' and equation[x + 1] == '.':
-            raise Exception('Invalid syntax - two dots in a row ')
+            raise Exception('Invalid syntax - two dots in a row')
     return equation
 
 
@@ -71,9 +78,11 @@ def check_for_number_with_too_many_dots_in_them(equation: str) -> str:
     """
     # go over equation and check if there are numbers with too many dots in them
     for x in range(len(equation) - 1):
-        if equation[x].isdigit() and equation[x + 1] == '.' and equation[x + 2].isdigit()\
+        if equation[x].isdigit() and equation[x + 1] == '.' \
+                and equation[x + 2].isdigit()\
                 and equation[x + 3] == '.':
-            raise Exception('Invalid syntax - number with too many dots in it')
+            raise Exception('Invalid syntax -'
+                            ' number with too many dots in it')
     return equation
 
 
@@ -117,8 +126,8 @@ def add_zero_before_and_after_dot_integer(equation: str) -> str:
     return equation
 
 
-def check_if_function_is_valid(equation: str, operators: set, operands: set,
-                               binary_operators: set, unary_operators: set,
+def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
+                               binary_operators: tuple, unary_operators: tuple,
                                priority: dict) -> str:
     """
     This function checks if the equation is valid,
@@ -278,7 +287,7 @@ def get_rid_of_extra_white_spaces(equation: str) -> str:
     return equation
 
 
-def put_multiplication_in_front_of_opening_parentheses(equation : str) -> str:
+def put_multiplication_in_front_of_opening_parentheses(equation: str) -> str:
     """
     function that gets an equation and puts a multiplication sign
     in front of opening parentheses where needed
@@ -304,8 +313,8 @@ def put_multiplication_in_front_of_opening_parentheses(equation : str) -> str:
 
 def find_closing_parentheses(equation: str, index: int) -> int:
     """
-    this function gets an euqation, and a strting index
-    of the opening parantheses and returns the index of the
+    this function gets an equation, and a starting index
+    of the opening parentheses and returns the index of the
     closing parentheses
     :param equation: the equation
     :param index: the index of the opening parentheses
@@ -360,6 +369,7 @@ def find_closing_parentheses(equation: str, index: int) -> int:
         raise Exception('Invalid syntax - no closing parentheses'
                         ' for the opening parentheses at the index')
 
+
 def simplify_equation(equation: str) -> str:
     """
     function that simplifies the equation
@@ -383,8 +393,8 @@ def simplify_equation(equation: str) -> str:
 
 
 # TODO: implement this function
-def calculate_equation(equation: str, binary_operators: set,
-                       unary_operators: set, priority: dict) -> str:
+def calculate_equation(equation: str, binary_operators: tuple,
+                       unary_operators: tuple, priority: dict) -> str:
     """
     general function that calculates the equation, this function
     will be run recursively until the equation is solved
