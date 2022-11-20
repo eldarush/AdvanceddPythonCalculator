@@ -45,10 +45,14 @@ input_equation = check_if_function_is_valid(input_equation, operators,
                                             unary_operators, priority)
 
 # simplify equation
-input_equation = simplify_equation(input_equation)
+input_equation = simplify_equation(input_equation, binary_operators,
+                                   unary_operators, priority,
+                                   operands, operators)
 
 # calculate the result
-result = calculate_equation(input_equation, binary_operators, unary_operators, priority)
+result = calculate_equation(input_equation, binary_operators,
+                            unary_operators, priority,
+                            operands, operators)
 
 # print the result of the equation
 # print("Result: {}".format(result))

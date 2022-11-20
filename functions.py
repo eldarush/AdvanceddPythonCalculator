@@ -79,7 +79,7 @@ def check_for_number_with_too_many_dots_in_them(equation: str) -> str:
     # go over equation and check if there are numbers with too many dots in them
     for x in range(len(equation) - 1):
         if equation[x].isdigit() and equation[x + 1] == '.' \
-                and equation[x + 2].isdigit()\
+                and equation[x + 2].isdigit() \
                 and equation[x + 3] == '.':
             raise Exception('Invalid syntax -'
                             ' number with too many dots in it')
@@ -117,10 +117,10 @@ def add_zero_before_and_after_dot_integer(equation: str) -> str:
 
             # if the dot is in the middle of the equation
             elif not x == 0 and not x == len(equation) - 1:
-                if not equation[x-1].isdigit():
+                if not equation[x - 1].isdigit():
                     equation = equation[:x] + '0' + equation[x:]
-                elif not equation[x+1].isdigit():
-                    equation = equation[:x+1] + '0' + equation[x+1:]
+                elif not equation[x + 1].isdigit():
+                    equation = equation[:x + 1] + '0' + equation[x + 1:]
         x += 1
     # return the equation with a zero before and after a dot
     return equation
@@ -160,6 +160,9 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     for x in equation:
         if x not in operators and x not in operands:
             raise Exception('Invalid token: {}'.format(x))
+
+    # check for parentheses errors
+    equation = check_for_extra_parentheses(equation)
 
     # check if the equation contains two consecutive dots
     check_for_double_dots(equation)
@@ -206,6 +209,9 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
         raise Exception("There is a number after a closing parentheses "
                         "at the equation, Syntax Error")
 
+    # check if there is an operand before an opening parentheses
+    equation = check_operand_in_front_of_opening_parentheses(equation)
+
     # TODO: confirm if this check is needed, if it is, fix it
     # # check if there are two operators in a row
     # for x in range(len(equation) - 1):
@@ -223,19 +229,22 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     return equation
 
 
-def get_rid_of_extra_parentheses(equation: str) -> str:
+# TODO: if there are extra parentheses, throw an exception
+def check_for_extra_parentheses(equation: str) -> str:
     """
-    function that gets an equation and
-    gets rid of extra parentheses in the equation
-    F.E 2()()() is just 2
-    or 2(3)() is just 2(3) and so on
+    function that checks if there are extra parentheses
+    in the equation that don't do anything
+    and if there are, throws an exception
     :param equation:
-    :return: equation with no extra parentheses
+    :return: same equation if there are no extra parentheses
     """
-    # go over equation and get rid of extra parentheses
-    equation = equation.replace('()', '')
 
-    # return the equation with no extra parentheses
+    # check if there are extra parentheses
+    if '()' in equation:
+        raise Exception('Invalid syntax - extra parentheses '
+                        'that dont do anything on token {}'.format(equation))
+
+    # if there are no extra parentheses, return the equation
     return equation
 
 
@@ -255,7 +264,8 @@ def get_rid_of_extra_minus_signs(equation: str) -> str:
 
 
 # TODO: implement this function
-def get_rid_of_extra_white_spaces(equation: str) -> str:
+def get_rid_of_extra_white_spaces(equation: str, operands: tuple,
+                                  binary_operators: tuple) -> str:
     """
     function that gets rid of extra white spaces
     and also checks if there are illegal white spaces
@@ -263,39 +273,73 @@ def get_rid_of_extra_white_spaces(equation: str) -> str:
     :param equation:
     :return: equation with no extra white spaces
     """
-    # # Removing any unwanted white spaces,
-    # tabs, or new lines from the equation string:
-    #     equation = re.sub(r"[\n\t\s]*", "", equation)
-    #     # Creating a list based on the equation string:
-    #     result_list = re.split(r'([-+*/^~%!@$&()])|\s+', equation)
-    #     # Filtering the list - Removing all the unwanted
-    #     "spaces" from the list:
-    #     result_list = [value for value in result_list if
-    #     value not in ['', ' ', '\t']]
 
-    # # s = "((8   1 *     6) /  42  + (3-1))"
-    # s= "5  2        + 4.0  "
-    # r = [""]
-    #
-    # for i in s.replace(" ", ""):
-    #     if i.isdigit() and r[-1].isdigit():
-    #         r[-1] = r[-1] + i
-    #     else:
-    #         r.append(i)
-    #
-    # print(r[1:])
+    # remove tabs from the equation
+    # go over equation and get rid of extra white spaces
+    # if the equation starts with white spaces, remove them
+    if ' ' in equation or '\t' in equation:
+        if equation[0] == ' ':
+            counter = 0
+            while equation[counter] == ' ' or equation[counter] == '\t':
+                # while there are white spaces
+                counter += 1
+            equation = equation[counter:]  # remove the white spaces
+
+        # if the equation ends with white spaces, remove them
+        if equation[-1] == ' ':
+            counter = -1
+            while equation[counter] == ' ' or equation[counter] == '\t':
+                counter -= 1
+            equation = equation[:counter + 1]
+
+    # if there are no white spaces in the equation,
+    else:
+        return equation
+
+    # convert all double spaces to single spaces
+    while '  ' in equation or '\t\t' in equation:
+        equation = equation.replace('  ', ' ')
+        equation = equation.replace('\t', ' ')
+
+    # go over equation and check if there are illegal white spaces
+    # between two operands
+    for x in range(len(equation) - 1):
+        if equation[x] == ' ':
+
+            # check if there is a white space between two digits
+            if equation[x - 1].isdigit() and equation[x + 1].isdigit():
+                raise Exception('Invalid syntax - illegal white space '
+                                'between two operands on token '
+                                '{}'.format(equation))
+
+            # check if there is a white space between two
+            # binary operators and the right
+            # operator is not a minus sign
+            if equation[x - 1] in binary_operators and \
+                    equation[x + 1] in binary_operators and \
+                    equation[x + 1] != '-':
+                raise Exception('Invalid syntax - illegal white space '
+                                'between two operands on token '
+                                '{}'.format(equation))
+
+    # when there are no illegal white spaces, return the equation
+    # with no extra white spaces
+    equation = equation.replace(' ', '')
+
+    # if there are white spaces in the equation, check if they
+    # are legal white spaces
+    # if there are illegal white spaces, throw an exception
+    # if there are legal white spaces, remove them
+
     return equation
 
 
-def put_multiplication_in_front_of_opening_parentheses(equation: str) -> str:
+# TODO: check if this is needed / valid
+def check_operand_in_front_of_opening_parentheses(equation: str) -> str:
     """
-    function that gets an equation and puts a multiplication sign
-    in front of opening parentheses where needed
-    f.e. 2(3+4) -> 2*(3+4)
-    or 2(3+4)(5+6) -> 2*(3+4)*(5+6)
-    but 2(3+4)5 -> 2*(3+4)5 and not 2*(3+4)*5
-    also 2(3+4)(5+6)5 -> 2*(3+4)*(5+6)5 and not 2*(3+4)*(5+6)*5
-    and 5((3+4)(5+6)) -> 5*((3+4)*(5+6))
+    function that gets an equation and checks if there is not
+    an operand in front of an opening parentheses
+    F. E
     :param equation:
     :return: corrected equation
     """
@@ -306,8 +350,10 @@ def put_multiplication_in_front_of_opening_parentheses(equation: str) -> str:
             # is a digit, or a closing parentheses
             if equation[x - 1].isdigit() or \
                     equation[x - 1] == ')':
-                # put a multiplication sign in front of the parentheses
-                equation = equation[:x] + '*' + equation[x:]
+                # raise an exception
+                raise Exception(f'Invalid syntax - there is an operand '
+                                'in front of an opening parentheses'
+                                f' on token {equation[x:]}')
     return equation
 
 
@@ -370,23 +416,20 @@ def find_closing_parentheses(equation: str, index: int) -> int:
                         ' for the opening parentheses at the index')
 
 
-def simplify_equation(equation: str) -> str:
+def simplify_equation(equation: str, binary_operators: tuple,
+                      unary_operators: tuple, priority: dict,
+                      operands: tuple, operators: tuple) -> str:
     """
     function that simplifies the equation
     :param equation:
     :return: simplified equation
     """
-    # get rid of extra parentheses
-    equation = get_rid_of_extra_parentheses(equation)
 
     # get rid of extra minus signs
     equation = get_rid_of_extra_minus_signs(equation)
 
     # get rid of extra white spaces
-    equation = get_rid_of_extra_white_spaces(equation)
-
-    # put * in front of opening parentheses where needed
-    equation = put_multiplication_in_front_of_opening_parentheses(equation)
+    equation = get_rid_of_extra_white_spaces(equation, operands, binary_operators)
 
     # return the simplified equation
     return equation
@@ -394,7 +437,8 @@ def simplify_equation(equation: str) -> str:
 
 # TODO: implement this function
 def calculate_equation(equation: str, binary_operators: tuple,
-                       unary_operators: tuple, priority: dict) -> str:
+                       unary_operators: tuple, priority: dict,
+                       operands: tuple, operators: tuple) -> str:
     """
     general function that calculates the equation, this function
     will be run recursively until the equation is solved
