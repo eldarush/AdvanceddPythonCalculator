@@ -234,15 +234,16 @@ def check_for_extra_parentheses(equation: str) -> str:
     """
     function that checks if there are extra parentheses
     in the equation that don't do anything
-    and if there are, throws an exception
+    and if there are, prints error message
+    and ends the program
     :param equation:
     :return: same equation if there are no extra parentheses
     """
 
     # check if there are extra parentheses
     if '()' in equation:
-        raise Exception('Invalid syntax - extra parentheses '
-                        'that dont do anything on token {}'.format(equation))
+        print("Invalid syntax, extra parentheses in the equation")
+        exit()
 
     # if there are no extra parentheses, return the equation
     return equation
@@ -301,6 +302,11 @@ def get_rid_of_extra_white_spaces(equation: str, operands: tuple,
         equation = equation.replace('  ', ' ')
         equation = equation.replace('\t', ' ')
 
+    # if there are white spaces in the equation, check if they
+    # are legal white spaces
+    # if there are illegal white spaces, print error message
+    # if there are legal white spaces, remove them
+
     # go over equation and check if there are illegal white spaces
     # between two operands
     for x in range(len(equation) - 1):
@@ -308,28 +314,25 @@ def get_rid_of_extra_white_spaces(equation: str, operands: tuple,
 
             # check if there is a white space between two digits
             if equation[x - 1].isdigit() and equation[x + 1].isdigit():
-                raise Exception('Invalid syntax - illegal white space '
-                                'between two operands on token '
-                                '{}'.format(equation))
+                print("Invalid syntax, illegal white space between two "
+                      "digits")
+                exit()
 
-            # check if there is a white space between two
-            # binary operators and the right
-            # operator is not a minus sign
-            if equation[x - 1] in binary_operators and \
-                    equation[x + 1] in binary_operators and \
-                    equation[x + 1] != '-':
-                raise Exception('Invalid syntax - illegal white space '
-                                'between two operands on token '
-                                '{}'.format(equation))
+            # TODO: check if there is a white space between two operands
+            # TODO: check if this check is needed
+            # # check if there is a white space between two
+            # # binary operators and the right
+            # # operator is not a minus sign
+            # if equation[x - 1] in binary_operators and \
+            #         equation[x + 1] in binary_operators and \
+            #         equation[x + 1] != '-':
+            #     raise Exception('Invalid syntax - illegal white space '
+            #                     'between two operands on token '
+            #                     '{}'.format(equation))
 
     # when there are no illegal white spaces, return the equation
     # with no extra white spaces
     equation = equation.replace(' ', '')
-
-    # if there are white spaces in the equation, check if they
-    # are legal white spaces
-    # if there are illegal white spaces, throw an exception
-    # if there are legal white spaces, remove them
 
     return equation
 
@@ -351,9 +354,10 @@ def check_operand_in_front_of_opening_parentheses(equation: str) -> str:
             if equation[x - 1].isdigit() or \
                     equation[x - 1] == ')':
                 # raise an exception
-                raise Exception(f'Invalid syntax - there is an operand '
-                                'in front of an opening parentheses'
-                                f' on token {equation[x:]}')
+                print(f'Invalid syntax - there is no operand '
+                      'in front of an opening parentheses'
+                      f' on token {equation[x:]}')
+                exit()
     return equation
 
 
@@ -368,16 +372,19 @@ def find_closing_parentheses(equation: str, index: int) -> int:
     """
     # check if the character at the index is an opening parentheses
     if equation[index] != '(':
-        raise Exception('Invalid syntax - the character at the index'
-                        ' is not an opening parentheses')
+        print('Invalid syntax - the character at the index'
+              ' is not an opening parentheses')
+        exit()
 
     # check if the index is in the equation
     if index >= len(equation):
-        raise Exception('Invalid syntax - the index is out of range')
+        print('Invalid syntax - the index is out of range')
+        exit()
 
     # check if the index is not negative
     if index < 0:
-        raise Exception('Invalid syntax - the index is negative')
+        print('Invalid syntax - the index is negative')
+        exit()
 
     # counter for the number of opening parentheses
     counter_opening_parentheses = 0
@@ -404,16 +411,18 @@ def find_closing_parentheses(equation: str, index: int) -> int:
         # it means that there is no closing parentheses
         # for the opening parentheses at the index
         if counter_opening_parentheses < 0:
-            raise Exception('Invalid syntax - no closing parentheses'
-                            ' for the opening parentheses at the index')
+            print('Invalid syntax - no closing parentheses'
+                  ' for the opening parentheses at the index')
+            exit()
 
     # if we reach end and counter is not 0, raise exception
     # technically this should never happen because the function
     # is run after the equation is checked for parentheses errors
     # but just in case we will raise an exception
     if counter_opening_parentheses != 0:
-        raise Exception('Invalid syntax - no closing parentheses'
-                        ' for the opening parentheses at the index')
+        print('Invalid syntax - no closing parentheses'
+              ' for the opening parentheses at the index')
+        exit()
 
 
 def simplify_equation(equation: str, binary_operators: tuple,
@@ -539,3 +548,6 @@ def calculate_equation(equation: str, binary_operators: tuple,
     # if it is a number, return it
     if is_number(equation):
         return equation
+    else:
+        print('Invalid equation - the equation doesnt have a result')
+        exit()

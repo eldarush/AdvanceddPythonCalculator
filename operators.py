@@ -69,7 +69,8 @@ def division(a: str, b: str) -> str:
     """
     # check if b is zero
     if b == 0:
-        raise ZeroDivisionError("Division by zero is not allowed.")
+        print("Division by zero is not allowed.")
+        exit()
 
     return str(float(a) / float(b))
 
@@ -84,7 +85,8 @@ def modulo(a: str, b: str) -> str:
 
     # check if b is zero
     if b == 0:
-        raise ZeroDivisionError("Modulo by zero is not allowed.")
+        print("Modulo by zero is not allowed.")
+        exit()
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
@@ -184,13 +186,15 @@ def factorial(a: str) -> str:
 
     # if a is smaller than 0, return an error
     if float(a) < 0:
-        raise ValueError('Invalid input for factorial: {},'
-                         ' factorial() not defined for negative values'.format(a))
+        print('Invalid input for factorial: {},'
+              ' factorial() not defined for negative values'.format(a))
+        exit()
 
     # if a is not an integer, return an error
     elif not float(a).is_integer():
-        raise ValueError('Invalid input for factorial: {},'
-                         ' factorial() not defined for non-integer values'.format(a))
+        print('Invalid input for factorial: {},'
+              ' factorial() not defined for non-integer values'.format(a))
+        exit()
 
     # if a is 0 or 1, return 1
     elif float(a) == 0 or float(a) == 1:

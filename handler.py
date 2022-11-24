@@ -10,8 +10,8 @@ from functions import *
 # TODO: when adding a new operator, add it to all of the sets and dictionaries below
 # sets of possible math operators and operands
 # those sets also act as a list of possible tokens for the equation
-operators = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!')
-operands = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '(', ')', ' ')
+operators = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!', '(', ')')
+operands = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ')
 
 # set of binary operators
 # meaning that they take two operands in order to work
@@ -28,6 +28,19 @@ priority = {'+': 1, '-': 1,
             '%': 4,
             '$': 5, '&': 5, '@': 5,
             '~': 6, '!': 6}
+
+# dictionary of functions for the operators
+funcs_per_operator = {'+': addition,
+                      '-': subtraction,
+                      '*': multiplication,
+                      '/': division,
+                      '^': power,
+                      '%': modulo,
+                      '$': maximum,
+                      '&': minimum,
+                      '@': factorial,
+                      '~': tilde,
+                      '!': factorial}
 
 # define the equation
 input_equation = ""
