@@ -188,6 +188,8 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     if the equation is not valid, if the equation is not valid,
     the program throws an exception, if the equation is valid,
     the function returns the equation
+    :param left_unary_operands:
+    :param right_unary_operands:
     :param equation:
     :param operators:
     :param operands:
@@ -423,10 +425,14 @@ def check_validity_of_equation_by_unary_operators(equation: str,
                 exit()
             # check if the next character is a number or an opening parentheses
             # this check prevents the user from writing something like 5!5
-            if equation[x + 1].isdigit() or equation[x + 1] == '(':
-                print('Invalid syntax - right unary followed by'
-                      ' a number or an opening parentheses')
-                exit()
+            if x != len(equation) - 1:
+                # if the right unary operator is not the last character
+                # in the equation, check if the next character is a number
+                # or an opening parentheses
+                if equation[x + 1].isdigit() or equation[x + 1] == '(':
+                    print('Invalid syntax - right unary followed by'
+                          ' a number or an opening parentheses')
+                    exit()
 
         # check if there is a left unary operator that is
         # in front of something that is not a number or an opening parentheses
@@ -437,10 +443,14 @@ def check_validity_of_equation_by_unary_operators(equation: str,
                 exit()
             # check if the last character is a number or a closing parentheses
             # this check prevents the user from writing something like 5~5
-            if equation[x - 1].isdigit() or equation[x - 1] == ')':
-                print('Invalid syntax - left unary operator following'
-                      ' a number or a closing parentheses')
-                exit()
+            if x != 0:
+                # if the left unary operator is not the first character
+                # in the equation, check if the character before it is a number
+                # or a closing parentheses
+                if equation[x - 1].isdigit() or equation[x - 1] == ')':
+                    print('Invalid syntax - left unary operator following'
+                          ' a number or a closing parentheses')
+                    exit()
 
     return equation
 
@@ -508,6 +518,9 @@ def get_rid_of_extra_minus_signs(equation: str, operands: tuple,
     F.E 2---3 is just 2-3
     or 2--3 is just 2-3
     or 2----3 is 2+3
+    :param unary_operators:
+    :param operands:
+    :param binary_operators:
     :param equation:
     :return: equation with no extra minus signs
     """
@@ -740,6 +753,10 @@ def simplify_equation(equation: str, binary_operators: tuple,
                       operands: tuple, operators: tuple) -> str:
     """
     function that simplifies the equation
+    :param operators:
+    :param operands:
+    :param unary_operators:
+    :param binary_operators:
     :param equation:
     :return: simplified equation
     """
@@ -766,6 +783,9 @@ def calculate_equation(equation: str, binary_operators: tuple,
     """
     general function that calculates the equation, this function
     will be run recursively until the equation is solved
+    :param left_unary_operands:
+    :param operators:
+    :param operands:
     :param right_unary_operands:
     :param equation:
     :param binary_operators:
