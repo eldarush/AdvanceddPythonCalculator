@@ -2,6 +2,54 @@
 # Path: functions.py
 # Author: @Eldar Aslanbeily
 
+from globals import *
+
+
+def get_equation_from_user() -> str:
+    """
+    function that gets an equation from the user
+    and if the user stops the program,
+    print a message and exit the program
+    :return:
+    """
+    input_equation = ""
+    try:
+        input_equation = input("Enter Equation:")
+        # if the user stops the program
+    except KeyboardInterrupt:
+        print("\n Program was interrupted by user")
+        exit()
+
+    return input_equation
+
+
+def calculate(equation: str) -> None:
+    """
+    function that runs the checks and calculates the equation
+    this is a function that is used by tne handler file which
+    is accessed by the user
+    :param equation:
+    :return: result of the equation
+    """
+
+    # check if equation is valid
+    equation = check_if_function_is_valid(equation, operators,
+                                                operands, binary_operators,
+                                                unary_operators, priority)
+
+    # simplify equation
+    equation = simplify_equation(equation, binary_operators,
+                                       unary_operators, priority,
+                                       operands, operators)
+
+    # calculate the result
+    result_of_calc = calculate_equation(equation, binary_operators,
+                                unary_operators, priority,
+                                operands, operators)
+
+    # print the result of the equation
+    print("Result: {}".format(result_of_calc))
+
 
 def is_number(s: str) -> bool:
     """
@@ -161,6 +209,9 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
         if x not in operators and x not in operands:
             raise Exception('Invalid token: {}'.format(x))
 
+    # remove all the spaces from the equation
+    equation = get_rid_of_extra_white_spaces(equation)
+
     # check for parentheses errors
     equation = check_for_extra_parentheses(equation)
 
@@ -172,6 +223,15 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
 
     # check if there is a number with too many dots in it
     check_for_number_with_too_many_dots_in_them(equation)
+
+    # check if there is a number after a closing parentheses
+    if contains_number_after_closing_parentheses(equation):
+        # if there is a number after a closing parentheses
+        # then the equation is not valid
+        print('Invalid syntax - number after closing parentheses')
+        exit()
+
+    #
 
     # check if equation is balanced
     # meaning that there are the same
@@ -212,24 +272,78 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     # check if there is an operand before an opening parentheses
     equation = check_operand_in_front_of_opening_parentheses(equation)
 
-    # TODO: confirm if this check is needed, if it is, fix it
-    # # check if there are two operators in a row
-    # for x in range(len(equation) - 1):
-    # # check if there are two binary operators in a row
-    # # only exceptions when there is a unary operator
-    # # in front of a binary operator or when
-    # # there is a closing parentheses
-    # # in front of a binary operator
-    # # or if there is a minus sign in front of a binary operator
-    # # (- as in sign change not subtraction)
-    # if equation[x] in binary_operators and \
-    #         equation[x + 1] in binary_operators and equation[x + 1] != '-':
-    #     raise Exception('Invalid syntax - two operators in a row '
-    #                     'on token {}'.format(equation))
+    # check the validity of the equation by binary operators
+    equation = check_validity_of_equation_by_binary_operators(equation,
+                                                              binary_operators)
+
+    # check the validity of the equation by unary operators
+    equation = check_validity_of_equation_by_unary_operators(equation,
+                                                             unary_operators)
+
     return equation
 
 
-# TODO: if there are extra parentheses, throw an exception
+# TODO: implement the function
+def check_validity_of_equation_by_binary_operators(equation: str,
+                                                   binary_operators: tuple) -> str:
+
+    """
+    returns the function if all the binary operands
+    are valid in it, if not prints error message
+    :param equation:
+    :param binary_operators:
+    :return: equation
+    """
+
+    # NOTE: the function is not implemented yet
+    # and everything that is written here is just a draft
+
+    for x in range(len(equation) - 1):
+        # check if there are two binary operators in a row
+        # only exceptions when there is a unary operator
+        # in front of a binary operator or when
+        # there is a closing parentheses
+        # in front of a binary operator
+        # or if there is a minus sign in front of a binary operator
+        # (- as in sign change not subtraction)
+        if equation[x] in binary_operators and \
+                equation[x + 1] in binary_operators and equation[x + 1] != '-':
+            print('Invalid syntax - two operators in a row ')
+            exit()
+
+    return equation
+
+
+# TODO: implement the function
+def check_validity_of_equation_by_unary_operators(equation: str,
+                                                  unary_operators: tuple) -> str:
+    """
+    returns the function if all the unary operands
+    are valid in it, if not prints error message
+    :param unary_operators:
+    :param equation:
+    :return: equation
+    """
+
+    # NOTE: the function is not implemented yet
+    # and everything that is written here is just a draft
+
+    for x in range(len(equation) - 1):
+        # check if there are two unary operators in a row
+        # only exceptions when there is a unary operator
+        # in front of a binary operator or when
+        # there is a closing parentheses
+        # in front of a binary operator
+        # or if there is a minus sign in front of a binary operator
+        # (- as in sign change not subtraction)
+        if equation[x] in unary_operators and \
+                equation[x + 1] in unary_operators and equation[x + 1] != '-':
+            print('Invalid syntax - two operators in a row ')
+            exit()
+
+    return equation
+
+
 def check_for_extra_parentheses(equation: str) -> str:
     """
     function that checks if there are extra parentheses
@@ -250,23 +364,82 @@ def check_for_extra_parentheses(equation: str) -> str:
 
 
 # TODO: implement this function
-def get_rid_of_extra_minus_signs(equation: str) -> str:
+def get_rid_of_extra_minus_signs(equation: str, operands: tuple,
+                                 binary_operators: tuple,
+                                 unary_operators: tuple) -> str:
     """
     function that gets rid of extra minus signs
     F.E 2---3 is just 2-3
-    or 2-(-3) is just 2+3
+    or 2--3 is just 2-3
+    or 2----3 is 2+3
     :param equation:
     :return: equation with no extra minus signs
     """
+
+    # if the equation is not None, continue with the program
+
+    # replace all triple minus signs with -
+    equation = equation.replace('---', '-')
+
+    # at this point, the equation can only contain
+    # two consecutive minus signs or none
+
+    # remove all extra minus signs at the
+    # beginning of the equation
+    while equation[0] == '-':
+        # if the equation is just a minus sign
+        # then return the equation
+        if len(equation) == 1:
+            return equation
+        elif equation[1] == '-':
+            equation = equation[2:]
+
+    # if there are minus signs at the end of the equation
+    # then return error message because it is invalid syntax
+    if equation[-1] == '-':
+        print("Invalid syntax, extra minus sign at the end of the equation")
+        exit()
+
+    # now that there are no extra minus signs at the beginning
+    # of the equation, check if there are extra minus signs
+    # in the middle of the equation
+
     # go over equation and get rid of extra minus signs
     # this is done by replacing -- with +
-    equation = equation.replace('--', '+')
+    for x in range(len(equation) - 1):
+        # if there are two minus signs in a row
+        if equation[x] == '-' and equation[x + 1] == '-':
+            # if the double minus sign is before a number
+            if is_number(equation[x + 2]):
+                # replace the double minus sign with +
+                equation = equation[:x] + '+' + equation[x + 2:]
+            # if the double minus sign is before a parentheses
+            elif equation[x + 2] == '(':
+                # replace the double minus sign with +
+                equation = equation[:x] + '+' + equation[x + 2:]
+            # if the double minus sign is before a closing parentheses
+            elif equation[x + 2] == ')':
+                # print error message and exit
+                print("Invalid syntax, extra minus sign before a closing "
+                      "parentheses")
+                exit()
+            # if the double minus sign is before a unary operator
+            elif equation[x + 2] in unary_operators:
+                # print error message and exit
+                print("Invalid syntax, extra minus sign before a unary "
+                      "operator")
+                exit()
+            # if the double minus sign is before a binary operator
+            elif equation[x + 2] in binary_operators:
+                # print error message and exit
+                print("Invalid syntax, extra minus sign before a binary "
+                      "operator")
+                exit()
+
     return equation
 
 
-# TODO: implement this function
-def get_rid_of_extra_white_spaces(equation: str, operands: tuple,
-                                  binary_operators: tuple) -> str:
+def get_rid_of_extra_white_spaces(equation: str) -> str:
     """
     function that gets rid of extra white spaces
     and also checks if there are illegal white spaces
@@ -317,18 +490,6 @@ def get_rid_of_extra_white_spaces(equation: str, operands: tuple,
                 print("Invalid syntax, illegal white space between two "
                       "digits")
                 exit()
-
-            # TODO: check if there is a white space between two operands
-            # TODO: check if this check is needed
-            # # check if there is a white space between two
-            # # binary operators and the right
-            # # operator is not a minus sign
-            # if equation[x - 1] in binary_operators and \
-            #         equation[x + 1] in binary_operators and \
-            #         equation[x + 1] != '-':
-            #     raise Exception('Invalid syntax - illegal white space '
-            #                     'between two operands on token '
-            #                     '{}'.format(equation))
 
     # when there are no illegal white spaces, return the equation
     # with no extra white spaces
@@ -435,10 +596,8 @@ def simplify_equation(equation: str, binary_operators: tuple,
     """
 
     # get rid of extra minus signs
-    equation = get_rid_of_extra_minus_signs(equation)
-
-    # get rid of extra white spaces
-    equation = get_rid_of_extra_white_spaces(equation, operands, binary_operators)
+    equation = get_rid_of_extra_minus_signs(equation, operands,
+                                            binary_operators, unary_operators)
 
     # return the simplified equation
     return equation
