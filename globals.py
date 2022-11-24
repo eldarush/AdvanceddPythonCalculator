@@ -6,25 +6,39 @@
 # Path: globals.py
 # Author: @Eldar Aslanbeily
 
-
+# the list of operators that the calculator can use
 from operators import *
 
-# TODO: when adding a new operator, add it to all of the sets and dictionaries below
-# sets of possible math operators and operands
-# those sets also act as a list of possible tokens for the equation
-operators = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!', '(', ')')
-operands = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ')
+# note: all the names of the operators are in uppercase
+# because these are global variables, that do not change
 
-# set of binary operators
+# TODO: when adding a new operator, add it to all of the tuples and dictionaries below
+# tuples of possible math operators and operands
+# those tuples also act as a list of possible tokens for the equation
+OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!', '(', ')')
+OPERANDS = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ')
+
+# tuple of binary operators
 # meaning that they take two operands in order to work
-binary_operators = ('+', '-', '*', '/', '^', '%', '$', '&', '@')
+BINARY_OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@')
 
-# set of unary operators
+# tuple of unary operators
 # meaning that they take one operand in order to work
-unary_operators = ('~', '!')
+UNARY_OPERATORS = ('~', '!')
+
+# tuple of unary operators that are right associative
+# meaning that they take one operand in order to work
+# and that they work from right to left
+RIGHT_ASSOCIATIVE_UNARY_OPERATORS = tuple('!')
+
+# tuple of unary operators that are left associative
+# meaning that they take two operands in order to work
+# and that they work from left to right
+LEFT_ASSOCIATIVE_UNARY_OPERATORS = tuple('~')
+
 
 # dictionary of priorities for the operators
-priority = {'+': 1, '-': 1,
+PRIORITY = {'+': 1, '-': 1,
             '*': 2, '/': 2,
             '^': 3,
             '%': 4,
