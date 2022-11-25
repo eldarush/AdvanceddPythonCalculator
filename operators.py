@@ -12,6 +12,8 @@
 # imports the pow function from the math library
 from math import pow
 
+# TODO: change is digit to is number
+
 
 def addition(a: str, b: str) -> str:
     """
@@ -173,6 +175,7 @@ def tilde(a: str) -> str:
     return str(-float(a))
 
 
+# TODO: check for overflow error (when the factorial is too big)
 def factorial(a: str) -> str:
     """
     returns the factorial of a

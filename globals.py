@@ -12,12 +12,14 @@ from operators import *
 # note: all the names of the operators are in uppercase
 # because these are global variables, that do not change
 
-# TODO: when adding a new operator, add it to all of the tuples and dictionaries below
+# TODO: when adding a new operator, add it to all the tuples and dictionaries below
 # tuples of possible math operators and operands
 # those tuples also act as a list of possible tokens for the equation
 OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!', '(', ')')
-OPERANDS = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ')
+OPERANDS = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ', '\t', '\n')
 
+# TODO: to make the program more generic, add extra tuples for closing and opening brackets
+# TODO: so that the program can handle more than one type of bracket
 # tuple of binary operators
 # meaning that they take two operands in order to work
 BINARY_OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@')
