@@ -72,7 +72,7 @@ def division(a: str, b: str) -> str:
     # check if b is zero
     if b == 0:
         print("Division by zero is not allowed.")
-        exit()
+        exit(1)
 
     return str(float(a) / float(b))
 
@@ -88,7 +88,7 @@ def modulo(a: str, b: str) -> str:
     # check if b is zero
     if b == 0:
         print("Modulo by zero is not allowed.")
-        exit()
+        exit(1)
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
@@ -191,13 +191,13 @@ def factorial(a: str) -> str:
     if float(a) < 0:
         print('Invalid input for factorial: {},'
               ' factorial() not defined for negative values'.format(a))
-        exit()
+        exit(1)
 
     # if a is not an integer, return an error
     elif not float(a).is_integer():
         print('Invalid input for factorial: {},'
               ' factorial() not defined for non-integer values'.format(a))
-        exit()
+        exit(1)
 
     # if a is 0 or 1, return 1
     elif float(a) == 0 or float(a) == 1:
@@ -212,4 +212,4 @@ def factorial(a: str) -> str:
         # if the factorial is too big, return an error message
         except OverflowError:
             print('Recursion error: factorial too big')
-            exit()
+            exit(1)
