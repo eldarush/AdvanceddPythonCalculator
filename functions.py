@@ -38,11 +38,6 @@ def calculate(equation: str) -> None:
                                           UNARY_OPERATORS, RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
                                           LEFT_ASSOCIATIVE_UNARY_OPERATORS)
 
-    # simplify equation
-    equation = simplify_equation(equation, BINARY_OPERATORS,
-                                 UNARY_OPERATORS,
-                                 OPERANDS, OPERATORS)
-
     # calculate the result
     result_of_calc = calculate_equation(equation, BINARY_OPERATORS,
                                         UNARY_OPERATORS, PRIORITY,
@@ -81,17 +76,39 @@ def doesnt_contain_numbers(equation: str) -> bool:
     for x in equation:
 
         # if the equation contains a number than return false
-        if x.isdigit():
+        if is_number(x):
             return False
+
+    # if the equation doesn't contain a number than return true
     return True
 
 
-def contains_number_after_closing_parentheses(equation: str) -> bool:
+def function_doesnt_contain_numbers(equation: str) -> str:
     """
-    function that checks if an equation contains a number
-    after a closing parentheses
-    For example: 2(3)4 is not valid
-    or 2(3+4)5 is not valid but 2(3+4) is valid
+    function that checks if a function doesn't contain numbers
+    simply by running the function doesnt_contain_numbers
+    :param equation:
+    :return: equation if the function doesn't contain numbers
+    """
+    # check if the equation doesn't contain numbers
+    if doesnt_contain_numbers(equation):
+        print('Invalid syntax - equation does not contain numbers')
+        exit()
+
+    # if the equation contains numbers, then return the equation
+    return equation
+
+
+def parentheses_surrounding_validity(equation: str) -> str:
+    """
+    function that checks if the surrounding of parentheses
+    are valid, meaning that there are no numbers or closing parentheses
+    before an opening parentheses and there are no opening parentheses
+    or numbers after a closing parentheses, in a regular equation
+    5(3+4) is valid and would be 5*(3+4), but in this calculator
+    5(3+4) is invalid and would print an error message
+    For example: 2(3) is not valid
+    or 2(3+4)5 is not valid but 2*(3+4)-5 is valid
     :param equation:
     :return: true if there is a number after a closing parentheses
     and false otherwise
@@ -100,9 +117,30 @@ def contains_number_after_closing_parentheses(equation: str) -> bool:
     # go over equation and check if there is a number
     # after a closing parentheses
     for x in range(len(equation) - 1):
-        if equation[x] == ')' and equation[x + 1].isdigit():
-            return True
-    return False
+        # if there is a number or opening parentheses
+        # after a closing parentheses in the middle of the equation
+        if equation[x] == ')' and x != len(equation) - 1:
+            if is_number(equation[x + 1]) or equation[x + 1] == '(':
+                print("Invalid syntax - number or opening parentheses"
+                      " after a closing parentheses")
+                exit()
+        # if there is closing parentheses at the end of the equation
+        # then we don't need to check if there is invalid character
+        # after the closing parentheses
+        elif equation[x] == ')' and x == len(equation) - 1:
+            pass
+        elif equation[x] == '(' and x != 0:
+            if is_number(equation[x - 1]) or equation[x + 1] == ')':
+                print("Invalid syntax - number or closing parentheses"
+                      " before an opening parentheses")
+                exit()
+        # if there is closing parentheses at the end of the equation
+        # then we don't need to check if there is invalid character
+        # after the closing parentheses
+        elif equation[x] == '(' and x == 0:
+            pass
+
+    return equation
 
 
 def check_for_double_dots(equation: str) -> str:
@@ -110,12 +148,13 @@ def check_for_double_dots(equation: str) -> str:
     function that checks if there are two dots in a row
     :param equation:
     :return: equation if there are no two dots in a row
-    and throws an exception otherwise
+    and prints an error message otherwise
     """
     # go over equation and check if there are two dots in a row
     for x in range(len(equation) - 1):
         if equation[x] == '.' and equation[x + 1] == '.':
-            raise Exception('Invalid syntax - two dots in a row')
+            print('Invalid syntax - two dots in a row')
+            exit()
     return equation
 
 
@@ -124,15 +163,16 @@ def check_for_number_with_too_many_dots_in_them(equation: str) -> str:
     function that checks if there are numbers with too many dots in them
     :param equation:
     :return: equation if there are no numbers with too many dots in them
-    and throws an exception otherwise
+    and prints an error message otherwise
     """
     # go over equation and check if there are numbers with too many dots in them
     for x in range(len(equation) - 1):
-        if equation[x].isdigit() and equation[x + 1] == '.' \
-                and equation[x + 2].isdigit() \
+        if is_number(equation[x]) and equation[x + 1] == '.' \
+                and is_number(equation[x + 2]) \
                 and equation[x + 3] == '.':
-            raise Exception('Invalid syntax -'
-                            ' number with too many dots in it')
+            print('Invalid syntax -'
+                  ' number with too many dots in it')
+            exit()
     return equation
 
 
@@ -167,9 +207,9 @@ def add_zero_before_and_after_dot_integer(equation: str) -> str:
 
             # if the dot is in the middle of the equation
             elif not x == 0 and not x == len(equation) - 1:
-                if not equation[x - 1].isdigit():
+                if not is_number(equation[x - 1]):
                     equation = equation[:x] + '0' + equation[x:]
-                elif not equation[x + 1].isdigit():
+                elif not is_number(equation[x + 1]):
                     equation = equation[:x + 1] + '0' + equation[x + 1:]
         x += 1
     # return the equation with a zero before and after a dot
@@ -186,7 +226,7 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     the function receives the equation, the tuples of operators and operands,
     and the dictionary of priorities for the operators and checks,
     if the equation is not valid, if the equation is not valid,
-    the program throws an exception, if the equation is valid,
+    the program prints an error message, if the equation is valid,
     the function returns the equation
     :param left_unary_operands:
     :param right_unary_operands:
@@ -195,7 +235,7 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     :param operands:
     :param binary_operators:
     :param unary_operators:
-    :return: equation if it is valid and throws an exception otherwise
+    :return: equation if it is valid and prints an error message otherwise
     """
 
     # check if the equation is just a number
@@ -206,13 +246,10 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     # continue with the program
 
     # check if the equation doesn't contain numbers
-    if doesnt_contain_numbers(equation):
-        raise Exception("The equation doesn't contain numbers")
+    equation = function_doesnt_contain_numbers(equation)
 
     # check if equation only contains operators and operands
-    for x in equation:
-        if x not in operators and x not in operands:
-            raise Exception('Invalid token: {}'.format(x))
+    equation = contains_invalid_characters(equation, operators, operands)
 
     # remove all the spaces from the equation
     equation = get_rid_of_extra_white_spaces(equation)
@@ -221,7 +258,7 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     equation = check_for_extra_parentheses(equation)
 
     # check if the equation contains two consecutive dots
-    check_for_double_dots(equation)
+    equation = check_for_double_dots(equation)
 
     # add a zero before and after a dot if needed
     equation = add_zero_before_and_after_dot_integer(equation)
@@ -229,53 +266,15 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     # check if there is a number with too many dots in it
     check_for_number_with_too_many_dots_in_them(equation)
 
-    # check if there is a number after a closing parentheses
-    if contains_number_after_closing_parentheses(equation):
-        # if there is a number after a closing parentheses
-        # then the equation is not valid
-        print('Invalid syntax - number after closing parentheses')
-        exit()
-
-    #
-
     # check if equation is balanced
-    # meaning that there are the same
-    # number of opening and closing parentheses
-    if equation.count('(') != equation.count(')'):
-        raise Exception('Invalid syntax - number of opening and closing'
-                        ' parentheses is not the same on token'
-                        ' {}'.format(equation))
+    equation = check_balanced_equation(equation)
 
-    # check if a closing parentheses is before an opening parentheses
-    if equation.find(')') < equation.find('('):
-        raise Exception('Invalid syntax - closing parentheses'
-                        ' is before an opening'
-                        ' parentheses on token {}'.format(equation))
+    # check if there is an invalid character after a closing parentheses
+    # or before an opening parentheses
+    equation = parentheses_surrounding_validity(equation)
 
-    # check if every opening parentheses has a closing parentheses
-    counter_opening_parentheses = 0
-    for x in equation:
-        if x == '(':
-            counter_opening_parentheses += 1
-        elif x == ')':
-            counter_opening_parentheses -= 1
-        if counter_opening_parentheses < 0:
-            raise Exception('Invalid syntax - closing parentheses is'
-                            ' before an opening'
-                            ' parentheses on token {}'.format(equation))
-
-    if counter_opening_parentheses != 0:
-        raise Exception('Invalid syntax - number of opening and closing'
-                        ' parentheses is not the'
-                        ' same on token {}'.format(equation))
-
-    # check if equation contains a number after a closing parentheses
-    if contains_number_after_closing_parentheses(equation):
-        raise Exception("There is a number after a closing parentheses "
-                        "at the equation, Syntax Error")
-
-    # check if there is an operand before an opening parentheses
-    equation = check_operand_in_front_of_opening_parentheses(equation)
+    # remove the extra white spaces from the equation
+    equation = get_rid_of_extra_white_spaces(equation)
 
     # check the validity of the equation by binary operators
     equation = check_validity_of_equation_by_binary_operators(equation,
@@ -291,6 +290,87 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
                                                            unary_operators, RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
                                                            LEFT_ASSOCIATIVE_UNARY_OPERATORS)
 
+    return equation
+
+
+test = '2.0-(3.0+4.0)'
+print(check_if_function_is_valid(test, OPERATORS, OPERANDS, BINARY_OPERATORS,
+                                 UNARY_OPERATORS, RIGHT_ASSOCIATIVE_UNARY_OPERATORS, LEFT_ASSOCIATIVE_UNARY_OPERATORS))
+
+
+def check_balanced_equation(equation: str) -> str:
+    """
+    This function checks if the equation is balanced,
+    the function receives the equation and checks,
+    if the amount of opening parentheses is the
+    same as the amount of closing parentheses
+    and if all the parentheses are balanced
+    meaning all the opening parentheses have a closing parentheses
+    and all the closing parentheses have an opening parentheses
+    :param equation:
+    :return: equation
+    """
+
+    # meaning that there are the same
+    # number of opening and closing parentheses
+    if equation.count('(') != equation.count(')'):
+        print('Invalid syntax - number of opening and closing'
+              ' parentheses is not the same on token'
+              ' {}'.format(equation))
+        exit()
+
+    # check if a closing parentheses is before an opening parentheses
+    if equation.find(')') < equation.find('('):
+        print('Invalid syntax - closing parentheses'
+              ' is before an opening'
+              ' parentheses on token {}'.format(equation))
+        exit()
+
+    # check if every opening parentheses has a closing parentheses
+    counter_opening_parentheses = 0
+    for x in equation:
+        # every time we find an opening parentheses
+        # we add 1 to the counter
+        # every time we find a closing parentheses
+        # we subtract 1 from the counter
+        if x == '(':
+            counter_opening_parentheses += 1
+        elif x == ')':
+            counter_opening_parentheses -= 1
+
+        # check if there are too many closing parentheses
+        # before an opening parentheses
+        if counter_opening_parentheses < 0:
+            print('Invalid syntax - closing parentheses is'
+                  ' before an opening'
+                  ' parentheses on token {}'.format(equation))
+            exit()
+
+    # at the end of the loop, if the counter is not zero,
+    # it means that there is an opening parentheses
+    # without a closing parentheses
+    if counter_opening_parentheses != 0:
+        print('Invalid syntax - number of opening and closing'
+              ' parentheses is not the'
+              ' same on token {}'.format(equation))
+        exit()
+
+    # if we got here, the equation is balanced
+    return equation
+
+
+def contains_invalid_characters(equation: str, operators: tuple, operands: tuple) -> str:
+    """
+    This function checks if the equation contains invalid characters
+    :param equation:
+    :param operators:
+    :param operands:
+    :return: True if the equation contains invalid characters, False otherwise
+    """
+    for x in equation:
+        if x not in operators and x not in operands:
+            print("Invalid syntax - The equation contains invalid characters")
+            exit()
     return equation
 
 
@@ -419,7 +499,7 @@ def check_validity_of_equation_by_unary_operators(equation: str,
         # check if there is a right unary operator is
         # after something that is not a number or a closing parentheses
         if equation[x] in right_unary_operators:
-            if not equation[x - 1].isdigit() and equation[x - 1] != ')':
+            if not is_number(equation[x - 1]) and equation[x - 1] != ')':
                 print('Invalid syntax - right unary operator after something'
                       ' that is not a number or a closing parentheses')
                 exit()
@@ -429,7 +509,7 @@ def check_validity_of_equation_by_unary_operators(equation: str,
                 # if the right unary operator is not the last character
                 # in the equation, check if the next character is a number
                 # or an opening parentheses
-                if equation[x + 1].isdigit() or equation[x + 1] == '(':
+                if is_number(equation[x + 1]) or equation[x + 1] == '(':
                     print('Invalid syntax - right unary followed by'
                           ' a number or an opening parentheses')
                     exit()
@@ -437,7 +517,7 @@ def check_validity_of_equation_by_unary_operators(equation: str,
         # check if there is a left unary operator that is
         # in front of something that is not a number or an opening parentheses
         if equation[x] in left_unary_operators:
-            if not equation[x + 1].isdigit() and equation[x + 1] != '(':
+            if not is_number(equation[x + 1]) and equation[x + 1] != '(':
                 print('Invalid syntax - left unary operator in front of'
                       ' something that is not a number or an opening parentheses')
                 exit()
@@ -447,7 +527,7 @@ def check_validity_of_equation_by_unary_operators(equation: str,
                 # if the left unary operator is not the first character
                 # in the equation, check if the character before it is a number
                 # or a closing parentheses
-                if equation[x - 1].isdigit() or equation[x - 1] == ')':
+                if is_number(equation[x - 1]) or equation[x - 1] == ')':
                     print('Invalid syntax - left unary operator following'
                           ' a number or a closing parentheses')
                     exit()
@@ -648,7 +728,7 @@ def get_rid_of_extra_white_spaces(equation: str) -> str:
         if equation[x] == ' ':
 
             # check if there is a white space between two digits
-            if equation[x - 1].isdigit() and equation[x + 1].isdigit():
+            if is_number(equation[x - 1]) and is_number(equation[x + 1]):
                 print("Invalid syntax, illegal white space between two "
                       "digits")
                 exit()
@@ -657,30 +737,6 @@ def get_rid_of_extra_white_spaces(equation: str) -> str:
     # with no extra white spaces
     equation = equation.replace(' ', '')
 
-    return equation
-
-
-# TODO: check if this is needed / valid
-def check_operand_in_front_of_opening_parentheses(equation: str) -> str:
-    """
-    function that gets an equation and checks if there is not
-    an operand in front of an opening parentheses
-    F. E
-    :param equation:
-    :return: corrected equation
-    """
-    for x in range(len(equation)):
-        # if the current character is an opening parentheses
-        if equation[x] == '(':
-            # if the character before the current character
-            # is a digit, or a closing parentheses
-            if equation[x - 1].isdigit() or \
-                    equation[x - 1] == ')':
-                # raise an exception
-                print(f'Invalid syntax - there is no operand '
-                      'in front of an opening parentheses'
-                      f' on token {equation[x:]}')
-                exit()
     return equation
 
 
@@ -738,35 +794,14 @@ def find_closing_parentheses(equation: str, index: int) -> int:
                   ' for the opening parentheses at the index')
             exit()
 
-    # if we reach end and counter is not 0, raise exception
+    # if we reach end and counter is not 0, print error message
     # technically this should never happen because the function
     # is run after the equation is checked for parentheses errors
-    # but just in case we will raise an exception
+    # but just in case we will print an error message
     if counter_opening_parentheses != 0:
         print('Invalid syntax - no closing parentheses'
               ' for the opening parentheses at the index')
         exit()
-
-
-def simplify_equation(equation: str, binary_operators: tuple,
-                      unary_operators: tuple,
-                      operands: tuple, operators: tuple) -> str:
-    """
-    function that simplifies the equation
-    :param operators:
-    :param operands:
-    :param unary_operators:
-    :param binary_operators:
-    :param equation:
-    :return: simplified equation
-    """
-
-    # get rid of extra minus signs
-    equation = get_rid_of_extra_minus_signs(equation, operands,
-                                            binary_operators, unary_operators)
-
-    # return the simplified equation
-    return equation
 
 
 # TODO: implement this function
