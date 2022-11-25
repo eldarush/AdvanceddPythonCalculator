@@ -206,4 +206,10 @@ def factorial(a: str) -> str:
     # if a is greater than 1, return a!
     # calling factorial recursively until a = 1
     else:
-        return str(int(float(a)) * int(float(factorial(str(float(a) - 1)))))
+        # try to return the factorial of a
+        try:
+            return str(int(float(a)) * int(float(factorial(str(float(a) - 1)))))
+        # if the factorial is too big, return an error message
+        except OverflowError:
+            print('Recursion error: factorial too big')
+            exit()
