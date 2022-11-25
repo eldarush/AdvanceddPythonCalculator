@@ -12,6 +12,8 @@
 # imports the pow function from the math library
 from math import pow
 
+# TODO: change is digit to is number
+
 
 def addition(a: str, b: str) -> str:
     """
@@ -69,7 +71,8 @@ def division(a: str, b: str) -> str:
     """
     # check if b is zero
     if b == 0:
-        raise ZeroDivisionError("Division by zero is not allowed.")
+        print("Division by zero is not allowed.")
+        exit()
 
     return str(float(a) / float(b))
 
@@ -84,7 +87,8 @@ def modulo(a: str, b: str) -> str:
 
     # check if b is zero
     if b == 0:
-        raise ZeroDivisionError("Modulo by zero is not allowed.")
+        print("Modulo by zero is not allowed.")
+        exit()
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
@@ -171,6 +175,7 @@ def tilde(a: str) -> str:
     return str(-float(a))
 
 
+# TODO: check for overflow error (when the factorial is too big)
 def factorial(a: str) -> str:
     """
     returns the factorial of a
@@ -184,13 +189,15 @@ def factorial(a: str) -> str:
 
     # if a is smaller than 0, return an error
     if float(a) < 0:
-        raise ValueError('Invalid input for factorial: {},'
-                         ' factorial() not defined for negative values'.format(a))
+        print('Invalid input for factorial: {},'
+              ' factorial() not defined for negative values'.format(a))
+        exit()
 
     # if a is not an integer, return an error
     elif not float(a).is_integer():
-        raise ValueError('Invalid input for factorial: {},'
-                         ' factorial() not defined for non-integer values'.format(a))
+        print('Invalid input for factorial: {},'
+              ' factorial() not defined for non-integer values'.format(a))
+        exit()
 
     # if a is 0 or 1, return 1
     elif float(a) == 0 or float(a) == 1:
@@ -199,4 +206,10 @@ def factorial(a: str) -> str:
     # if a is greater than 1, return a!
     # calling factorial recursively until a = 1
     else:
-        return str(int(float(a)) * int(float(factorial(str(float(a) - 1)))))
+        # try to return the factorial of a
+        try:
+            return str(int(float(a)) * int(float(factorial(str(float(a) - 1)))))
+        # if the factorial is too big, return an error message
+        except OverflowError:
+            print('Recursion error: factorial too big')
+            exit()
