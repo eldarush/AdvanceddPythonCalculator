@@ -436,7 +436,8 @@ def check_validity_of_equation_by_all_operators(equation: str, binary_operators:
     # for example: 5*!5 or 5~*5
     # if there is such a case print an error message and exit
     for x in range(len(equation) - 1):
-        if equation[x] in binary_operators:
+        if equation[x] in binary_operators and \
+                equation[x] != '-':
             if equation[x + 1] in right_unary_operators:
                 # check if there is a right unary operator after a binary operator
                 print('Invalid syntax - binary operator before a right'
@@ -770,10 +771,6 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
 
     return equation
 
-
-test = '3^*2!'
-print(check_if_function_is_valid(test, OPERATORS, OPERANDS, BINARY_OPERATORS,
-                                 UNARY_OPERATORS, RIGHT_ASSOCIATIVE_UNARY_OPERATORS, LEFT_ASSOCIATIVE_UNARY_OPERATORS))
 
 def get_number_to_the_right_of_the_operator(equation: str, index: int) -> str:
     """
