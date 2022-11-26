@@ -38,7 +38,6 @@ RIGHT_ASSOCIATIVE_UNARY_OPERATORS = tuple('!')
 # and that they work from left to right
 LEFT_ASSOCIATIVE_UNARY_OPERATORS = tuple('~')
 
-
 # dictionary of priorities for the operators
 PRIORITY = {'+': 1, '-': 1,
             '*': 2, '/': 2,
@@ -48,14 +47,15 @@ PRIORITY = {'+': 1, '-': 1,
             '~': 6, '!': 6}
 
 # dictionary of functions for the operators
-funcs_per_operator = {'+': addition,
-                      '-': subtraction,
-                      '*': multiplication,
-                      '/': division,
-                      '^': power,
-                      '%': modulo,
-                      '$': maximum,
-                      '&': minimum,
-                      '@': factorial,
-                      '~': tilde,
-                      '!': factorial}
+FUNCTIONS_PER_OPERATOR = {'+': addition,
+                          '-': subtraction,
+                          '*': multiplication,
+                          '/': division,
+                          '^': power,
+                          '%': modulo,
+                          '$': maximum,
+                          '&': minimum,
+                          '@': average,
+                          '~': tilde,
+                          '!': factorial}
+
