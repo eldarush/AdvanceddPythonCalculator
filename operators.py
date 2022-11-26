@@ -100,7 +100,8 @@ def division(a: str, b: str) -> str:
     """
     # check if b is zero
     if b == '0':
-        print("Math Error: Division by zero is not allowed.")
+        print("Math Error: Division by zero is "
+              f"not allowed at Token: {a}/{b}.")
         exit(1)
 
     # if both a and b are infinite, print error message
@@ -137,7 +138,8 @@ def modulo(a: str, b: str) -> str:
 
     # check if b is zero
     if b == 0:
-        print("Invalid input: Modulo by zero is not allowed.")
+        print("Invalid input: Modulo by zero is not allowed."
+              f" Cannot do {a}%{b}.")
         exit(1)
 
     # check if a is infinite
@@ -303,16 +305,16 @@ def factorial(a: str) -> str:
 
     # if a is smaller than 0, return an error
     if float(a) < 0:
-        print('Invalid input for factorial: {},'
-              ' factorial() not defined for negative values'.format(a))
+        print(f'Invalid input for factorial: {a},'
+              ' factorial() not defined for negative values')
         exit(1)
 
     # if a is not an integer or infinity, return an error
     # if a is infinity, the check for infinity is done in the
     # second next if statement (check if bigger than 171)
     elif not float(a).is_integer() and a != "inf":
-        print('Invalid input for factorial: {},'
-              ' factorial() not defined for non-integer values'.format(a))
+        print(f'Invalid input for factorial: {a},'
+              ' factorial() not defined for non-integer values')
         exit(1)
 
     # if a is 0 or 1, return 1
