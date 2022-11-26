@@ -7,8 +7,8 @@
 from functions import get_equation_from_user, calculate
 
 
-# # get the equation from the user
-# input_equation = get_equation_from_user()
-#
-# # run the calculator and print the result
-# calculate(input_equation)
+# get the equation from the user
+input_equation = get_equation_from_user()
+
+# run the calculator and print the result
+calculate(input_equation)
