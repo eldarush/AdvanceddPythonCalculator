@@ -8,33 +8,70 @@
 # import all from the functions file for testing
 from functions import *
 
-# import all the config for testing purposes
-from globals import *
 
 # import pytest to test the code
 import pytest
 
 
-def test_operators():
+def test_syntax_errors():
     """
-    tests that the operators are valid and working
-    for every possible input
-    :return:
-    """
-    assert calculate_equation("3!*((2^6)$7!)", BINARY_OPERATORS, UNARY_OPERATORS,
-                              PRIORITY, OPERANDS, OPERATORS, RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
-                              LEFT_ASSOCIATIVE_UNARY_OPERATORS) == "30240"
-
-
-def test_exit():
-    """
-    checks that all the exit commands work
-    and all the validity checks work
-    :return:
+    checks that all the syntax errors are caught
+    and that the program exits
     """
     with pytest.raises(SystemExit) as e:
-        check_if_function_is_valid("5 5+6", OPERATORS, OPERANDS, BINARY_OPERATORS,
-                                          UNARY_OPERATORS, RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
-                                          LEFT_ASSOCIATIVE_UNARY_OPERATORS)
-    assert e.value.code == 1
-    # assert e.type == SystemExit
+        calculate("2^*3")
+        calculate("2-+3")
+        calculate("2+3-")
+        calculate("2+*3")
+        calculate("2+/3")
+        calculate("!2+3/")
+        calculate("~2~3!")
+    assert e.type == SystemExit
+
+
+def test_garbage_input():
+    """
+    checks that the program exits when the input is wrong
+    """
+    with pytest.raises(SystemExit) as e:
+        calculate("omega is not the best")
+        calculate("calculator is easy")
+        calculate("calculator is not working")
+    assert e.type == SystemExit
+
+
+def test_empty_white_space_input():
+    """
+    checks that the program exits when the input is empty
+    or contains extra white spaces with nothing else
+    """
+    with pytest.raises(SystemExit) as e:
+        calculate("")
+        calculate(" ")
+        calculate("\t")
+        calculate("\n")
+        calculate("\t   \t\t      \n\n    \n")
+    # we check that the program exits with the correct error code
+    # which is 0 - meaning that the program exited normally
+    # and not with an error
+    assert e.value.code == 0
+
+
+def test_operator_valid():
+    """
+    checks that the program will return the correct result
+    for all the possible operators
+    """
+    assert calculate("2+3") == "5"
+    assert calculate("2-3") == "-1"
+    assert calculate("2*3") == "6"
+    assert calculate("2/3") == str(2/3)
+    assert calculate("2^3") == "8"
+    assert calculate("2%3") == "2"
+    assert calculate("2$3") == "3"
+    assert calculate("2&3") == "2"
+    assert calculate("2@3") == str((2+3)/2)
+    assert calculate("~3") == "-3"
+    assert calculate("3!") == "6"
+
+

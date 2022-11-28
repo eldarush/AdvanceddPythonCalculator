@@ -5,7 +5,7 @@
 from globals import *
 
 
-def is_number(s: str) -> bool:
+def is_number(s="") -> bool:
     """
     simple function that checks if a string is a number
     this function receives a string and returns
@@ -24,7 +24,7 @@ def is_number(s: str) -> bool:
         return False
 
 
-def doesnt_contain_numbers(equation: str) -> bool:
+def doesnt_contain_numbers(equation="") -> bool:
     """
     This function checks if an equation contains numbers
     :param equation:
@@ -40,7 +40,7 @@ def doesnt_contain_numbers(equation: str) -> bool:
     return True
 
 
-def function_doesnt_contain_numbers(equation: str) -> str:
+def function_doesnt_contain_numbers(equation="") -> str:
     """
     function that checks if a function doesn't contain numbers
     simply by running the function doesnt_contain_numbers
@@ -56,8 +56,9 @@ def function_doesnt_contain_numbers(equation: str) -> str:
     return equation
 
 
-def parentheses_surrounding_validity(equation: str, right_unary_operators: tuple,
-                                     left_unary_operators: tuple) -> str:
+def parentheses_surrounding_validity(equation="",
+                                     right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                                     left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     function that checks if the surrounding of parentheses
     are valid, meaning that there are no numbers or closing parentheses
@@ -105,7 +106,7 @@ def parentheses_surrounding_validity(equation: str, right_unary_operators: tuple
     return equation
 
 
-def check_for_double_dots(equation: str) -> str:
+def check_for_double_dots(equation="") -> str:
     """
     function that checks if there are two dots in a row
     :param equation:
@@ -120,7 +121,7 @@ def check_for_double_dots(equation: str) -> str:
     return equation
 
 
-def check_for_number_with_too_many_dots_in_them(equation: str) -> str:
+def check_for_number_with_too_many_dots_in_them(equation="") -> str:
     """
     function that checks if there are numbers with too many dots in them
     :param equation:
@@ -148,7 +149,7 @@ def check_for_number_with_too_many_dots_in_them(equation: str) -> str:
     return equation
 
 
-def add_zero_before_and_after_dot_integer(equation: str) -> str:
+def add_zero_before_and_after_dot_integer(equation="") -> str:
     """
     function that adds a zero before and after a dot
     F.E 2.(3) is 2.0(3)
@@ -188,7 +189,7 @@ def add_zero_before_and_after_dot_integer(equation: str) -> str:
     return equation
 
 
-def check_balanced_equation(equation: str) -> str:
+def check_balanced_equation(equation="") -> str:
     """
     This function checks if the equation is balanced,
     the function receives the equation and checks,
@@ -213,7 +214,7 @@ def check_balanced_equation(equation: str) -> str:
     if equation.find(')') < equation.find('('):
         print('Invalid syntax - closing parentheses'
               ' is before an opening'
-              ' parentheses on token {}'.format(equation))
+              f' parentheses on token {equation}')
         exit(1)
 
     # check if every opening parentheses has a closing parentheses
@@ -233,7 +234,7 @@ def check_balanced_equation(equation: str) -> str:
         if counter_opening_parentheses < 0:
             print('Invalid syntax - closing parentheses is'
                   ' before an opening'
-                  ' parentheses on token {}'.format(equation))
+                  f' parentheses on token {equation}')
             exit(1)
 
     # at the end of the loop, if the counter is not zero,
@@ -242,14 +243,15 @@ def check_balanced_equation(equation: str) -> str:
     if counter_opening_parentheses != 0:
         print('Invalid syntax - number of opening and closing'
               ' parentheses is not the'
-              ' same on token {}'.format(equation))
+              f' same on token {equation}')
         exit(1)
 
     # if we got here, the equation is balanced
     return equation
 
 
-def contains_invalid_characters(equation: str, operators: tuple, operands: tuple) -> str:
+def contains_invalid_characters(equation="", operators=OPERATORS,
+                                operands=OPERANDS) -> str:
     """
     This function checks if the equation contains invalid characters
     :param equation:
@@ -264,8 +266,8 @@ def contains_invalid_characters(equation: str, operators: tuple, operands: tuple
     return equation
 
 
-def check_validity_of_equation_by_binary_operators(equation: str,
-                                                   binary_operators: tuple) -> str:
+def check_validity_of_equation_by_binary_operators(equation="",
+                                                   binary_operators=BINARY_OPERATORS) -> str:
     """
     returns the function if all the binary operands
     are valid in it, if not prints error message
@@ -354,10 +356,10 @@ def check_validity_of_equation_by_binary_operators(equation: str,
     return equation
 
 
-def check_validity_of_equation_by_unary_operators(equation: str,
-                                                  unary_operators: tuple,
-                                                  right_unary_operators: tuple,
-                                                  left_unary_operators: tuple) -> str:
+def check_validity_of_equation_by_unary_operators(equation="",
+                                                  unary_operators=UNARY_OPERATORS,
+                                                  right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                                                  left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     returns the function if all the unary operands
     are valid in it, if not prints error message
@@ -426,9 +428,9 @@ def check_validity_of_equation_by_unary_operators(equation: str,
     return equation
 
 
-def check_validity_of_equation_by_all_operators(equation: str, binary_operators: tuple,
-                                                right_unary_operators: tuple,
-                                                left_unary_operators: tuple) -> str:
+def check_validity_of_equation_by_all_operators(equation="", binary_operators=BINARY_OPERATORS,
+                                                right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                                                left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     returns the function if all the binary and unary operands
     are valid in it, if not prints error message
@@ -461,7 +463,7 @@ def check_validity_of_equation_by_all_operators(equation: str, binary_operators:
     return equation
 
 
-def check_for_extra_parentheses(equation: str) -> str:
+def check_for_extra_parentheses(equation="") -> str:
     """
     function that checks if there are extra parentheses
     in the equation that don't do anything
@@ -480,18 +482,18 @@ def check_for_extra_parentheses(equation: str) -> str:
     return equation
 
 
-def get_rid_of_extra_minus_signs(equation: str, operands: tuple,
-                                 binary_operators: tuple,
-                                 unary_operators: tuple,
-                                 right_unary_operands: tuple,
-                                 left_unary_operands: tuple) -> str:
+def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
+                                 binary_operators=BINARY_OPERATORS,
+                                 unary_operators=UNARY_OPERATORS,
+                                 right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                                 left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     function that gets rid of extra minus signs
     F.E 2---3 is just 2-3
     or 2--3 is just 2-3
     or 2----3 is 2+3
-    :param right_unary_operands:
-    :param left_unary_operands:
+    :param right_unary_operators:
+    :param left_unary_operators:
     :param unary_operators:
     :param operands:
     :param binary_operators:
@@ -521,7 +523,7 @@ def get_rid_of_extra_minus_signs(equation: str, operands: tuple,
         # go over the equation and check if there is a minus sign
         # until the first left unary operator, number or opening parentheses
         elif is_number(equation[1]) or equation[1] == '(' \
-                or equation[1] in left_unary_operands:
+                or equation[1] in left_unary_operators:
             break
 
     # if there are minus signs at the end of the equation
@@ -542,17 +544,17 @@ def get_rid_of_extra_minus_signs(equation: str, operands: tuple,
             # if the double minus sign is before a number
             # or an opening parentheses or a left unary operator
             if is_number(equation[x + 2]) or equation[x + 2] == '(' or \
-                    equation[x + 2] in left_unary_operands:
+                    equation[x + 2] in left_unary_operators:
                 # if the double minus sign is after a binary operator
                 if equation[x - 1] in binary_operators or equation[x - 1] \
-                        in left_unary_operands:
+                        in left_unary_operators or equation[x-1] == '(':
                     # remove the double minus sign
                     equation = equation[:x] + equation[x + 2:]
                     break
                 # if the double minus sign is after an operand
                 # or a closing parentheses or a right unary operator
                 elif equation[x - 1] in operands or equation[x - 1] == ')' \
-                        or equation[x - 1] in right_unary_operands:
+                        or equation[x - 1] in right_unary_operators:
                     # then replace the double minus sign with a plus sign
                     equation = equation[:x] + '+' + equation[x + 2:]
                     break
@@ -563,7 +565,7 @@ def get_rid_of_extra_minus_signs(equation: str, operands: tuple,
                       "parentheses")
                 exit(1)
             # if the double minus sign is before a unary operator
-            elif equation[x + 2] in right_unary_operands:
+            elif equation[x + 2] in right_unary_operators:
                 # print error message and exit
                 print("Invalid syntax, extra minus sign before a right "
                       "unary operator")
@@ -587,10 +589,10 @@ def get_rid_of_extra_minus_signs(equation: str, operands: tuple,
         return get_rid_of_extra_minus_signs(equation, operands,
                                             binary_operators,
                                             unary_operators,
-                                            right_unary_operands, left_unary_operands)
+                                            right_unary_operators, left_unary_operators)
 
 
-def get_rid_of_extra_white_spaces(equation: str) -> str:
+def get_rid_of_extra_white_spaces(equation="") -> str:
     """
     function that gets rid of extra white spaces
     and also checks if there are illegal white spaces
@@ -642,7 +644,7 @@ def get_rid_of_extra_white_spaces(equation: str) -> str:
     return equation
 
 
-def find_closing_parentheses(equation: str, index: int) -> int:
+def find_closing_parentheses(equation="", index=0) -> int:
     """
     this function gets an equation, and a starting index
     of the opening parentheses and returns the index of the
@@ -698,11 +700,7 @@ def find_closing_parentheses(equation: str, index: int) -> int:
         exit(1)
 
 
-def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
-                               binary_operators: tuple,
-                               unary_operators: tuple,
-                               right_unary_operands: tuple,
-                               left_unary_operands: tuple) -> str:
+def check_if_function_is_valid(equation="") -> str:
     """
     This function checks if the equation is valid,
     the function receives the equation, the tuples of operators and operands,
@@ -710,13 +708,6 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     if the equation is not valid, if the equation is not valid,
     the program prints an error message, if the equation is valid,
     the function returns the equation
-    :param left_unary_operands:
-    :param right_unary_operands:
-    :param equation:
-    :param operators:
-    :param operands:
-    :param binary_operators:
-    :param unary_operators:
     :return: equation if it is valid and prints an error message otherwise
     """
 
@@ -731,7 +722,7 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
     equation = function_doesnt_contain_numbers(equation)
 
     # check if equation only contains operators and operands
-    equation = contains_invalid_characters(equation, operators, operands)
+    equation = contains_invalid_characters(equation)
 
     # remove all the spaces from the equation
     equation = get_rid_of_extra_white_spaces(equation)
@@ -753,35 +744,24 @@ def check_if_function_is_valid(equation: str, operators: tuple, operands: tuple,
 
     # check if there is an invalid character after a closing parentheses
     # or before an opening parentheses
-    equation = parentheses_surrounding_validity(equation,
-                                                right_unary_operands,
-                                                left_unary_operands)
+    equation = parentheses_surrounding_validity(equation)
 
     # remove the extra minus signs from the equation
-    equation = get_rid_of_extra_minus_signs(equation, operands,
-                                            binary_operators, unary_operators,
-                                            right_unary_operands,
-                                            left_unary_operands)
+    equation = get_rid_of_extra_minus_signs(equation)
 
     # check the validity of the equation by binary operators
-    equation = check_validity_of_equation_by_binary_operators(equation,
-                                                              binary_operators)
+    equation = check_validity_of_equation_by_binary_operators(equation)
 
     # check the validity of the equation by unary operators
-    equation = check_validity_of_equation_by_unary_operators(equation,
-                                                             unary_operators,
-                                                             right_unary_operands,
-                                                             left_unary_operands)
+    equation = check_validity_of_equation_by_unary_operators(equation)
 
     # check validity of equation by both binary and unary operators
-    equation = check_validity_of_equation_by_all_operators(equation, binary_operators,
-                                                           right_unary_operands,
-                                                           left_unary_operands)
+    equation = check_validity_of_equation_by_all_operators(equation)
 
     return equation
 
 
-def get_number_to_the_right_of_the_operator(equation: str, index: int) -> str:
+def get_number_to_the_right_of_the_operator(equation="", index=0) -> str:
     """
     this function gets an equation and an index of an operator,
     and returns the number to the right of the operator
@@ -857,7 +837,7 @@ def get_number_to_the_right_of_the_operator(equation: str, index: int) -> str:
     return num_to_return
 
 
-def get_number_to_the_left_of_the_operator(equation: str, index: int) -> str:
+def get_number_to_the_left_of_the_operator(equation="", index=0) -> str:
     """
     this function gets an equation and an index of an operator,
     and returns the number to the left of the operator
@@ -876,10 +856,17 @@ def get_number_to_the_left_of_the_operator(equation: str, index: int) -> str:
         print('Invalid syntax - the index is negative')
         exit(1)
 
-    # if the index is at the start of the equation
+    # if the index is at the start of the equation,
+    # but the operator is not a minus sign (that will stand
+    # for a negative number)
     if index == 0:
-        print('Invalid syntax - the operator is at the start of the equation')
-        exit(1)
+        if equation[index] != '-':
+            print('Invalid syntax - the operator is at the start of the equation')
+            exit(1)
+        elif equation[index] == '-':
+            # returning 0 minus something is the same as returning
+            # the negative of the number
+            return '0'
 
     # if the index is at the second character of the equation
     if index == 1:
@@ -907,7 +894,7 @@ def get_number_to_the_left_of_the_operator(equation: str, index: int) -> str:
     return num_to_return
 
 
-def is_negative_number(equation: str) -> bool:
+def is_negative_number(equation="") -> bool:
     """
     this function gets an equation and returns whether
     the equation contains only a minus sign and numbers
@@ -918,11 +905,11 @@ def is_negative_number(equation: str) -> bool:
     """
     # go over the equation
     return equation[0] == '-' and is_number(equation[1:]) \
-        and equation[1:].count('-') == 0
+           and equation[1:].count('-') == 0
 
 
-def count_amount_operators_in_equation(equation: str, binary_operators: tuple,
-                                       unary_operators: tuple) -> int:
+def count_amount_operators_in_equation(equation="", binary_operators=BINARY_OPERATORS,
+                                       unary_operators=UNARY_OPERATORS) -> int:
     """
     this function gets an equation and returns the amount of
     operators in the equation
@@ -946,8 +933,8 @@ def count_amount_operators_in_equation(equation: str, binary_operators: tuple,
     return amount_operators
 
 
-def calculate_binary_operator(operator: str, left_operand: str,
-                              right_operand: str) -> str:
+def calculate_binary_operator(operator="", left_operand="",
+                              right_operand="") -> str:
     """
     this function gets an operator and two operands and returns
     the result of the calculation
@@ -959,7 +946,7 @@ def calculate_binary_operator(operator: str, left_operand: str,
     return FUNCTIONS_PER_OPERATOR[operator](left_operand, right_operand)
 
 
-def calculate_unary_operator(operator: str, operand: str) -> str:
+def calculate_unary_operator(operator="", operand="") -> str:
     """
     this function gets an operator and an operand and returns
     the result of the calculation
@@ -970,18 +957,14 @@ def calculate_unary_operator(operator: str, operand: str) -> str:
     return FUNCTIONS_PER_OPERATOR[operator](operand)
 
 
-# TODO: fix problem with parentheses
-def calculate_equation(equation: str, binary_operators: tuple,
-                       unary_operators: tuple, priority: dict,
-                       operands: tuple, operators: tuple,
-                       right_unary_operands: tuple,
-                       left_unary_operands: tuple) -> str:
+def calculate_equation(equation="", binary_operators=BINARY_OPERATORS,
+                       unary_operators=UNARY_OPERATORS, priority=PRIORITY,
+                       right_unary_operands=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                       left_unary_operands=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     general function that calculates the equation, this function
     will be run recursively until the equation is solved
     :param left_unary_operands:
-    :param operators:
-    :param operands:
     :param right_unary_operands:
     :param equation:
     :param binary_operators:
@@ -1022,12 +1005,7 @@ def calculate_equation(equation: str, binary_operators: tuple,
                 saved_equation_inside_parentheses = equation_inside_parentheses
 
                 # calculate the equation inside the parentheses
-                equation_inside_parentheses = calculate_equation(equation_inside_parentheses,
-                                                                 binary_operators,
-                                                                 unary_operators,
-                                                                 priority, operands,
-                                                                 operators, right_unary_operands,
-                                                                 left_unary_operands)
+                equation_inside_parentheses = calculate_equation(equation_inside_parentheses)
                 # replace the equation inside the parentheses with the result
                 equation = equation.replace('(' + saved_equation_inside_parentheses + ')',
                                             equation_inside_parentheses)
@@ -1046,7 +1024,13 @@ def calculate_equation(equation: str, binary_operators: tuple,
         current_priority = 6
         # go over the operators by the priority
         while current_priority > 0 and not size_changed:
+            # if the equation is number - return the number
+            # this check is needed for when we reach this place
+            # while calculating the insider equation in parentheses
+
             # go over the equation
+            if is_number(equation):
+                return equation
             for x in range(len(equation)):
                 # if the current character is an operator
                 if equation[x] in unary_operators or \
@@ -1055,6 +1039,13 @@ def calculate_equation(equation: str, binary_operators: tuple,
                     if priority[equation[x]] == current_priority:
                         # if the current operator is a binary operator
                         if equation[x] in binary_operators:
+                            # if the case is that we are at the first index
+                            # and the operator is a minus sign
+                            # then we continue to the next iteration
+                            # because that means that the minus sign is
+                            # a sign of a negative number
+                            if x == 0 and equation[x] == '-':
+                                continue
                             # get the number to the left of the operator
                             num_to_the_left = get_number_to_the_left_of_the_operator(equation, x)
                             # get the number to the right of the operator
@@ -1073,7 +1064,29 @@ def calculate_equation(equation: str, binary_operators: tuple,
                         elif equation[x] in right_unary_operands:
                             # get the number to the left of the operator
                             num_to_the_left = get_number_to_the_left_of_the_operator(equation, x)
-                            # calculate the equation
+                            # if the right unary operator is a factorial
+                            # we need to check if the number to the left is a negative number
+                            # if it is we need to calculate the equation without negative
+                            if equation[x] == '!':
+                                # if the number to the left is negative
+                                if num_to_the_left[0] == '-':
+                                    len_of_left = len(num_to_the_left)
+                                    # if the minus sign functions as a sign change
+                                    # then we need to calculate the equation with the minus sign
+                                    # if the minus sign functions as a binary operator
+                                    # then we need to calculate the equation without the minus sign
+                                    if equation[x - len_of_left - 1] in binary_operators:
+                                        # in this scenario the minus sign functions as
+                                        # a sign change
+                                        # calculate the equation with the minus sign
+                                        pass
+                                    elif not equation[x - len_of_left - 1] in binary_operators:
+                                        # in this scenario the minus sign functions as
+                                        # a binary operator
+                                        # we need to calculate the
+                                        # equation without the minus sign
+                                        num_to_the_left = num_to_the_left[1:]
+                            # calculate the equation and replace it with the result
                             equation = equation.replace(num_to_the_left + equation[x],
                                                         calculate_unary_operator(equation[x],
                                                                                  num_to_the_left))
@@ -1100,18 +1113,19 @@ def calculate_equation(equation: str, binary_operators: tuple,
     # check if there are still operators in the equation
     # if there are still operators in the equation
     # run the function recursively
-    elif count_amount_operators_in_equation(equation, binary_operators,
-                                            unary_operators) > 0:
-        return calculate_equation(equation, binary_operators, unary_operators,
-                                  priority, operands, operators, right_unary_operands,
-                                  left_unary_operands)
+    elif count_amount_operators_in_equation(equation) > 0:
+
+        # remove extra minus signs
+        equation = get_rid_of_extra_minus_signs(equation)
+        # run the function again recursively
+        return calculate_equation(equation)
     else:
         print('Invalid equation - the equation doesnt have a result')
         exit(1)
 
 
-def print_operators(binary_operators: str,
-                    unary_operators: str) -> None:
+def print_operators(binary_operators=BINARY_OPERATORS,
+                    unary_operators=UNARY_OPERATORS) -> None:
     """
     print the operators
     :param binary_operators: the binary operators
@@ -1139,17 +1153,17 @@ def print_welcome_message() -> None:
           'This is a smart calculator made by @Eldar Aslanbeily \n'
           'You can use the calculator to calculate equations with '
           'the following operators:\n')
-    print_operators(BINARY_OPERATORS, UNARY_OPERATORS)
+    print_operators()
     print('For more information about the calculator, \n'
           'please read the README.md file in the repository \n'
-          'at: https://github.com/eldarush/AdvanceddPythonCalculator.git \n' 
+          'at: https://github.com/eldarush/AdvanceddPythonCalculator.git \n'
           'This calculator supports parentheses,'
           'and extra spaces between the operators and operands, \n'
           'but not between the operators themselves.\n'
           'type "exit" or "quit" to exit the program')
 
 
-def check_for_exit_quit(equation: str) -> None:
+def check_for_exit_quit(equation="") -> None:
     """
     check if the user typed 'exit' or 'quit'
     if he did, exit the program
@@ -1170,7 +1184,7 @@ def check_for_exit_quit(equation: str) -> None:
         raise SystemExit
 
 
-def check_for_continue_c(equation: str) -> bool:
+def check_for_continue_c(equation="") -> bool:
     """
     check if the user typed 'continue' or 'c'
     if he did, return True
@@ -1191,7 +1205,7 @@ def check_for_continue_c(equation: str) -> bool:
     return False
 
 
-def is_blank(equation: str) -> bool:
+def is_blank(equation="") -> bool:
     """
     check if the equation is blank
     :param equation: the equation
@@ -1277,7 +1291,7 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
     return input_equation
 
 
-def calculate(equation: str) -> None:
+def calculate(equation="") -> None:
     """
     function that runs the checks and calculates the equation
     this is a function that is used by tne handler file which
@@ -1286,19 +1300,19 @@ def calculate(equation: str) -> None:
     :return: result of the equation
     """
 
+    # test if for some reason the equation is blank,
+    # this should not happen because the equation is checked
+    # before it is passed to this function by the get_equation_from_user
+    # function in the handler file
+    if is_blank(equation):
+        print("The entered equation is blank")
+        exit(0)
+
     # check if equation is valid
-    equation = check_if_function_is_valid(equation, OPERATORS,
-                                          OPERANDS, BINARY_OPERATORS,
-                                          UNARY_OPERATORS,
-                                          RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
-                                          LEFT_ASSOCIATIVE_UNARY_OPERATORS)
+    equation = check_if_function_is_valid(equation)
 
     # calculate the result
-    result_of_calc = calculate_equation(equation, BINARY_OPERATORS,
-                                        UNARY_OPERATORS, PRIORITY,
-                                        OPERANDS, OPERATORS,
-                                        RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
-                                        LEFT_ASSOCIATIVE_UNARY_OPERATORS)
+    result_of_calc = calculate_equation(equation)
 
     # print the result of the equation
     print("\nResult: {}\n".format(result_of_calc))
