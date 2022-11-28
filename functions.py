@@ -918,7 +918,7 @@ def is_negative_number(equation: str) -> bool:
     """
     # go over the equation
     return equation[0] == '-' and is_number(equation[1:]) \
-        and equation[1:].count('-') == 0
+           and equation[1:].count('-') == 0
 
 
 def count_amount_operators_in_equation(equation: str, binary_operators: tuple,
@@ -1073,6 +1073,16 @@ def calculate_equation(equation: str, binary_operators: tuple,
                         elif equation[x] in right_unary_operands:
                             # get the number to the left of the operator
                             num_to_the_left = get_number_to_the_left_of_the_operator(equation, x)
+
+                            # TODO: check problem with negative signs with factorials
+                            # TODO: fix the problem 1-(-5)! that does not work
+                            # if the number to the left of the operator is a negative number
+                            # and the operator is a factorial
+                            # we need to get rid of the negative sign in the number
+                            # this handles the case of 1-5! that should be 1-(5!)
+                            # and not 1(-5!) which is wrong
+                            if equation[x] == '!' and num_to_the_left[0] == '-':
+                                num_to_the_left = num_to_the_left[1:]
                             # calculate the equation
                             equation = equation.replace(num_to_the_left + equation[x],
                                                         calculate_unary_operator(equation[x],
@@ -1096,12 +1106,26 @@ def calculate_equation(equation: str, binary_operators: tuple,
     # final check to see if the equation is a number
     # if it is a number, return it
     if is_number(equation) or is_negative_number(equation):
+        # we need to add zeroes before 3. or .3 will be flagged as
+        # number, so we need to add the missing zeros to it to
+        # make it look like the actual number
+        equation = add_zero_before_and_after_dot_integer(equation)
         return equation
     # check if there are still operators in the equation
     # if there are still operators in the equation
     # run the function recursively
     elif count_amount_operators_in_equation(equation, binary_operators,
                                             unary_operators) > 0:
+        # again we check if the equation is valid or not before
+        # running the function recursively, if it is not valid
+        # the program will stop running in the check_equation_validity function
+        equation = check_if_function_is_valid(equation, operators,
+                                              operands,
+                                              binary_operators,
+                                              unary_operators,
+                                              right_unary_operands,
+                                              left_unary_operands)
+
         return calculate_equation(equation, binary_operators, unary_operators,
                                   priority, operands, operators, right_unary_operands,
                                   left_unary_operands)
@@ -1142,7 +1166,7 @@ def print_welcome_message() -> None:
     print_operators(BINARY_OPERATORS, UNARY_OPERATORS)
     print('For more information about the calculator, \n'
           'please read the README.md file in the repository \n'
-          'at: https://github.com/eldarush/AdvanceddPythonCalculator.git \n' 
+          'at: https://github.com/eldarush/AdvanceddPythonCalculator.git \n'
           'This calculator supports parentheses,'
           'and extra spaces between the operators and operands, \n'
           'but not between the operators themselves.\n'
@@ -1266,6 +1290,8 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
             # exit the program
             check_for_exit_quit(input_equation)
 
+            # TODO: make this work with capital P
+            # TODO: also fix when e is in the equation, add the right number of 0s
             # replace the 'p' operand with the previous result
             input_equation = input_equation.replace('p', previous_result)
 
