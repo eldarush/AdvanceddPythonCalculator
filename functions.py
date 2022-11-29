@@ -49,7 +49,8 @@ def function_doesnt_contain_numbers(equation="") -> str:
     """
     # check if the equation doesn't contain numbers
     if doesnt_contain_numbers(equation):
-        print('Invalid syntax - equation does not contain numbers')
+        print('Invalid syntax - equation does not contain numbers, \n'
+              f'equation is: {equation}')
         exit(1)
 
     # if the equation contains numbers, then return the equation
@@ -84,7 +85,8 @@ def parentheses_surrounding_validity(equation="",
             if is_number(equation[x + 1]) or equation[x + 1] == '(' \
                     or equation[x + 1] in left_unary_operators:
                 print("Invalid syntax - number or opening parentheses "
-                      "or left unary operator after closing parentheses")
+                      "or left unary operator after closing parentheses \n"
+                      f"at index {x}, equation is: {equation}")
                 exit(1)
         # if there is closing parentheses at the end of the equation
         # then we don't need to check if there is invalid character
@@ -95,7 +97,8 @@ def parentheses_surrounding_validity(equation="",
             if is_number(equation[x - 1]) or equation[x - 1] == ')' \
                     or equation[x - 1] in right_unary_operators:
                 print("Invalid syntax - number or closing parentheses "
-                      "or right unary operator before opening parentheses")
+                      "or right unary operator before opening parentheses \n"
+                      f"at index {x}, equation is: {equation}")
                 exit(1)
         # if there is closing parentheses at the end of the equation
         # then we don't need to check if there is invalid character
@@ -116,7 +119,8 @@ def check_for_double_dots(equation="") -> str:
     # go over equation and check if there are two dots in a row
     for x in range(len(equation) - 1):
         if equation[x] == '.' and equation[x + 1] == '.':
-            print('Invalid syntax - two dots in a row')
+            print('Invalid syntax - two dots in a row \n'
+                  f'at index {x}, equation is: {equation}')
             exit(1)
     return equation
 
@@ -140,7 +144,8 @@ def check_for_number_with_too_many_dots_in_them(equation="") -> str:
         if x == '.':
             if flag:
                 print('Invalid syntax - number with too'
-                      ' many decimal points in it')
+                      ' many decimal points in it \n'
+                      f'at index {x}, equation is: {equation}')
                 exit(1)
             else:
                 flag = True
@@ -206,15 +211,15 @@ def check_balanced_equation(equation="") -> str:
     # number of opening and closing parentheses
     if equation.count('(') != equation.count(')'):
         print('Invalid syntax - number of opening and closing'
-              ' parentheses is not the same on token'
-              ' {}'.format(equation))
+              ' parentheses is not the same \n'
+              f'equation is: {equation}')
         exit(1)
 
     # check if a closing parentheses is before an opening parentheses
     if equation.find(')') < equation.find('('):
         print('Invalid syntax - closing parentheses'
               ' is before an opening'
-              f' parentheses on token {equation}')
+              f'parentheses in equation: {equation}')
         exit(1)
 
     # check if every opening parentheses has a closing parentheses
@@ -234,7 +239,7 @@ def check_balanced_equation(equation="") -> str:
         if counter_opening_parentheses < 0:
             print('Invalid syntax - closing parentheses is'
                   ' before an opening'
-                  f' parentheses on token {equation}')
+                  f' parentheses in equation: {equation}')
             exit(1)
 
     # at the end of the loop, if the counter is not zero,
@@ -242,8 +247,8 @@ def check_balanced_equation(equation="") -> str:
     # without a closing parentheses
     if counter_opening_parentheses != 0:
         print('Invalid syntax - number of opening and closing'
-              ' parentheses is not the'
-              f' same on token {equation}')
+              ' parentheses \n is not the'
+              f' same in equation {equation}')
         exit(1)
 
     # if we got here, the equation is balanced
@@ -261,7 +266,8 @@ def contains_invalid_characters(equation="", operators=OPERATORS,
     """
     for x in equation:
         if x not in operators and x not in operands:
-            print("Invalid syntax - The equation contains invalid characters")
+            print("Invalid syntax - The equation contains invalid characters \n"
+                  f"at index {x}, equation is: {equation}")
             exit(1)
     return equation
 
@@ -286,13 +292,15 @@ def check_validity_of_equation_by_binary_operators(equation="",
         # the exception is if the equation starts with a minus sign
         if equation[0] != '-':
             print('Invalid syntax - binary operator at the beginning'
-                  ' of the equation')
+                  ' of the equation, \n'
+                  f'at index {0}, equation is: {equation}')
             exit(1)
 
     # check if there is a binary operator at the end of the equation
     if equation[-1] in binary_operators:
         print('Invalid syntax - binary operator at the end'
-              ' of the equation')
+              ' of the equation \n'
+              f'at index {len(equation) - 1}, equation is: {equation}')
         exit(1)
 
     # it is important to note that this function is run
@@ -313,14 +321,16 @@ def check_validity_of_equation_by_binary_operators(equation="",
                 # check if the operator is not a minus operator
                 if equation[x] != '-':
                     print('Invalid syntax - binary operator after'
-                          ' another binary operator')
+                          ' another binary operator \n'
+                          f'at index {x}, equation is: {equation}')
                     exit(1)
             # check if the operator is after an opening parentheses
             if equation[x - 1] == '(':
                 # check if the operator is not a minus operator
                 if equation[x] != '-':
                     print('Invalid syntax - binary operator after'
-                          ' an opening parentheses')
+                          ' an opening parentheses \n'
+                          f'at index {x}, equation is: {equation}')
                     exit(1)
 
             # checks for after the operator
@@ -330,12 +340,14 @@ def check_validity_of_equation_by_binary_operators(equation="",
                 # check if the minus is before an operator
                 if equation[x + 1] in binary_operators:
                     print('Invalid syntax - binary operator after a'
-                          ' binary operator')
+                          ' binary operator \n'
+                          f'at index {x}, equation is: {equation}')
                     exit(1)
                 # check if the minus is before a closing parentheses
                 elif equation[x + 1] == ')':
                     print('Invalid syntax - closing parentheses after'
-                          ' a binary operator')
+                          ' a binary operator \n'
+                          f'at index {x}, equation is: {equation}')
                     exit(1)
             # if the operator is not a minus operator
             else:
@@ -344,12 +356,14 @@ def check_validity_of_equation_by_binary_operators(equation="",
                     # if the operator is not be
                     if equation[x + 1] != '-':
                         print('Invalid syntax - binary operator after a'
-                              ' binary operator')
+                              ' binary operator \n'
+                              f'at index {x}, equation is: {equation}')
                         exit(1)
                 # check if the minus is before a closing parentheses
                 elif equation[x + 1] == ')':
                     print('Invalid syntax - closing parentheses after'
-                          ' a binary operator')
+                          ' a binary operator \n'
+                          f'at index {x}, equation is: {equation}')
                     exit(1)
 
     # return the equation if it is valid
@@ -370,12 +384,14 @@ def check_validity_of_equation_by_unary_operators(equation="",
 
     # check if the function starts with a right unary operator
     if equation[0] in right_unary_operators:
-        print('Invalid syntax - equation starts with a right unary operator')
+        print('Invalid syntax - equation starts with a right unary operator \n'
+                f'at index {0}, equation is: {equation}')
         exit(1)
 
     # check if the function ends with a left unary operator
     if equation[-1] in left_unary_operators:
-        print('Invalid syntax - equation ends with a left unary operator')
+        print('Invalid syntax - equation ends with a left unary operator \n'
+                f'at index {len(equation) - 1}, equation is: {equation}')
         exit(1)
     # check the validity of unary operators in the equation
 
@@ -386,7 +402,8 @@ def check_validity_of_equation_by_unary_operators(equation="",
         if equation[x] in right_unary_operators:
             if not is_number(equation[x - 1]) and equation[x - 1] != ')':
                 print('Invalid syntax - right unary operator after something'
-                      ' that is not a number or a closing parentheses')
+                      ' that is not a number or a closing parentheses \n'
+                      f'at index {x}, equation is: {equation}')
                 exit(1)
             # check if the next character is a number or an opening parentheses
             # this check prevents the user from writing something like 5!5
@@ -396,7 +413,8 @@ def check_validity_of_equation_by_unary_operators(equation="",
                 # or an opening parentheses
                 if is_number(equation[x + 1]) or equation[x + 1] == '(':
                     print('Invalid syntax - right unary followed by'
-                          ' a number or an opening parentheses')
+                          ' a number or an opening parentheses \n'
+                          f'at index {x}, equation is: {equation}')
                     exit(1)
 
         # check if there is a left unary operator that is
@@ -405,7 +423,8 @@ def check_validity_of_equation_by_unary_operators(equation="",
             if not is_number(equation[x + 1]) and equation[x + 1] != '(' \
                     and equation[x + 1] != '-':
                 print('Invalid syntax - left unary operator in front of'
-                      ' something that is not a number or an opening parentheses')
+                      ' something that is not a number or an opening parentheses \n'
+                      f'at index {x}, equation is: {equation}')
                 exit(1)
             # check if the last character is a number or a closing parentheses
             # this check prevents the user from writing something like 5~5
@@ -415,7 +434,8 @@ def check_validity_of_equation_by_unary_operators(equation="",
                 # or a closing parentheses
                 if is_number(equation[x - 1]) or equation[x - 1] == ')':
                     print('Invalid syntax - left unary operator following'
-                          ' a number or a closing parentheses')
+                          ' a number or a closing parentheses \n'
+                          f'at index {x}, equation is: {equation}')
                     exit(1)
 
     return equation
@@ -445,12 +465,14 @@ def check_validity_of_equation_by_all_operators(equation="", binary_operators=BI
             if equation[x + 1] in right_unary_operators:
                 # check if there is a right unary operator after a binary operator
                 print('Invalid syntax - binary operator before a right'
-                      ' unary operator')
+                      ' unary operator \n'
+                      f'at index {x}, equation is: {equation}')
                 exit(1)
             elif equation[x - 1] in left_unary_operators:
                 # check if there is a left unary operator before a binary operator
                 print('Invalid syntax - binary operator after a left'
-                      ' unary operator')
+                      ' unary operator \n'
+                      f'at index {x}, equation is: {equation}')
                 exit(1)
 
     return equation
@@ -522,7 +544,8 @@ def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
     # if there are minus signs at the end of the equation
     # then return error message because it is invalid syntax
     if equation[-1] == '-':
-        print("Invalid syntax, extra minus sign at the end of the equation")
+        print("Invalid syntax, extra minus sign at the end of the equation \n"
+              f"equation is: {equation}")
         exit(1)
 
     # now that there are no extra minus signs at the beginning
@@ -555,19 +578,22 @@ def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
             elif equation[x + 2] == ')':
                 # print error message and exit
                 print("Invalid syntax, extra minus sign before a closing "
-                      "parentheses")
+                      "parentheses \n"
+                      f"at index {x}, equation is: {equation}")
                 exit(1)
             # if the double minus sign is before a unary operator
             elif equation[x + 2] in right_unary_operators:
                 # print error message and exit
                 print("Invalid syntax, extra minus sign before a right "
-                      "unary operator")
+                      "unary operator \n"
+                      f"at index {x}, equation is: {equation}")
                 exit(1)
             # if the double minus sign is before a binary operator
             elif equation[x + 2] in binary_operators:
                 # print error message and exit
                 print("Invalid syntax, extra minus sign before a binary "
-                      "operator")
+                      "operator \n"
+                      f"at index {x}, equation is: {equation}")
                 exit(1)
 
     # if there are no extra minus signs, return the equation
@@ -585,11 +611,14 @@ def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
                                             right_unary_operators, left_unary_operators)
 
 
-def get_rid_of_extra_white_spaces(equation="") -> str:
+def get_rid_of_extra_white_spaces(equation="", binary_operators=BINARY_OPERATORS,
+                                  left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     function that gets rid of extra white spaces
     and also checks if there are illegal white spaces
     between two operands
+    :param left_unary_operators:
+    :param binary_operators:
     :param equation:
     :return: equation with no extra white spaces
     """
@@ -627,8 +656,52 @@ def get_rid_of_extra_white_spaces(equation="") -> str:
             # check if there is a white space between two digits
             if is_number(equation[x - 1]) and is_number(equation[x + 1]):
                 print("Invalid syntax, illegal white space between two "
-                      "digits")
+                      "digits \n"
+                      f"at index {x}, equation is: {equation}")
                 exit(1)
+
+            # if the white space is between a number and a minus sign
+            # that is functioning as a sign change, then it is illegal
+            elif equation[x - 1] == '-' and is_number(equation[x + 1]):
+
+                # we need to go back to the character before the minus sign
+                # and check if the minus sign is functioning as a sign change
+                # or as a binary operator
+                # if it is functioning as a sign change, then it is illegal
+                # if it is functioning as a binary operator, then it is legal
+
+                # if the minus sign is the first character in the equation
+                # then it is illegal because it is a sign change
+                if x == 1:
+                    print("Invalid syntax, illegal white space between a "
+                          "digit and a minus sign at index 1 \n"
+                          f"equation is: {equation}")
+                    exit(1)
+                # if the minus sign is not the first character in the equation
+                # we go back to the character before the minus sign, if it is
+                # a space, we go back again, and so on
+                else:
+                    if equation[x - 2] == ' ':
+                        # we check the character before the space
+                        # if it is a binary operator, or a left unary operator
+                        # or an opening parentheses, then it is illegal
+                        if equation[x - 3] in binary_operators or \
+                                equation[x - 3] in left_unary_operators or \
+                                equation[x - 3] == '(':
+                            print("Invalid syntax, illegal white space between "
+                                  f"a digit and a minus sign at index {x} \n"
+                                  f"equation is: {equation}")
+                            exit(1)
+                    # if the character before the white space is not a space,
+                    # if it is a binary operator, or a left unary operator
+                    # or an opening parentheses, then it is illegal
+                    elif equation[x - 2] in binary_operators or \
+                            equation[x - 2] in left_unary_operators or \
+                            equation[x - 2] == '(':
+                        print("Invalid syntax, illegal white space between "
+                              f"a digit and a minus sign at index {x} \n"
+                              f"equation is: {equation}")
+                        exit(1)
 
     # when there are no illegal white spaces, return the equation
     # with no extra white spaces
@@ -649,17 +722,20 @@ def find_closing_parentheses(equation="", index=0) -> int:
     # check if the character at the index is an opening parentheses
     if equation[index] != '(':
         print('Invalid syntax - the character at the index'
-              ' is not an opening parentheses')
+              ' is not an opening parentheses \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
     # check if the index is in the equation
     if index >= len(equation):
-        print('Invalid syntax - the index is out of range')
+        print('Invalid syntax - the index is out of range \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
     # check if the index is not negative
     if index < 0:
-        print('Invalid syntax - the index is negative')
+        print('Invalid syntax - the index is negative \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
     # counter for the number of opening parentheses
@@ -689,7 +765,8 @@ def find_closing_parentheses(equation="", index=0) -> int:
     # but just in case we will print an error message
     if counter_opening_parentheses != 0:
         print('Invalid syntax - no closing parentheses'
-              ' for the opening parentheses at the index')
+              ' for the opening parentheses  \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
 
@@ -765,17 +842,20 @@ def get_number_to_the_right_of_the_operator(equation="", index=0) -> str:
 
     # check if the index is in the equation
     if index >= len(equation):
-        print('Invalid syntax - the index is out of range')
+        print('Invalid syntax - the index is out of range \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
     # check if the index is not negative
     if index < 0:
-        print('Invalid syntax - the index is negative')
+        print('Invalid syntax - the index is negative \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
     # if the index is at the end of the equation
     if index == len(equation) - 1:
-        print('Invalid syntax - the operator is at the end of the equation')
+        print('Invalid syntax - the operator is at the end of the equation \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
     # if the index is at the second to last character of the equation
@@ -841,12 +921,14 @@ def get_number_to_the_left_of_the_operator(equation="", index=0) -> str:
 
     # check if the index is in the equation
     if index >= len(equation):
-        print('Invalid syntax - the index is out of range')
+        print('Invalid syntax - the index is out of range \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
     # check if the index is not negative
     if index < 0:
-        print('Invalid syntax - the index is negative')
+        print('Invalid syntax - the index is negative \n'
+              f'at index {index}, equation is: {equation}')
         exit(1)
 
     # if the index is at the start of the equation,
@@ -854,7 +936,8 @@ def get_number_to_the_left_of_the_operator(equation="", index=0) -> str:
     # for a negative number)
     if index == 0:
         if equation[index] != '-':
-            print('Invalid syntax - the operator is at the start of the equation')
+            print('Invalid syntax - the operator is at the start of the equation \n'
+                  f'at index {index}, equation is: {equation}')
             exit(1)
         elif equation[index] == '-':
             # returning 0 minus something is the same as returning
@@ -1112,7 +1195,9 @@ def calculate_equation(equation="", binary_operators=BINARY_OPERATORS,
         # run the function again recursively
         return calculate_equation(equation)
     else:
-        print('Invalid equation - the equation doesnt have a result')
+        print('Invalid equation - the equation doesnt have a result \n '
+              'or the equation is invalid \n'
+              f'equation calculated so far is: {equation}')
         exit(1)
 
 
@@ -1308,7 +1393,7 @@ def calculate(equation="") -> None:
     # before it is passed to this function by the get_equation_from_user
     # function in the handler file
     if is_blank(equation):
-        print("The entered equation is blank")
+        print('The entered equation is blank')
         exit(0)
 
     # check if equation is valid
@@ -1318,7 +1403,7 @@ def calculate(equation="") -> None:
     result_of_calc = calculate_equation(equation)
 
     # print the result of the equation
-    print("\nResult: {}\n".format(result_of_calc))
+    print('\nResult: {}\n'.format(result_of_calc))
 
     # ask the user if he wants to continue using the calculator
     # or exit the program
@@ -1331,7 +1416,7 @@ def calculate(equation="") -> None:
         user_input = input('If you want to exit the program,'
                            ' type "exit" or "quit:')
     except KeyboardInterrupt:
-        print("\nProgram was interrupted by user")
+        print('\nProgram was interrupted by user')
         exit(1)
     # go in a loop until the user types 'continue' or 'c'
     # or 'exit' or 'quit'
