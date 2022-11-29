@@ -1301,6 +1301,9 @@ def is_blank(equation="") -> bool:
     return False
 
 
+# TODO: fix the bug where the calculator doesnt work correctly
+# TODO: for cases like (-1)!
+
 def get_equation_from_user(first_run=1, previous_result='') -> str:
     """
     function that gets an equation from the user
