@@ -332,3 +332,61 @@ def factorial(a: str) -> str:
     else:
         return str(int(float(a)) *
                    int(float(factorial(str(float(a) - 1)))))
+
+
+def sum_digits(equation: str) -> str:
+    """
+    returns the sum of the digits of the input
+    123# = 1+2+3 = 6
+    123.456# = 1+2+3+4+5+6 = 21
+    -3.14# = -(3+1+4) = -8
+    :param equation:
+    :return: the sum of the digits of the input
+    """
+
+    # check if the input is infinity
+    if equation == "inf":
+        return "inf"
+
+    # check if the input is negative infinity
+    if equation == "-inf":
+        return "-inf"
+
+    # check if the input is not a number
+    if equation == "nan":
+        # print error message if the input is not a number
+        print("Invalid input: Cannot find sum of digits of nan"
+              " (Not A number).")
+
+    # if input is 0, return 0
+    if equation == "0":
+        return "0"
+
+    # if the input is positive, return the sum of the digits
+    if float(equation) >= 0:
+        # if the input is an integer, return the sum of the digits
+        if float(equation).is_integer():
+            return str(sum(int(digit) for digit in equation if digit.isdigit()))
+        # if the input is a float, return the sum of the digits of the
+        # integer part and the sum of the digits of the decimal part
+        elif not float(equation).is_integer():
+            return str(sum(int(digit) for digit in equation.split('.')[0]
+                           if digit.isdigit()) +
+                       sum(int(digit) for digit in equation.split('.')[1]
+                           if digit.isdigit()))
+
+    # if the input is negative, return the negative of the sum of the digits
+    elif float(equation) < 0:
+        # if the input is an integer, return the negative of the sum of the
+        # digits
+        if float(equation).is_integer():
+            return str(-sum(int(digit) for digit in equation[1:]
+                            if digit.isdigit()))
+        # if the input is a float, return the negative of the sum of the
+        # digits of the integer part and the sum of the digits of the
+        # decimal part
+        elif not float(equation).is_integer():
+            return str(-sum(int(digit) for digit in equation[1:].split('.')[0]
+                            if digit.isdigit()) -
+                       sum(int(digit) for digit in equation.split('.')[1]
+                           if digit.isdigit()))

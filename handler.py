@@ -13,3 +13,5 @@ input_equation = get_equation_from_user()
 # run the calculator and print the result
 calculate(input_equation)
 
+# TODO: make (- 3) not valid because - is a part of the number and there
+# TODO: is a space between the - and the 3 (do this in remove_spaces function)

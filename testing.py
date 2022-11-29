@@ -26,7 +26,10 @@ def test_syntax_errors():
         calculate("2+/3")
         calculate("!2+3/")
         calculate("~2~3!")
-    assert e.type == SystemExit
+    # we check that the program exits with the correct error code
+    # which is 1 - meaning that the program exited with an error
+    # because the input was wrong
+    assert e.value.code == 1
 
 
 def test_garbage_input():
@@ -37,7 +40,10 @@ def test_garbage_input():
         calculate("omega is not the best")
         calculate("calculator is easy")
         calculate("calculator is not working")
-    assert e.type == SystemExit
+    # we check that the program exits with the correct error code
+    # which is 1 - meaning that the program exited with an error
+    # because the input was wrong
+    assert e.value.code == 1
 
 
 def test_empty_white_space_input():
@@ -62,16 +68,18 @@ def test_operator_valid():
     checks that the program will return the correct result
     for all the possible operators
     """
-    assert calculate("2+3") == "5"
-    assert calculate("2-3") == "-1"
-    assert calculate("2*3") == "6"
-    assert calculate("2/3") == str(2/3)
-    assert calculate("2^3") == "8"
-    assert calculate("2%3") == "2"
-    assert calculate("2$3") == "3"
-    assert calculate("2&3") == "2"
-    assert calculate("2@3") == str((2+3)/2)
-    assert calculate("~3") == "-3"
-    assert calculate("3!") == "6"
-
+    assert calculate_equation("2+3") == "5"
+    assert calculate_equation("2-3") == "-1"
+    assert calculate_equation("2*3") == "6"
+    assert calculate_equation("2/3") == str(2/3)
+    assert calculate_equation("2^3") == "8"
+    assert calculate_equation("2%3") == "2"
+    assert calculate_equation("2$3") == "3"
+    assert calculate_equation("2&3") == "2"
+    assert calculate_equation("2@3") == str((2+3)/2)
+    assert calculate_equation("~3") == "-3"
+    assert calculate_equation("3!") == "6"
+    assert calculate_equation("3!!") == "720"
+    assert calculate_equation("99#") == "18"
+    assert calculate_equation("99##") == "9"
 

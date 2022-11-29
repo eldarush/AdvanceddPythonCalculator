@@ -357,7 +357,6 @@ def check_validity_of_equation_by_binary_operators(equation="",
 
 
 def check_validity_of_equation_by_unary_operators(equation="",
-                                                  unary_operators=UNARY_OPERATORS,
                                                   right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
                                                   left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
@@ -365,7 +364,6 @@ def check_validity_of_equation_by_unary_operators(equation="",
     are valid in it, if not prints error message
     :param left_unary_operators:
     :param right_unary_operators:
-    :param unary_operators:
     :param equation:
     :return: equation
     """
@@ -382,11 +380,6 @@ def check_validity_of_equation_by_unary_operators(equation="",
     # check the validity of unary operators in the equation
 
     for x in range(len(equation) - 1):
-        # check if there are two unary operators in a row
-        if equation[x] in unary_operators and \
-                equation[x + 1] in unary_operators:
-            print('Invalid syntax - two unary operators in a row ')
-            exit(1)
 
         # check if there is a right unary operator is
         # after something that is not a number or a closing parentheses
@@ -1064,28 +1057,27 @@ def calculate_equation(equation="", binary_operators=BINARY_OPERATORS,
                         elif equation[x] in right_unary_operands:
                             # get the number to the left of the operator
                             num_to_the_left = get_number_to_the_left_of_the_operator(equation, x)
-                            # if the right unary operator is a factorial
+                            # in the case that the operator is a right unary operator
                             # we need to check if the number to the left is a negative number
                             # if it is we need to calculate the equation without negative
-                            if equation[x] == '!':
-                                # if the number to the left is negative
-                                if num_to_the_left[0] == '-':
-                                    len_of_left = len(num_to_the_left)
-                                    # if the minus sign functions as a sign change
-                                    # then we need to calculate the equation with the minus sign
-                                    # if the minus sign functions as a binary operator
-                                    # then we need to calculate the equation without the minus sign
-                                    if equation[x - len_of_left - 1] in binary_operators:
-                                        # in this scenario the minus sign functions as
-                                        # a sign change
-                                        # calculate the equation with the minus sign
-                                        pass
-                                    elif not equation[x - len_of_left - 1] in binary_operators:
-                                        # in this scenario the minus sign functions as
-                                        # a binary operator
-                                        # we need to calculate the
-                                        # equation without the minus sign
-                                        num_to_the_left = num_to_the_left[1:]
+                            # if the number to the left is negative
+                            if num_to_the_left[0] == '-':
+                                len_of_left = len(num_to_the_left)
+                                # if the minus sign functions as a sign change
+                                # then we need to calculate the equation with the minus sign
+                                # if the minus sign functions as a binary operator
+                                # then we need to calculate the equation without the minus sign
+                                if equation[x - len_of_left - 1] in binary_operators:
+                                    # in this scenario the minus sign functions as
+                                    # a sign change
+                                    # calculate the equation with the minus sign
+                                    pass
+                                elif not equation[x - len_of_left - 1] in binary_operators:
+                                    # in this scenario the minus sign functions as
+                                    # a binary operator
+                                    # we need to calculate the
+                                    # equation without the minus sign
+                                    num_to_the_left = num_to_the_left[1:]
                             # calculate the equation and replace it with the result
                             equation = equation.replace(num_to_the_left + equation[x],
                                                         calculate_unary_operator(equation[x],
@@ -1257,6 +1249,11 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
             print("\n"
                   "Program was interrupted by user")
             exit(1)
+        # if the input is an EOF, exit the program
+        except EOFError:
+            print("\n"
+                  "Program was interrupted by user - input contains EOF")
+            exit(1)
 
     # if the function is not called for the first time
     else:
@@ -1282,9 +1279,15 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
 
             # replace the 'p' operand with the previous result
             input_equation = input_equation.replace('p', previous_result)
-
+        # if the user stops the program via ctrl + c,
+        # print a message and exit the program
         except KeyboardInterrupt:
             print('\nProgram was interrupted by user')
+            exit(1)
+        # if the input is an EOF, exit the program
+        except EOFError:
+            print("\n"
+                  "Program was interrupted by user - input contains EOF")
             exit(1)
 
     # return the equation that the user entered

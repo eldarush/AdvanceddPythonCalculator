@@ -15,7 +15,7 @@ from operators import *
 # TODO: when adding a new operator, add it to all the tuples and dictionaries below
 # tuples of possible math operators and operands
 # those tuples also act as a list of possible tokens for the equation
-OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!', '(', ')')
+OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!', '(', ')', '#')
 OPERANDS = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ', '\t', '\n')
 
 # TODO: to make the program more generic, add extra tuples for closing and opening brackets
@@ -26,12 +26,12 @@ BINARY_OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@')
 
 # tuple of unary operators
 # meaning that they take one operand in order to work
-UNARY_OPERATORS = ('~', '!')
+UNARY_OPERATORS = ('~', '!', '#')
 
 # tuple of unary operators that are right associative
 # meaning that they take one operand in order to work
 # and that they work from right to left
-RIGHT_ASSOCIATIVE_UNARY_OPERATORS = tuple('!')
+RIGHT_ASSOCIATIVE_UNARY_OPERATORS = ('!', '#')
 
 # tuple of unary operators that are left associative
 # meaning that they take two operands in order to work
@@ -44,7 +44,7 @@ PRIORITY = {'+': 1, '-': 1,
             '^': 3,
             '%': 4,
             '$': 5, '&': 5, '@': 5,
-            '~': 6, '!': 6}
+            '~': 6, '!': 6, '#': 6}
 
 # dictionary of functions for the operators
 FUNCTIONS_PER_OPERATOR = {'+': addition,
@@ -57,5 +57,5 @@ FUNCTIONS_PER_OPERATOR = {'+': addition,
                           '&': minimum,
                           '@': average,
                           '~': tilde,
-                          '!': factorial}
-
+                          '!': factorial,
+                          '#': sum_digits}
