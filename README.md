@@ -23,6 +23,7 @@
   avarage (a@b) - returns the avarage between a and b <br />
   tilde (~a) - returns the negative value of a <br />
   factorial (a!) <br />
+  sum digits (a#) - returns the sum of all digits in a <br />
  
 ##  priorotiy list for the operators: <br />
 ###  // higher proiroty mreans that its done first in the calculation. <br />
@@ -44,6 +45,7 @@
   6: <br />
     tilde (~a) <br />
     factorial (a!) <br />
+    sum digits (a#) <br />
 
 ##  This calculator only accepts digits (0-9) not variables (a-z) etc.  <br />
 ##  This calculator only accepts round parentheses (), not any other kind - [] {}. <br />
