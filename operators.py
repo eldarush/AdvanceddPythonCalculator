@@ -155,13 +155,36 @@ def modulo(a: str, b: str) -> str:
     return str(float(a) % float(b))
 
 
+# Todo: cover all cases for power function
 def power(a: str, b: str) -> str:
     """
     returns a to the power of b
     :param a:
     :param b:
-    :return: a^b (a**b)
+    :return: a^b (a to the power of b)
     """
+    # if b is 0, return 1
+    # this check already covers the case where a is 0
+    # because 0^0 is agreed to be 1 (at lease according to wiki)
+    # source: https://en.wikipedia.org/wiki/Zero_to_the_power_of_zero
+    if b == '0':
+        return "1"
+
+    # if b is 1, return a
+    if b == '1':
+        return a
+
+    # if a is 0, return 0
+    if a == '0':
+        return "0"
+
+    # check if the user is trying to do power function
+    # where the base is negative and the exponent is not an integer
+    if float(a) < 0 and float(b) % 1 != 0:
+        print('Invalid input: Cannot do negative base to non-integer power. \n'
+              'power is not defined for negative base and non-integer power. \n'
+              f'Cannot do {a}^{b}.')
+        exit(1)
     try:
         # if both a and b are integers, return an integer
         if a.isdigit() and b.isdigit():
@@ -169,9 +192,19 @@ def power(a: str, b: str) -> str:
 
         # if either a or b is a float, return a float
         return str(pow(float(a), float(b)))
+    # if the result is too big, return an error message
     except OverflowError:
-        print("Math Error: Overflow - number too large for power"
-              f" Cannot do {a}^{b}.")
+        print('Math Error: Overflow - number too large for power'
+              f' Cannot do {a}^{b}.')
+        exit(1)
+    # if the result raises a type error, return an error message
+    except TypeError:
+        print('TypeError: unsupported operand type(s) for power: \n'
+              f'{type(a)} and {type(b)}. Cannot do {a}^{b}.')
+        exit(1)
+    # if the result raises a value error, return an error message
+    except ValueError as e:
+        print(f'ValueError: {e}. Cannot do {a}^{b}.')
         exit(1)
 
 
@@ -215,8 +248,10 @@ def minimum(a: str, b: str) -> str:
     """
 
     # check if one of the numbers is infinity
-    if a == "inf" or b == "inf":
-        return "inf"
+    if a == "inf" and b != "inf":
+        return b
+    elif b == "inf" and a != "inf":
+        return a
 
     # check if one of the numbers is negative infinity
     if a == "-inf" or b == "-inf":
@@ -337,6 +372,7 @@ def factorial(a: str) -> str:
 def sum_digits(equation: str) -> str:
     """
     returns the sum of the digits of the input
+    this operation is only defined for positive numbers
     123# = 1+2+3 = 6
     123.456# = 1+2+3+4+5+6 = 21
     -3.14# = -(3+1+4) = -8
@@ -375,18 +411,8 @@ def sum_digits(equation: str) -> str:
                        sum(int(digit) for digit in equation.split('.')[1]
                            if digit.isdigit()))
 
-    # if the input is negative, return the negative of the sum of the digits
+    # if the input is negative, print an error message
     elif float(equation) < 0:
-        # if the input is an integer, return the negative of the sum of the
-        # digits
-        if float(equation).is_integer():
-            return str(-sum(int(digit) for digit in equation[1:]
-                            if digit.isdigit()))
-        # if the input is a float, return the negative of the sum of the
-        # digits of the integer part and the sum of the digits of the
-        # decimal part
-        elif not float(equation).is_integer():
-            return str(-sum(int(digit) for digit in equation[1:].split('.')[0]
-                            if digit.isdigit()) -
-                       sum(int(digit) for digit in equation.split('.')[1]
-                           if digit.isdigit()))
+        print(f'Invalid input for sum_digits: {equation},'
+              ' sum_digits() not defined for negative values')
+        exit(1)
