@@ -497,6 +497,43 @@ def check_for_extra_parentheses(equation="") -> str:
     return equation
 
 
+# TODO: implement this function correctly
+def get_number_after_minus_signs(equation="", index=0) -> str:
+    """
+    function that gets an equation and an index of the first minus
+    sign and returns the whole number after all the minus signs
+    for example equation: 3---3!
+    and index 1
+    the function will return --3
+
+    and for the equation 3----3! and index 1
+    the function will return ---3
+    :param equation:
+    :param index:
+    :return:
+    """
+    # get the index of the first number after all the minus signs
+    # and return the number
+    # min index is the index of the first minus sign
+    # after the first minus sign
+    min_index = index + 1
+    # initialize the number to be returned
+    number = ""
+    while equation[min_index] == '-':
+        number += equation[min_index]
+        min_index += 1
+
+    # now minIndex is the index of the first number after all the minus signs
+    # we get the complete number after all the minus signs
+    # and return it
+    while is_number(equation[min_index]) or equation[min_index] == '.':
+        number += equation[min_index]
+        min_index += 1
+
+    # return the number
+    return number
+
+
 def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
                                  binary_operators=BINARY_OPERATORS,
                                  unary_operators=UNARY_OPERATORS,
@@ -552,9 +589,7 @@ def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
     # of the equation, check if there are extra minus signs
     # in the middle of the equation
 
-    # TODO: if its found out that 3--3! is not a valid equation
-    # TODO: because ! reads -3, we need to change the code
-    # TODO: when i am found right, great success
+    # TODO: make sure all works correctly with the new changes to the function
 
     # go over equation and get rid of extra minus signs
     # this is done by replacing -- with +
@@ -576,8 +611,17 @@ def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
                 elif equation[x - 1] in operands or equation[x - 1] == ')' \
                         or equation[x - 1] in right_unary_operators:
                     # then replace the double minus sign with a plus sign
-                    equation = equation[:x] + '+' + equation[x + 2:]
+                    # change the double minus sign to a minus sign,
+                    # and add parentheses around the number after the second minus sign
+                    num_right_of_first_minus_sign = get_number_after_minus_signs(equation, x)
+
+                    # now we have in the example 3--3! the number -3
+                    # we need to add parentheses around it so the equation will be 3-(-3)!
+                    # and then we can continue with the program
+                    equation = equation[:x + 1] + '(' + num_right_of_first_minus_sign + ')' \
+                               + equation[x + 1 + len(num_right_of_first_minus_sign):]
                     break
+
             # if the double minus sign is before a closing parentheses
             elif equation[x + 2] == ')':
                 # print error message and exit
@@ -613,6 +657,10 @@ def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
                                             binary_operators,
                                             unary_operators,
                                             right_unary_operators, left_unary_operators)
+
+
+print(get_rid_of_extra_minus_signs('2---3!'))
+print(get_rid_of_extra_minus_signs('2--3!'))
 
 
 def get_rid_of_extra_white_spaces(equation="", binary_operators=BINARY_OPERATORS,
@@ -663,55 +711,48 @@ def get_rid_of_extra_white_spaces(equation="", binary_operators=BINARY_OPERATORS
                       "digits \n"
                       f"at index {x}, equation is: {equation}")
                 exit(1)
+            # if the white space is between a number and a minus sign
+            # that is functioning as a sign change, then it is illegal
+            elif equation[x - 1] == '-' and is_number(equation[x + 1]):
 
-            # TODO: if this check is needed, return it back
-            # TODO: if it is not needed, delete it
-            # this was a check for a white space between a sign change
-            # minus and a number, but it is not needed, I don't want to
-            # delete it just yet because i might need it later
+                # we need to go back to the character before the minus sign
+                # and check if the minus sign is functioning as a sign change
+                # or as a binary operator
+                # if it is functioning as a sign change, then it is illegal
+                # if it is functioning as a binary operator, then it is legal
 
-            # # if the white space is between a number and a minus sign
-            # # that is functioning as a sign change, then it is illegal
-            # elif equation[x - 1] == '-' and is_number(equation[x + 1]):
-            #
-            #     # we need to go back to the character before the minus sign
-            #     # and check if the minus sign is functioning as a sign change
-            #     # or as a binary operator
-            #     # if it is functioning as a sign change, then it is illegal
-            #     # if it is functioning as a binary operator, then it is legal
-            #
-            #     # if the minus sign is the first character in the equation
-            #     # then it is illegal because it is a sign change
-            #     if x == 1:
-            #         print("Invalid syntax, illegal white space between a "
-            #               "digit and a minus sign at index 1 \n"
-            #               f"equation is: {equation}")
-            #         exit(1)
-            #     # if the minus sign is not the first character in the equation
-            #     # we go back to the character before the minus sign, if it is
-            #     # a space, we go back again, and so on
-            #     else:
-            #         if equation[x - 2] == ' ':
-            #             # we check the character before the space
-            #             # if it is a binary operator, or a left unary operator
-            #             # or an opening parentheses, then it is illegal
-            #             if equation[x - 3] in binary_operators or \
-            #                     equation[x - 3] in left_unary_operators or \
-            #                     equation[x - 3] == '(':
-            #                 print("Invalid syntax, illegal white space between "
-            #                       f"a digit and a minus sign at index {x} \n"
-            #                       f"equation is: {equation}")
-            #                 exit(1)
-            #         # if the character before the white space is not a space,
-            #         # if it is a binary operator, or a left unary operator
-            #         # or an opening parentheses, then it is illegal
-            #         elif equation[x - 2] in binary_operators or \
-            #                 equation[x - 2] in left_unary_operators or \
-            #                 equation[x - 2] == '(':
-            #             print("Invalid syntax, illegal white space between "
-            #                   f"a digit and a minus sign at index {x} \n"
-            #                   f"equation is: {equation}")
-            #             exit(1)
+                # if the minus sign is the first character in the equation
+                # then it is illegal because it is a sign change
+                if x == 1:
+                    print("Invalid syntax, illegal white space between a "
+                          "digit and a minus sign at index 1 \n"
+                          f"equation is: {equation}")
+                    exit(1)
+                # if the minus sign is not the first character in the equation
+                # we go back to the character before the minus sign, if it is
+                # a space, we go back again, and so on
+                else:
+                    if equation[x - 2] == ' ':
+                        # we check the character before the space
+                        # if it is a binary operator, or a left unary operator
+                        # or an opening parentheses, then it is illegal
+                        if equation[x - 3] in binary_operators or \
+                                equation[x - 3] in left_unary_operators or \
+                                equation[x - 3] == '(':
+                            print("Invalid syntax, illegal white space between "
+                                  f"a digit and a minus sign at index {x} \n"
+                                  f"equation is: {equation}")
+                            exit(1)
+                    # if the character before the white space is not a space,
+                    # if it is a binary operator, or a left unary operator
+                    # or an opening parentheses, then it is illegal
+                    elif equation[x - 2] in binary_operators or \
+                            equation[x - 2] in left_unary_operators or \
+                            equation[x - 2] == '(':
+                        print("Invalid syntax, illegal white space between "
+                              f"a digit and a minus sign at index {x} \n"
+                              f"equation is: {equation}")
+                        exit(1)
 
     # when there are no illegal white spaces, return the equation
     # with no extra white spaces
@@ -1154,17 +1195,49 @@ def calculate_equation(equation="", binary_operators=BINARY_OPERATORS,
         # if the current character is a closing parentheses
         if equation[x] == ')' and x != len(equation) - 1:
             # if the next character is a right unary operator
+
+            # TODO: fix bug where (0.01 + 3^2 - 4@2 + ~(4-10 - (2*2))! + 1) first does factorial,
+            # TODO: it should first do the ~ and then the factorial
             if equation[x + 1] in right_unary_operands:
                 # we need to find the matching opening parentheses
                 # to the closing parentheses we found
                 opening_parentheses_index = find_opening_parentheses(equation, x)
-                result_inside = calculate_equation(equation[opening_parentheses_index + 1:x])
-                # calculate the right unary operator on the result inside
-                # the parentheses
-                result = calculate_unary_operator(equation[x + 1], result_inside)
-                # replace the parentheses and the right unary operator with
-                # the result
-                equation = equation[:opening_parentheses_index] + result + equation[x + 2:]
+
+                # we need to check if the character before the parentheses is a left unary operator
+                # if it is, we need to calculate the left unary operator on the sub equation
+                # in parentheses and then calculate the right unary operator on the result
+                # for example: ~(4-10 - (2*2))! or ~(4-10 - (2*2))#, we need to first calculate
+                # ~(4-10 - (2*2)) and then calculate the right unary operator on the result
+                # to make sure that the result is not negative and valid
+                if opening_parentheses_index != 0 \
+                        and equation[opening_parentheses_index - 1] in left_unary_operands:
+                    # calculate the left unary operator on the sub equation in parentheses
+                    # this is equivalent to calculating th equation with one index backwards
+                    # for example: ~(4-10 - (2*2))! or ~(4-10 - (2*2))#, we need to first calculate
+                    # ~(4-10 - (2*2)) and then calculate the right unary operator on the result
+                    # to make sure that the result is not negative and valid
+                    result_inside = calculate_equation(equation[opening_parentheses_index + 1:x])
+                    # calculate the right unary operator on the result inside
+                    # the parentheses
+                    # now we apply the left unary operator on the result of the equation
+                    # inside the parentheses
+                    result_inside = \
+                        calculate_unary_operator(equation[opening_parentheses_index - 1],
+                                                 result_inside)
+                    result = calculate_unary_operator(equation[x + 1], result_inside)
+                    # replace the result and the left unary operator and the right unary operator
+                    # with the result of the calculation
+                    equation = equation[:opening_parentheses_index - 1] + result + \
+                               equation[x + 2:]
+                else:
+                    result_inside = calculate_equation(equation[opening_parentheses_index + 1:x])
+                    # calculate the right unary operator on the result inside
+                    # the parentheses
+                    result = calculate_unary_operator(equation[x + 1], result_inside)
+                    # replace the parentheses and the right unary operator with
+                    # the result
+                    equation = equation[:opening_parentheses_index] + result + equation[x + 2:]
+
                 # call the function recursively to calculate the equation
                 # again
                 # we need to check if the equation is valid again
