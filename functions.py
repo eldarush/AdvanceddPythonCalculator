@@ -1145,9 +1145,6 @@ def calculate_equation(equation="", binary_operators=BINARY_OPERATORS,
         # if the current character is a closing parentheses
         if equation[x] == ')' and x != len(equation) - 1:
             # if the next character is a right unary operator
-
-            # TODO: fix bug where (0.01 + 3^2 - 4@2 + ~(4-10 - (2*2))! + 1) first does factorial,
-            # TODO: it should first do the ~ and then the factorial
             if equation[x + 1] in right_unary_operands:
                 # we need to find the matching opening parentheses
                 # to the closing parentheses we found
