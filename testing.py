@@ -83,3 +83,5 @@ def test_operator_valid():
     assert calculate_equation("99#") == "18"
     assert calculate_equation("99##") == "9"
 
+# TODO: add more tests for the calculator as the requirements specify
+# TODO: also figure out how to run all the required tests at once
