@@ -414,7 +414,8 @@ def check_validity_of_equation_by_unary_operators(equation="",
         # check if there is a right unary operator is
         # after something that is not a number or a closing parentheses
         if equation[x] in right_unary_operators:
-            if not is_number(equation[x - 1]) and equation[x - 1] != ')':
+            if not is_number(equation[x - 1]) and equation[x - 1] != ')' and equation[x - 1] not \
+                    in right_unary_operators:
                 print('Invalid syntax - right unary operator after something'
                       ' that is not a number or a closing parentheses \n'
                       f'at index {x}, equation is: {equation}')
@@ -547,7 +548,6 @@ def get_number_after_minus_signs(equation="", index=0) -> str:
     # return the number
     return number
 
-print(get_number_after_minus_signs("3--3", 1))
 
 def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
                                  binary_operators=BINARY_OPERATORS,
@@ -657,14 +657,14 @@ def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
                     # but if the next character after the number is a !, then we need to add
                     # parentheses around the number, because 5--123! is the same as 5-(123)!
                     # and we need to add parentheses around the number
-                    if x + 1 + len(num_right_of_first_minus_sign) < len(equation) and\
+                    if x + 1 + len(num_right_of_first_minus_sign) < len(equation) and \
                             equation[x + 1 + len(num_right_of_first_minus_sign)] == '#':
                         # replace the double minus sign with a plus sign
                         equation = equation[:x] + '+' + equation[x + 2:]
                         break
                     # if the next character after the number is not a #, then we need to add
                     # parentheses around the number
-                    elif x + 1 + len(num_right_of_first_minus_sign) < len(equation) and\
+                    elif x + 1 + len(num_right_of_first_minus_sign) < len(equation) and \
                             equation[x + 1 + len(num_right_of_first_minus_sign)] != '#':
                         equation = equation[:x + 1] + '(' + num_right_of_first_minus_sign + ')' \
                                    + equation[x + 1 + len(num_right_of_first_minus_sign):]
@@ -713,7 +713,7 @@ def get_rid_of_extra_minus_signs(equation="", operands=OPERANDS,
                                             right_unary_operators, left_unary_operators)
 
 
-# TODO: make sure this is correct
+# TODO: in this function, the checks of white spaces are still there
 def get_rid_of_extra_white_spaces(equation="", binary_operators=BINARY_OPERATORS,
                                   left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
@@ -726,86 +726,84 @@ def get_rid_of_extra_white_spaces(equation="", binary_operators=BINARY_OPERATORS
     :return: equation with no extra white spaces
     """
 
-    # all checks become unnecessary now that 5  5 is just 55
+    # convert all double spaces and tabs
+    # and next lines to single spaces
+    while '  ' in equation or '\t' in equation or '\n' in equation:
+        equation = equation.replace('  ', ' ')
+        equation = equation.replace('\t', ' ')
+        equation = equation.replace('\n', ' ')
 
-    # # convert all double spaces and tabs
-    # # and next lines to single spaces
-    # while '  ' in equation or '\t' in equation or '\n' in equation:
-    #     equation = equation.replace('  ', ' ')
-    #     equation = equation.replace('\t', ' ')
-    #     equation = equation.replace('\n', ' ')
-    #
-    # # remove all leading and trailing white spaces
-    # if ' ' in equation:
-    #     if equation[0] == ' ':
-    #         equation = equation[1:]
-    #
-    #     # if the equation ends with white spaces, remove them
-    #     elif equation[-1] == ' ':
-    #         equation = equation[:-1]
-    #
-    # # if there are no white spaces in the equation,
-    # else:
-    #     return equation
-    #
-    # # if there are white spaces in the equation, check if they
-    # # are legal white spaces
-    # # if there are illegal white spaces, print error message
-    # # if there are legal white spaces, remove them
-    #
-    # # go over equation and check if there are illegal white spaces
-    # # between two operands or a sign change minus and a number
-    # for x in range(len(equation) - 1):
-    #     if equation[x] == ' ':
-    #
-    #         # check if there is a white space between two digits
-    #         if is_number(equation[x - 1]) and is_number(equation[x + 1]):
-    #             print("Invalid syntax, illegal white space between two "
-    #                   "digits \n"
-    #                   f"at index {x}, equation is: {equation}")
-    #             exit(1)
-    #         # if the white space is between a number and a minus sign
-    #         # that is functioning as a sign change, then it is illegal
-    #         elif equation[x - 1] == '-' and is_number(equation[x + 1]):
-    #
-    #             # we need to go back to the character before the minus sign
-    #             # and check if the minus sign is functioning as a sign change
-    #             # or as a binary operator
-    #             # if it is functioning as a sign change, then it is illegal
-    #             # if it is functioning as a binary operator, then it is legal
-    #
-    #             # if the minus sign is the first character in the equation
-    #             # then it is illegal because it is a sign change
-    #             if x == 1:
-    #                 print("Invalid syntax, illegal white space between a "
-    #                       "digit and a minus sign at index 1 \n"
-    #                       f"equation is: {equation}")
-    #                 exit(1)
-    #             # if the minus sign is not the first character in the equation
-    #             # we go back to the character before the minus sign, if it is
-    #             # a space, we go back again, and so on
-    #             else:
-    #                 if equation[x - 2] == ' ':
-    #                     # we check the character before the space
-    #                     # if it is a binary operator, or a left unary operator
-    #                     # or an opening parentheses, then it is illegal
-    #                     if equation[x - 3] in binary_operators or \
-    #                             equation[x - 3] in left_unary_operators or \
-    #                             equation[x - 3] == '(':
-    #                         print("Invalid syntax, illegal white space between "
-    #                               f"a digit and a minus sign at index {x} \n"
-    #                               f"equation is: {equation}")
-    #                         exit(1)
-    #                 # if the character before the white space is not a space,
-    #                 # if it is a binary operator, or a left unary operator
-    #                 # or an opening parentheses, then it is illegal
-    #                 elif equation[x - 2] in binary_operators or \
-    #                         equation[x - 2] in left_unary_operators or \
-    #                         equation[x - 2] == '(':
-    #                     print("Invalid syntax, illegal white space between "
-    #                           f"a digit and a minus sign at index {x} \n"
-    #                           f"equation is: {equation}")
-    #                     exit(1)
+    # remove all leading and trailing white spaces
+    if ' ' in equation:
+        if equation[0] == ' ':
+            equation = equation[1:]
+
+        # if the equation ends with white spaces, remove them
+        elif equation[-1] == ' ':
+            equation = equation[:-1]
+
+    # if there are no white spaces in the equation,
+    else:
+        return equation
+
+    # if there are white spaces in the equation, check if they
+    # are legal white spaces
+    # if there are illegal white spaces, print error message
+    # if there are legal white spaces, remove them
+
+    # go over equation and check if there are illegal white spaces
+    # between two operands or a sign change minus and a number
+    for x in range(len(equation) - 1):
+        if equation[x] == ' ':
+
+            # check if there is a white space between two digits
+            if is_number(equation[x - 1]) and is_number(equation[x + 1]):
+                print("Invalid syntax, illegal white space between two "
+                      "digits \n"
+                      f"at index {x}, equation is: {equation}")
+                exit(1)
+            # if the white space is between a number and a minus sign
+            # that is functioning as a sign change, then it is illegal
+            elif equation[x - 1] == '-' and is_number(equation[x + 1]):
+
+                # we need to go back to the character before the minus sign
+                # and check if the minus sign is functioning as a sign change
+                # or as a binary operator
+                # if it is functioning as a sign change, then it is illegal
+                # if it is functioning as a binary operator, then it is legal
+
+                # if the minus sign is the first character in the equation
+                # then it is illegal because it is a sign change
+                if x == 1:
+                    print("Invalid syntax, illegal white space between a "
+                          "digit and a minus sign at index 1 \n"
+                          f"equation is: {equation}")
+                    exit(1)
+                # if the minus sign is not the first character in the equation
+                # we go back to the character before the minus sign, if it is
+                # a space, we go back again, and so on
+                else:
+                    if equation[x - 2] == ' ':
+                        # we check the character before the space
+                        # if it is a binary operator, or a left unary operator
+                        # or an opening parentheses, then it is illegal
+                        if equation[x - 3] in binary_operators or \
+                                equation[x - 3] in left_unary_operators or \
+                                equation[x - 3] == '(':
+                            print("Invalid syntax, illegal white space between "
+                                  f"a digit and a minus sign at index {x} \n"
+                                  f"equation is: {equation}")
+                            exit(1)
+                    # if the character before the white space is not a space,
+                    # if it is a binary operator, or a left unary operator
+                    # or an opening parentheses, then it is illegal
+                    elif equation[x - 2] in binary_operators or \
+                            equation[x - 2] in left_unary_operators or \
+                            equation[x - 2] == '(':
+                        print("Invalid syntax, illegal white space between "
+                              f"a digit and a minus sign at index {x} \n"
+                              f"equation is: {equation}")
+                        exit(1)
 
     # when there are no illegal white spaces, return the equation
     # with no extra white spaces
