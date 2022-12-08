@@ -4,7 +4,7 @@
 ## Language: Python <br />
 ## Interpritor: Python-3.7 <br />
 
-###  This calculator while run through the "main.py" file will <br />
+###  This calculator while run through the "handler.py" file will <br />
 ###  ask the user to input a function, then the program will calculate the  <br />
 ###  result of the equation that the user inputted, this result can be saved and used again <br />
 ###  for further equations as 'ans'. <br />
