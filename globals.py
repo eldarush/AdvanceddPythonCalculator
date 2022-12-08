@@ -56,3 +56,18 @@ FUNCTIONS_PER_OPERATOR = {'+': addition,
                           '~': tilde,
                           '!': factorial,
                           '#': sum_digits}
+
+
+# dictionary of operators and if they are stronger than unary minus
+STRONGER_THAN_UNARY_MINUS = {'+': False,
+                                '-': False,
+                                '*': False,
+                                '/': False,
+                                '^': False,
+                                '%': False,
+                                '$': False,
+                                '&': False,
+                                '@': False,
+                                '~': False,
+                                '!': False,
+                                '#': True}
