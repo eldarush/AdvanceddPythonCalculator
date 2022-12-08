@@ -5,18 +5,18 @@
 
 from globals import *
 
-def is_number(s="") -> bool:
+def is_number(equation="") -> bool:
     """
     simple function that checks if a string is a number
     this function receives a string and returns
     true if the string is a number and false otherwise
-    :param s: the string
+    :param equation: the string
     :return: true if the string is a number and false otherwise
     """
 
     # try to convert the string to a float, if it works then it is a number
     try:
-        float(s)
+        float(equation)
         return True
 
     # if the string is not a number, then return false
@@ -28,9 +28,9 @@ def contains_invalid_characters(equation="", operators=OPERATORS,
                                 operands=OPERANDS) -> str:
     """
     This function checks if the equation contains invalid characters
-    :param equation:
-    :param operators:
-    :param operands:
+    :param equation: the equation
+    :param operators: the operators
+    :param operands: the operands
     :return: True if the equation contains invalid characters, False otherwise
     """
     for x in equation:
@@ -64,8 +64,8 @@ def is_negative_number(equation="") -> bool:
 def doesnt_contain_numbers(equation="") -> bool:
     """
     This function checks if an equation contains numbers
-    :param equation:
-    :return:
+    :param equation: the equation
+    :return: True if the equation doesn't contain numbers, False otherwise
     """
     for x in equation:
 
@@ -81,8 +81,9 @@ def function_doesnt_contain_numbers(equation="") -> str:
     """
     function that checks if a function doesn't contain numbers
     simply by running the function doesnt_contain_numbers
-    :param equation:
-    :return: equation if the function doesn't contain numbers
+    :param equation: the equation
+    :return: equation if the function doesn't contain numbers,
+    and raises a syntax error otherwise
     """
     # check if the equation doesn't contain numbers
     if doesnt_contain_numbers(equation):
@@ -134,7 +135,7 @@ def check_left_parentheses_validity(equation="", index=0,
 def check_for_double_dots(equation="") -> str:
     """
     function that checks if there are two dots in a row
-    :param equation:
+    :param equation: the equation
     :return: equation if there are no two dots in a row
     and prints an error message otherwise
     """
@@ -149,7 +150,7 @@ def check_for_double_dots(equation="") -> str:
 def check_for_number_with_too_many_dots_in_them(equation="") -> str:
     """
     function that checks if there are numbers with too many dots in them
-    :param equation:
+    :param equation: the equation
     :return: equation if there are no numbers with too many dots in them
     and prints an error message otherwise
     """
@@ -181,8 +182,8 @@ def check_for_number_with_too_many_dots_in_them(equation="") -> str:
 def handle_dot_in_the_middle_of_equation(equation="", index =0) -> str:
     """
     function that handles the dot in the middle of the equation
-    :param equation:
-    :param index:
+    :param equation: the equation
+    :param index: the index of the dot
     :return: the equation with extra 0 where needed
     """
     # if there is no number before the dot
@@ -337,10 +338,10 @@ def right_unary_validation(equation="", index=0,
     this function gets an equation and an index of an operator,
     and checks if the operator is a right unary operator is valid or not
     this is done by checking the surrounding characters of the operator
-    :param equation:
-    :param index:
-    :param right_unary_operators:
-    :return:
+    :param equation: the equation
+    :param index: the index of the operator
+    :param right_unary_operators: the right unary operators
+    :return: None if the operator is valid, otherwise raises an error
     """
     # check if the right unary operator is after a number
     previous_number = get_number_to_the_left_of_the_operator(equation, index)
@@ -363,10 +364,12 @@ def right_unary_validation(equation="", index=0,
 
 def left_unary_validation(equation="", index=0) -> None:
     """
-
-    :param equation:
-    :param index:
-    :return:
+    this function gets an equation and an index of an operator,
+    and checks if the operator is a left unary operator is valid or not
+    this is done by checking the surrounding characters of the operator
+    :param equation: the equation
+    :param index: the index of the operator
+    :return: None if the operator is valid, otherwise raises an error
     """
     # get the next number after the left unary operator
     next_number = get_number_to_the_right_of_the_operator(equation, index)
@@ -394,7 +397,7 @@ def check_for_extra_parentheses(equation="") -> str:
     in the equation that don't do anything
     and if there are, prints error message
     and ends the program
-    :param equation:
+    :param equation: the equation
     :return: same equation if there are no extra parentheses
     """
 
@@ -410,15 +413,9 @@ def get_number_after_minus_signs(equation="", index=0) -> str:
     """
     function that gets an equation and an index of the first minus
     sign and returns the whole number after all the minus signs
-    for example equation: 3---3!
-    and index 1
-    the function will return --3
-
-    and for the equation 3----3! and index 1
-    the function will return ---3
-    :param equation:
-    :param index:
-    :return:
+    :param equation: the equation
+    :param index: the index of the first minus sign
+    :return: the number after the minus signs
     """
     # get the index of the first number after all the minus signs
     # and return the number
@@ -447,7 +444,7 @@ def remove_triple_minus_signs(equation="")-> str:
     """
     function that removes all the triple minus signs
     from the equation, and replaces them with a single minus sign
-    :param equation:
+    :param equation: the equation
     :return: the equation without triple minus signs
     """
     # replace all triple minus signs with -
@@ -462,8 +459,8 @@ def is_stronger_than_minus_sign(equation="", index=0) -> bool:
     """
     function that gets an equation and an index of the operator
     and checks if the operator is stronger than the minus sign
-    :param equation:
-    :param index:
+    :param equation: the equation
+    :param index: the index of the operator
     :return: True if the operator is stronger than the minus sign
     """
     return STRONGER_THAN_UNARY_MINUS[equation[index]]
@@ -476,13 +473,16 @@ def handle_double_minus_signs(equation="", operands=OPERANDS,
 
     """
     function that handles the double minus signs in the equation
-    :param equation:
-    :param operands:
-    :param binary_operators:
-    :param right_unary_operators:
-    :param left_unary_operators:
-    :return:
+    :param equation: the equation
+    :param operands: the operands
+    :param binary_operators: the binary operators
+    :param right_unary_operators: the right unary operators
+    :param left_unary_operators: the left unary operators
+    :return: the equation without double minus signs
     """
+    # go over the equation and check if there are double minus signs
+    # if there are, replace them with +  or delete them, or replace with -(-
+    # depending on the situation
     for x in range(len(equation) - 1):
         # if there are two minus signs in a row
         if equation[x] == '-' and equation[x + 1] == '-':
@@ -526,29 +526,12 @@ def handle_double_minus_signs(equation="", operands=OPERANDS,
                     # and add parentheses around the number after the second minus sign
                     num_right_of_first_minus_sign = get_number_after_minus_signs(equation, x)
 
-                    # now we have in the example 3--3! the number -3
-                    # we need to add parentheses around it so the equation will be 3-(-3)!
-                    # and then we can continue with the program
-
-                    # the following example is specific for the factorial function and the
-                    # sum digits function, but is relevant for any case where one operator has a
-                    # higher priority than the minus sign and the other operator has a lower priority
-                    # than the minus sign and the operators are of the same type:
-
-                    # we need to differentiate between # and !, because # reads the number
-                    # as a positive if its presented as -123#, and the only way to make it
-                    # negative is to add parentheses around it so it will be (-123)#, and
-                    # then it will be negative and will return an error message,
-                    # on the other hand ! reads the number as a negative if its presented as
-                    # -123!, and will read -123! as positive only if there is a number before
-                    # such as 3-123!, or if its specified as -(123)!
 
                     # if the next character after the number is stronger than minus, then we can just replace
-                    # the double minus sign with a plus sign, because 5--5# is the same as
-                    # 5+5#, and we don't need to add parentheses around the number
-                    # but if the next character after the number is a !, then we need to add
-                    # parentheses around the number, because 5--123! is the same as 5-(123)!
-                    # and we need to add parentheses around the number
+                    # the double minus sign with a plus sign, and not add parentheses
+                    # but if the next character is not stronger than minus, then we need to add parentheses
+                    # to the number after the first minus sign to indicate to the operator that
+                    # the number after the first minus sign is negative
                     if x + 1 + len(num_right_of_first_minus_sign) < len(equation) and \
                             is_stronger_than_minus_sign(equation,x + 1 + len(num_right_of_first_minus_sign)):
                         # replace the double minus sign with a plus sign
@@ -703,7 +686,6 @@ def find_opening_parentheses(equation="", index=0) -> int:
               f'at index {index}, equation is: {equation}')
 
 
-
 def count_amount_operators_in_equation(equation="", binary_operators=BINARY_OPERATORS,
                                        unary_operators=UNARY_OPERATORS) -> int:
     """
@@ -759,7 +741,7 @@ def print_operators(binary_operators=BINARY_OPERATORS,
     print the operators
     :param binary_operators: the binary operators
     :param unary_operators: the unary operators
-    :return: None
+    :return: the function prints the operators
     """
     # initialize the strings that will contain the operators
     binary = ""
@@ -776,7 +758,7 @@ def print_welcome_message() -> None:
     """
     print welcome message and instructions
     to the user
-    :return: None
+    :return: the function prints the welcome message
     """
     print('Welcome to the calculator! ',
           'This is a smart calculator made by @Eldar Aslanbeily \n'
@@ -797,7 +779,7 @@ def check_for_exit_quit(equation="") -> None:
     check if the user typed 'exit' or 'quit'
     if he did, exit the program
     :param equation: the equation
-    :return: None
+    :return: exit the program if the user typed 'exit' or 'quit'
     """
 
     # create equation copy, so we can change it
@@ -858,7 +840,7 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
     function that gets an equation from the user
     and if the user stops the program,
     print a message and exit the program
-    :return:
+    :return: the equation that the user typed
     """
     # initialize the equation
     input_equation = ""
@@ -929,6 +911,12 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
 
 
 def continue_using_calculator() -> None:
+    """
+    function that asks the user if he wants to continue using the calculator
+    if he does, call the main function again
+    if he doesn't, exit the program
+    :return: the function calls the main function again if the user wants to
+    """
     print('If you want to continue using the calculator, '
           'type "continue" or "c"')
 
