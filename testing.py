@@ -82,4 +82,26 @@ def test_operator_valid():
     assert calculate_equation("3!!") == "720"
     assert calculate_equation("99#") == "18"
     assert calculate_equation("99##") == "9"
+    # assert calculate_equation("2^(3-2)") == "2"
+    # assert calculate_equation("~5+5!") == "115.0"
+    # assert calculate_equation("2^3!") == "64"
+    # assert calculate_equation("~(~5)*(5)!") == "600.0"
+
+
+def test_complicated_equations():
+    """
+    checks that the program will return the correct result
+    for complicated equations
+    """
+    # this test function contains 20 very complicated equations, that
+    # make use of all the operators and are at lest 20 characters long
+    assert calculate_equation("(122+33*(   4^3! $ (9- 8@33 ) ) )& ( 9*  21! - 93218# )") == "135290.0"
+    assert calculate_equation("(4! - (5.5^3)#)$ (123123@6!)@(~543)") == "30689"
+    assert calculate_equation("(~-23  4*5  43)#-(543  43^0.1)@69 420$(133 7)") == "-34693.4875938195"
+    assert calculate_equation("((~(4^   3!$9-8 @33)  )&9*  21 #-   93218#)@42  069") == "-372162"
+    assert calculate_equation("(420-69+1337)# -~((-2)^3)!$(2.5^2@3)  ----82366") == "42069.0"
+    assert calculate_equation("731+~(31321)*2 *-321 --- (3!$89@321321$312^0.5)") == "20108412.11971862"
+    assert calculate_equation("(~-----(321312*32)%2^31)*76 -- (5---321 +(21)!)") == "5.109094217170944"
+    # TODO: add more complicated equations and test them here
+
 

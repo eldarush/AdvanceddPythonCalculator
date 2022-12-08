@@ -28,9 +28,8 @@ def addition(a: str, b: str) -> str:
     # but have different signs, print error message
     if a == "inf" and b == "-inf" or \
             a == "-inf" and b == "inf":
-        print("Invalid input: Cannot add"
+        raise ValueError("Invalid input: Cannot add"
               " infinity and negative infinity.")
-        exit(1)
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
@@ -50,8 +49,7 @@ def subtraction(a: str, b: str) -> str:
 
     # if both a and b are infinite, print error message
     if a == "inf" and b == "inf" or a == "-inf" and b == "-inf":
-        print("Invalid input: Cannot subtract infinity from infinity.")
-        exit(1)
+        raise ValueError("Invalid input: Cannot subtract infinity from infinity.")
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
@@ -73,8 +71,7 @@ def multiplication(a: str, b: str) -> str:
     # and the other is zero, print error message
     if (a == "inf" or a == "-inf") and b == "0" or \
             (b == "inf" or b == "-inf") and a == "0":
-        print("Invalid input: Cannot multiply infinity by zero.")
-        exit(1)
+        raise ValueError("Invalid input: Cannot multiply infinity by zero.")
 
     # try and multiply a and b
     try:
@@ -86,8 +83,7 @@ def multiplication(a: str, b: str) -> str:
         return str(float(a) * float(b))
     # if the result is too big, return an error message
     except OverflowError:
-        print("Error: Overflow - number too large for multiplication.")
-        exit(1)
+        raise ValueError("Error: Overflow - number too large for multiplication.")
 
 
 def division(a: str, b: str) -> str:
@@ -100,30 +96,25 @@ def division(a: str, b: str) -> str:
     """
     # check if b is zero
     if b == '0':
-        print("Math Error: Division by zero is "
+        raise ValueError("Math Error: Division by zero is "
               f"not allowed at Token: {a}/{b}.")
-        exit(1)
 
     # if both a and b are infinite, print error message
     if a == "inf" and b == "inf":
-        print("Invalid input: Cannot divide infinity by infinity.")
-        exit(1)
+        raise ValueError("Invalid input: Cannot divide infinity by infinity.")
 
     # if both a and b are negative infinite, print error message
     if a == "-inf" and b == "-inf":
-        print("Invalid input: Cannot divide negative"
+        raise ValueError("Invalid input: Cannot divide negative"
               " infinity by negative infinity.")
-        exit(1)
 
     # if a is infinite and b is negative infinite, print error message
     if a == "inf" and b == "-inf":
-        print("Invalid input: Cannot divide infinity by negative infinity.")
-        exit(1)
+        raise ValueError("Invalid input: Cannot divide infinity by negative infinity.")
 
     # if a is negative infinite and b is infinite, print error message
     if a == "-inf" and b == "inf":
-        print("Invalid input: Cannot divide negative infinity by infinity.")
-        exit(1)
+        raise ValueError("Invalid input: Cannot divide negative infinity by infinity.")
 
     return str(float(a) / float(b))
 
@@ -138,14 +129,12 @@ def modulo(a: str, b: str) -> str:
 
     # check if b is zero
     if b == 0:
-        print("Invalid input: Modulo by zero is not allowed."
+        raise ValueError("Invalid input: Modulo by zero is not allowed."
               f" Cannot do {a}%{b}.")
-        exit(1)
 
     # check if a is infinite
     if a == "inf" or a == "-inf":
-        print("Invalid input: Modulo of infinity is not allowed.")
-        exit(1)
+        raise ValueError("Invalid input: Modulo of infinity is not allowed.")
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
@@ -155,7 +144,6 @@ def modulo(a: str, b: str) -> str:
     return str(float(a) % float(b))
 
 
-# Todo: cover all cases for power function
 def power(a: str, b: str) -> str:
     """
     returns a to the power of b
@@ -181,10 +169,9 @@ def power(a: str, b: str) -> str:
     # check if the user is trying to do power function
     # where the base is negative and the exponent is not an integer
     if float(a) < 0 and float(b) % 1 != 0:
-        print('Invalid input: Cannot do negative base to non-integer power. \n'
+        raise ValueError('Invalid input: Cannot do negative base to non-integer power. \n'
               'power is not defined for negative base and non-integer power. \n'
               f'Cannot do {a}^{b}.')
-        exit(1)
     try:
         # if both a and b are integers, return an integer
         if a.isdigit() and b.isdigit():
@@ -194,18 +181,15 @@ def power(a: str, b: str) -> str:
         return str(pow(float(a), float(b)))
     # if the result is too big, return an error message
     except OverflowError:
-        print('Math Error: Overflow - number too large for power'
+        raise ValueError('Math Error: Overflow - number too large for power'
               f' Cannot do {a}^{b}.')
-        exit(1)
     # if the result raises a type error, return an error message
     except TypeError:
-        print('TypeError: unsupported operand type(s) for power: \n'
+        raise ValueError('TypeError: unsupported operand type(s) for power: \n'
               f'{type(a)} and {type(b)}. Cannot do {a}^{b}.')
-        exit(1)
     # if the result raises a value error, return an error message
     except ValueError as e:
-        print(f'ValueError: {e}. Cannot do {a}^{b}.')
-        exit(1)
+        raise ValueError(f'ValueError: {e}. Cannot do {a}^{b}.')
 
 
 def maximum(a: str, b: str) -> str:
@@ -228,7 +212,7 @@ def maximum(a: str, b: str) -> str:
     if a == "nan" or b == "nan":
         # print error message if one of the numbers
         # is not a number
-        print("Invalid input: Cannot find maximum of nan"
+        raise ValueError("Invalid input: Cannot find maximum of nan"
               " (Not A number).")
 
     # if both a and b are integers, return an integer
@@ -261,7 +245,7 @@ def minimum(a: str, b: str) -> str:
     if a == "nan" or b == "nan":
         # print error message if one of the numbers
         # is not a number
-        print("Invalid input: Cannot find minimum of nan"
+        raise ValueError("Invalid input: Cannot find minimum of nan"
               " (Not A number).")
 
     # if both a and b are integers, return an integer
@@ -293,9 +277,8 @@ def average(a: str, b: str) -> str:
     # too big for the computer to handle, for example "inf" that stands
     # for infinity
     except OverflowError:
-        print("Math Error: Overflow - number too large for average."
+        raise ValueError("Math Error: Overflow - number too large for average."
               f" Cannot do average of {a} and {b}.")
-        exit(1)
 
 
 def tilde(a: str) -> str:
@@ -316,7 +299,7 @@ def tilde(a: str) -> str:
     # check if a is not a number
     if a == "nan":
         # print error message if a is not a number
-        print("Invalid input: Cannot find negative of nan"
+        raise ValueError("Invalid input: Cannot find negative of nan"
               " (Not A number).")
 
     # if a is an integer, return an integer
@@ -340,17 +323,15 @@ def factorial(a: str) -> str:
 
     # if a is smaller than 0, return an error
     if float(a) < 0:
-        print(f'Invalid input for factorial: {a},'
+        raise ValueError(f'Invalid input for factorial: {a},'
               ' factorial() not defined for negative values')
-        exit(1)
 
     # if a is not an integer or infinity, return an error
     # if a is infinity, the check for infinity is done in the
     # second next if statement (check if bigger than 171)
     elif not float(a).is_integer() and a != "inf":
-        print(f'Invalid input for factorial: {a},'
+        raise ValueError(f'Invalid input for factorial: {a},'
               ' factorial() not defined for non-integer values')
-        exit(1)
 
     # if a is 0 or 1, return 1
     elif float(a) == 0 or float(a) == 1:
@@ -358,9 +339,8 @@ def factorial(a: str) -> str:
 
     # the max value of a is 171, otherwise the result will be too big
     elif float(a) > 171:
-        print(f'Invalid input for factorial: {a},'
+        raise ValueError(f'Invalid input for factorial: {a},'
               ' factorial() not defined for values larger than 171')
-        exit(1)
 
     # if a is greater than 1, return a!
     # calling factorial recursively until a = 1
@@ -391,7 +371,7 @@ def sum_digits(equation: str) -> str:
     # check if the input is not a number
     if equation == "nan":
         # print error message if the input is not a number
-        print("Invalid input: Cannot find sum of digits of nan"
+        raise ValueError("Invalid input: Cannot find sum of digits of nan"
               " (Not A number).")
 
     # if input is 0, return 0
@@ -413,6 +393,5 @@ def sum_digits(equation: str) -> str:
 
     # if the input is negative, print an error message
     elif float(equation) < 0:
-        print(f'Invalid input for sum_digits: {equation},'
+        raise ValueError(f'Invalid input for sum_digits: {equation},'
               ' sum_digits() not defined for negative values')
-        exit(1)
