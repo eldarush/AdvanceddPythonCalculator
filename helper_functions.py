@@ -33,12 +33,32 @@ def contains_invalid_characters(equation="", operators=OPERATORS,
     :param operands: the operands
     :return: True if the equation contains invalid characters, False otherwise
     """
-    for x in equation:
-        if x not in operators and x not in operands:
-            raise SyntaxError("Invalid syntax - The equation contains invalid characters \n"
-                  f"at index {x}, equation is: {equation}")
-    return equation
+    for index in range(len(equation)):
 
+        # if the character is not an operator or operand
+        # then it is an invalid character
+        if equation[index] not in operators and equation[index] not in operands:
+
+            # the exception where invalid characters are allowed
+            # is when there is an 'e' after a number, and the e is followed
+            # by a + or - and a number
+            if equation[index] == 'e':
+                # check if there are even 2 more characters after the e
+                if index + 2 >= len(equation):
+                    raise SyntaxError('Invalid syntax - invalid character \n'
+                                      f'at index {index}, equation is: {equation}')
+                elif equation[index - 1].isdigit() \
+                    and equation[index + 1] in ['+', '-'] \
+                    and equation[index + 2].isdigit():
+                    print('here')
+                    continue
+                else:
+                    raise SyntaxError('Invalid syntax - invalid character \n'
+                                      f'at index {index}, equation is: {equation}')
+            else:
+                raise SyntaxError('Invalid syntax - invalid character \n'
+                  f'at index {index}, equation is: {equation}')
+    return equation
 
 def is_negative_number(equation="") -> bool:
     """
@@ -162,19 +182,20 @@ def check_for_number_with_too_many_dots_in_them(equation="") -> str:
     # and if we see another dot, we print an error message if the flag is true
     # the flag is set to false after we exit the current number
     # meaning that the character is not a digit
-    for x in equation:
-        if x == '.':
+
+    for index in range(len(equation)):
+        if equation[index] == '.':
             # if we encounter a dot and the flag is true
             # then we have a number with too many dots in it
             if flag:
                 raise SyntaxError('Invalid syntax - number with too'
                       ' many decimal points in it \n'
-                      f'at index {x}, equation is: {equation}')
+                      f'at index {index}, equation is: {equation}')
             # if we encounter a dot and the flag is false
             # then we set the flag to true
             else:
                 flag = True
-        elif not is_number(x):
+        elif not is_number(equation[index]):
             flag = False
     return equation
 
@@ -332,6 +353,71 @@ def get_number_to_the_left_of_the_operator(equation="", index=0) -> str:
     return num_to_return
 
 
+def convert_e_sign_number(equation="") -> str:
+    """
+    this function gets an equation and returns the equation
+    with the e+number changed to 10 times the number
+    and the e- number changed to 0.1 times the number
+    for example 2e+3 will be changed to 2000 because 2 * 10^3 = 2000
+    and 2e-3 will be changed to 0.002 because 2 * 10^-3 = 0.002
+    :param equation: the equation
+    :return: the equation with the e+number or e-number changed
+    to 10 times the number or 0.1 times the number accordingly
+    """
+    # go over the equation and check if there is an e+ or e-
+    for index in range(len(equation)):
+
+        # if the character is e
+        if equation[index] == 'e':
+
+            # get the whole number after the + or - sign
+            power_e = get_number_to_the_right_of_the_operator(equation, index+1)
+
+
+            # if the next character is +, then multiply the number
+            # by 10 times the number after the e+
+            if equation[index + 1] == '+':
+                # if power is 0, then keep the number as is
+                if power_e == '0':
+                    equation = equation.replace(f'e+{power_e}', '')
+                else:
+                    # make a number that will contain the amount of zeroes we need
+                    # to add to the number
+                    zeroes = ''
+                    for _ in range(int(power_e)):
+                        zeroes += '0'
+
+                    # now we replace the e+number with the number of zeroes
+                    equation = equation.replace(f'e+{power_e}', zeroes)
+                    break
+            # if the next character is -, then multiply the number
+            # by 0.1 times the number after the e-
+            else:
+                # if power is 0, then keep the number as is
+                if power_e == '0':
+                    equation = equation.replace(f'e-{power_e}', '')
+                else:
+                    # make a number that will contain the amount of zeroes we need
+                    # to add before the number
+                    zeroes = ''
+                    for _ in range(int(power_e)-1):
+                        zeroes += '0'
+
+                    # now we replace the e-number with the number of zeroes
+                    # for example 2e-3 will be changed to 0.002
+                    equation = equation.replace(equation[index-1:index+len(power_e)+2]
+                                                ,f'0.{zeroes}{equation[index-1]}')
+                    break
+
+    # if there is no e+ or e- in the equation, return the equation
+    if 'e' not in equation:
+        return equation
+    else:
+        # if there is an e+ or e- in the equation, return the equation
+        # after we changed the e+number or e-number to 10 times the number
+        # or 0.1 times the number accordingly
+        return convert_e_sign_number(equation)
+
 def right_unary_validation(equation="", index=0,
                            right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS) -> None:
     """
@@ -375,7 +461,14 @@ def left_unary_validation(equation="", index=0) -> None:
     next_number = get_number_to_the_right_of_the_operator(equation, index)
     if not is_number(equation[index + 1]) and equation[index + 1] != '(' \
             and not is_negative_number(next_number):
-        raise SyntaxError('Invalid syntax - left unary operator in front of'
+
+        # check if the next number is just a negative sign and if it is,
+        # check if the next character is an opening parentheses
+        # also check if the next number is not at the end of the equation
+        if next_number == '-' and index + 2 < len(equation) and equation[index + 2] == '(':
+            pass
+        else:
+            raise SyntaxError('Invalid syntax - left unary operator in front of'
                           ' something that is not a number or an opening parentheses \n'
                           f'at index {index}, equation is: {equation}')
 

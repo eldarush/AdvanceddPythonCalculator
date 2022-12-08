@@ -252,6 +252,7 @@ def check_validity_of_equation_by_unary_operators(equation="",
     # return the equation if it is valid
     return equation
 
+print(check_validity_of_equation_by_unary_operators("~-3"))
 
 def check_validity_of_equation_by_all_operators(equation="", binary_operators=BINARY_OPERATORS,
                                                 right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
@@ -356,6 +357,9 @@ def check_if_function_is_valid(equation="") -> str:
     # we need to catch the error and print the error message
     try:
 
+        # convert the e(+-)number in the equation to the correct format
+        equation = convert_e_sign_number(equation)
+
         # check if the equation doesn't contain numbers
         equation = function_doesnt_contain_numbers(equation)
 
@@ -421,6 +425,12 @@ def calculate_equation(equation="", binary_operators=BINARY_OPERATORS,
     :param priority: the priority of the operators
     :return: the result of the equation as a string
     """
+    # first thing, remove all the white spaces from the equation
+    equation = get_rid_of_extra_white_spaces(equation)
+
+    # convert the e(+-)number in the equation to the correct format
+    equation = convert_e_sign_number(equation)
+
     # go over the equation and do the math for each operator
     # by the priority that each operator has
     # the operators with the highest priority will be calculated first
