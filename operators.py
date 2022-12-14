@@ -283,10 +283,10 @@ def average(a: str, b: str) -> str:
 
 def tilde(a: str) -> str:
     """
-    returns the negative of a
-    for example, if a = 5, returns -5
+    returns the negative of 'a' inside parantheses
+    for example, if a = 5, returns (-5)
     :param a:
-    :return: -a
+    :return: (-a)
     """
     # check if a is infinity
     if a == "inf":
@@ -304,10 +304,10 @@ def tilde(a: str) -> str:
 
     # if a is an integer, return an integer
     if a.isdigit():
-        return str(-int(float(a)))
+        return '('+str(-int(float(a)))+')'
 
     # if a is a float, return a float
-    return str(-float(a))
+    return '('+str(-float(a))+')'
 
 
 def factorial(a: str) -> str:
