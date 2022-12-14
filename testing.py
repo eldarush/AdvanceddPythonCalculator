@@ -102,6 +102,7 @@ def test_complicated_equations():
     assert calculate_equation("(420-69+1337)# -~((-2)^3)!$(2.5^2@3)  ----82366") == "42069.0"
     assert calculate_equation("731+~(31321)*2 *-321 --- (3!$89@321321$312^0.5)") == "20108412.11971862"
     assert calculate_equation("(~-----(321312*32)%2^31)*76 -- (5---321 +(21)!)") == "5.109094217170944"
+    assert calculate_equation("(24$3!)@   1.69+7!   *(0.01^2)#    /12*7  -(.1)") == "2952.745"
     # TODO: add more complicated equations and test them here
 
 

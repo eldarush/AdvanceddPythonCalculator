@@ -563,89 +563,28 @@ def handle_double_minus_signs(equation="", operands=OPERANDS,
                                  binary_operators=BINARY_OPERATORS,
                                  right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
                                  left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
-
     """
-    function that handles the double minus signs in the equation
+    this is a new function that handles the double minus signs in the equation
+    theis function implements the second algorithm for handling double minus signs,
+    where double minus sign is replaced with + if its acting as a binary operator and
+    deleted if its acting as a unary operator (sign change)
     :param equation: the equation
     :param operands: the operands
     :param binary_operators: the binary operators
     :param right_unary_operators: the right unary operators
     :param left_unary_operators: the left unary operators
-    :return: the equation without double minus signs
+    :return: the equation with the double minus signs handled
     """
-    # go over the equation and check if there are double minus signs
-    # if there are, replace them with +  or delete them, or replace with -(-
+
+    # go over the function and check if there are any double minus signs
     # depending on the situation
     for x in range(len(equation) - 1):
         # if there are two minus signs in a row
         if equation[x] == '-' and equation[x + 1] == '-':
-            # if the double minus sign is at the beginning of the equation
-            if x == 0:
-                # if after the double minus signs there is a number
-                # we need to check if the next operator is stronger than the minus
-                # if it is, then we need to remove the double minus sign
-                num_right_of_first_minus_sign = get_number_after_minus_signs(equation, x)
-                if is_stronger_than_minus_sign(equation,x + len(num_right_of_first_minus_sign) + 1):
-                    # remove the double minus sign
-                    equation = equation[x + 2:]
-                    # break the loop and start over
-                    break
 
-            # if the double minus sign is before a number
-            # or an opening parentheses or a left unary operator
-            if is_number(equation[x + 2]) or equation[x + 2] == '(' or \
-                    equation[x + 2] in left_unary_operators:
-                # if the double minus sign is after a binary operator
-                if equation[x - 1] in binary_operators or equation[x - 1] \
-                        in left_unary_operators or equation[x - 1] == '(':
-                    # remove the double minus sign
-                    equation = equation[:x] + equation[x + 2:]
-                    break
-                # if the double minus sign is after an operand
-                # or a closing parentheses or a right unary operator
-                elif equation[x - 1] in operands or equation[x - 1] == ')' \
-                        or equation[x - 1] in right_unary_operators:
-
-                    # the cases where -- immediately becomes + are:
-                    # 1. -- is before an opening parentheses
-                    # 2. -- is before a left unary operator
-                    if equation[x + 2] == '(' or equation[x + 2] in left_unary_operators:
-                        # replace the double minus sign with +
-                        equation = equation[:x] + '+' + equation[x + 2:]
-                        break
-
-                    # then replace the double minus sign with a plus sign
-                    # change the double minus sign to a minus sign,
-                    # and add parentheses around the number after the second minus sign
-                    num_right_of_first_minus_sign = get_number_after_minus_signs(equation, x)
-
-
-                    # if the next character after the number is stronger than minus, then we can just replace
-                    # the double minus sign with a plus sign, and not add parentheses
-                    # but if the next character is not stronger than minus, then we need to add parentheses
-                    # to the number after the first minus sign to indicate to the operator that
-                    # the number after the first minus sign is negative
-                    if x + 1 + len(num_right_of_first_minus_sign) < len(equation) and \
-                            is_stronger_than_minus_sign(equation,x + 1 + len(num_right_of_first_minus_sign)):
-                        # replace the double minus sign with a plus sign
-                        equation = equation[:x] + '+' + equation[x + 2:]
-                        break
-                    # if the next character after the number is not a #, then we need to add
-                    # parentheses around the number
-                    elif x + 1 + len(num_right_of_first_minus_sign) < len(equation) and not\
-                             is_stronger_than_minus_sign(equation,x + 1 + len(num_right_of_first_minus_sign)):
-                        equation = equation[:x + 1] + '(' + num_right_of_first_minus_sign + ')' \
-                                   + equation[x + 1 + len(num_right_of_first_minus_sign):]
-                        break
-                    # if we reached here then we need to replace the double minus sign with
-                    # a plus sign, because the number is at the end of the equation
-                    else:
-                        # replace the double minus sign with a plus sign
-                        equation = equation[:x] + '+' + equation[x + 2:]
-                        break
-
+            # first we check the validity of the double minus sign
             # if the double minus sign is before a closing parentheses
-            elif equation[x + 2] == ')':
+            if equation[x + 2] == ')':
                 # print error message and exit
                 raise SyntaxError("Invalid syntax - extra minus sign before a closing "
                       "parentheses \n"
@@ -657,15 +596,42 @@ def handle_double_minus_signs(equation="", operands=OPERANDS,
                       "unary operator \n"
                       f"at index {x}, equation is: {equation}")
             # if the double minus sign is before a binary operator
+            # note that --- is valid but caller function already handles it
             elif equation[x + 2] in binary_operators:
                 # print error message and exit
                 raise SyntaxError("Invalid syntax - extra minus sign before a binary "
                       "operator \n"
                       f"at index {x}, equation is: {equation}")
 
-    # if we reached here then we need to return the equation
-    return equation
+            # if the double sign is at a valid location:
 
+
+            # if the double minus sign is at the beginning of the equation
+            if x == 0:
+                # then we just need to remove the double minus sign
+                equation = equation[2:]
+                # break the loop and start over
+                break
+
+            # else if the double minus sign is after a binary operator or a left unary operator
+            # or an opening parentheses, in this case we need to remove the double minus sign
+            elif equation[x - 1] in binary_operators or equation[x - 1] in left_unary_operators \
+                    or equation[x - 1] == '(':
+                # remove the double minus sign
+                equation = equation[:x] + equation[x + 2:]
+                break
+
+            # else if the double minus sign is after an operand or a right unary operator
+            # or a closing parentheses, in this case we need to replace the double minus sign
+            # with a plus sign
+            elif equation[x - 1] in operands or equation[x - 1] in right_unary_operators \
+                    or equation[x - 1] == ')' or is_number(equation[x - 1]):
+                # replace the double minus sign with a plus sign
+                equation = equation[:x] + '+' + equation[x + 2:]
+                break
+
+    # at the end of the function, we need to return the equation
+    return equation
 
 def find_closing_parentheses(equation="", index=0) -> int:
     """
@@ -967,12 +933,19 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
 
     # if the function is not called for the first time
     else:
-        print('\nWelcome back to the calculator!\n'
-              'type "exit" or "quit" to exit the program\n'
-              f'your previous result is: {previous_result}, \n'
-              'if you want to use the previous result as an operand,\n'
-              'then type your equation with the operand "p" that will be replaced\n'
-              'with the previous result\n')
+        # different message for when we crashed the program with an error
+        # and when we got a result
+
+        if previous_result == '':
+            print('\nWelcome back to the calculator!\n'
+                  'type "exit" or "quit" to exit the program\n')
+        else:
+            print('\nWelcome back to the calculator!\n'
+                  'type "exit" or "quit" to exit the program\n'
+                  f'your previous result is: {previous_result}, \n'
+                  'if you want to use the previous result as an operand,\n'
+                  'then type your equation with the operand "p" that will be replaced\n'
+                  'with the previous result\n')
         try:
             input_equation = \
                 input('Please enter the equation you want to calculate:')
@@ -987,8 +960,11 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
             # exit the program
             check_for_exit_quit(input_equation)
 
-            # replace the 'p' operand with the previous result
-            input_equation = input_equation.replace('p', previous_result)
+            # only replace the 'p' with the previous result if the previous result
+            # is not an empty string
+            if previous_result != '':
+                # replace the 'p' operand with the previous result
+                input_equation = input_equation.replace('p', previous_result)
         # if the user stops the program via ctrl + c,
         # print a message and exit the program
         except KeyboardInterrupt:
@@ -1017,9 +993,12 @@ def continue_using_calculator() -> None:
     user_input = ''
     try:
         user_input = input('If you want to exit the program,'
-                           ' type "exit" or "quit:')
+                           ' type "exit" or "quit": ')
     except KeyboardInterrupt:
         print('\nProgram was interrupted by user')
+        exit(1)
+    except EOFError:
+        print('\nProgram was interrupted by user - input contains EOF')
         exit(1)
     # go in a loop until the user types 'continue' or 'c'
     # or 'exit' or 'quit'

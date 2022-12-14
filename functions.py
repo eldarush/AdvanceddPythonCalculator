@@ -252,7 +252,6 @@ def check_validity_of_equation_by_unary_operators(equation="",
     # return the equation if it is valid
     return equation
 
-print(check_validity_of_equation_by_unary_operators("~-3"))
 
 def check_validity_of_equation_by_all_operators(equation="", binary_operators=BINARY_OPERATORS,
                                                 right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
@@ -400,12 +399,28 @@ def check_if_function_is_valid(equation="") -> str:
         # check validity of equation by both binary and unary operators
         equation = check_validity_of_equation_by_all_operators(equation)
 
-    # except the error and print the error message
-    except Exception as error:
-        print(error)
-        # exit the program with error code 1
-        exit(1)
+    # except the error and print the error message,
+    # then run the program again, so that the program will not stop unlees
+    # the user wants to stop it
 
+    except SyntaxError as se:
+        print(f"\nSyntax Error: {se}\n")
+        # ask the user if he wants to continue using the calculator
+        continue_using_calculator()
+
+        # if the user wants to continue using the calculator,
+        # ask him to enter an equation
+        calculate(get_equation_from_user(first_run=0))
+
+    # if there is an unexpected error, print the error message
+    except Exception as e:
+        print(f"\nUnexpected Exception: {e}\n")
+        # ask the user if he wants to continue using the calculator
+        continue_using_calculator()
+
+        # if the user wants to continue using the calculator,
+        # ask him to enter an equation
+        calculate(get_equation_from_user(first_run=0))
     # return the equation if it is valid
     return equation
 
@@ -709,10 +724,31 @@ def calculate(equation="") -> None:
         result_of_calc = calculate_equation(equation)
 
     # except the exception that is raised when the equation is invalid
-    # and print a message to the user
+    # and print a message to the user, continue the program
+    except SyntaxError as se:
+        print(f'\nSyntax error: {se}\n')
+        # ask the user if he wants to continue using the calculator
+        continue_using_calculator()
+
+        # if the user wants to continue using the calculator,
+        # ask him to enter an equation
+        calculate(get_equation_from_user(first_run=0))
+    except ValueError as ve:
+        print(f'\nValue error: {ve}\n')
+        # ask the user if he wants to continue using the calculator
+        continue_using_calculator()
+
+        # if the user wants to continue using the calculator,
+        # ask him to enter an equation
+        calculate(get_equation_from_user(first_run=0))
     except Exception as error:
-        print(error)
-        exit(1)
+        print(f"\nUnexpected error: {error}\n")
+        # ask the user if he wants to continue using the calculator
+        continue_using_calculator()
+
+        # if the user wants to continue using the calculator,
+        # ask him to enter an equation
+        calculate(get_equation_from_user(first_run=0))
 
     # print the result of the equation
     print('\nResult: {}\n'.format(result_of_calc))
