@@ -270,13 +270,8 @@ def average(a: str, b: str) -> str:
     """
     # try and divide a+b by 2
     try:
-        # if both a and b are even or odd, return an integer
-        if (float(a) % 2 == 0 and float(b) % 2 == 0) or \
-                (float(a) % 2 != 0 and float(b) % 2 != 0):
-            return str(int((float(a) + float(b)) / 2))
-
-        # if a is even and b is odd, or a is odd and b is even, return a float
-        return str((float(a) + float(b)) / 2)
+        # return the average as a float
+        return str( (float(a) +float(b)) / 2.0 )
     # if the result is too big, return an error message
     # if we reach this point, it means that the input is probably
     # too big for the computer to handle, for example "inf" that stands

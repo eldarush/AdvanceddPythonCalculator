@@ -353,6 +353,53 @@ def get_number_to_the_left_of_the_operator(equation="", index=0) -> str:
     return num_to_return
 
 
+def get_expanded_scientific_notation(flt):
+    """
+    Convert a number to a string in expanded scientific notation.
+    :param flt: the number to convert
+    :return: the number in expanded scientific notation
+    """
+    # flag to indicate if the number was negative
+    was_neg = False
+    # check if there is no 'e' in the number
+    if not ("e" in flt):
+        return flt
+
+    # if the number is negative, make it positive
+    if flt.startswith('-'):
+        flt = flt[1:]
+        was_neg = True
+
+    # split the number at the 'e'
+    str_vals = str(flt).split('e')
+
+    # get the coefficient and the exponent
+    coef = float(str_vals[0])
+    exp = int(str_vals[1])
+
+    # set return value to empty string
+    return_val = ''
+
+    # if the exponent is positive
+    if int(exp) > 0:
+        # replace the 'e' with 'x10^'
+        return_val += str(coef).replace('.', '')
+        return_val += ''.join(['0' for _ in range(0, abs(exp - len(str(coef).split('.')[1])))])
+
+    # if the exponent is negative
+    # replace the 'e' with 'x10^'
+    elif int(exp) < 0:
+        return_val += '0.'
+        return_val += ''.join(['0' for _ in range(0, abs(exp) - 1)])
+        return_val += str(coef).replace('.', '')
+
+    # if the original number was negative, add the negative sign
+    if was_neg:
+        return_val = '-' + return_val
+
+    # return the number in expanded scientific notation
+    return return_val
+
 def convert_e_sign_number(equation="") -> str:
     """
     this function gets an equation and returns the equation
@@ -383,54 +430,28 @@ def convert_e_sign_number(equation="") -> str:
 
         # if the character is e
         if equation[index] == 'e':
+            # get the number to the left of the e sign
+            num_to_left_of_e_sign = get_number_to_the_left_of_the_operator(equation, index)
+            # get the number to the right of the e sign and the plus or minus sign
+            num_to_right_of_e_sign = get_number_to_the_right_of_the_operator(equation, index + 1)
+            # get the e and the plus or minus sign
+            e_sign = equation[index] + equation[index + 1]
+            # combine them together
+            complete_equation = num_to_left_of_e_sign + e_sign + num_to_right_of_e_sign
+            # replace the equation with equation but with the correct notation
+            equation = equation.replace(complete_equation,
+                                        get_expanded_scientific_notation(complete_equation))
 
-            # get the whole number after the + or - sign
-            power_e = get_number_to_the_right_of_the_operator(equation, index+1)
+            # break the loop because we changed the equation
+            break
 
-
-            # if the next character is +, then multiply the number
-            # by 10 times the number after the e+
-            if equation[index + 1] == '+':
-                # if power is 0, then keep the number as is
-                if power_e == '0':
-                    equation = equation.replace(f'e+{power_e}', '')
-                else:
-                    # make a number that will contain the amount of zeroes we need
-                    # to add to the number
-                    zeroes = ''
-                    for _ in range(int(power_e)):
-                        zeroes += '0'
-
-                    # now we replace the e+number with the number of zeroes
-                    equation = equation.replace(f'e+{power_e}', zeroes)
-                    break
-            # if the next character is -, then multiply the number
-            # by 0.1 times the number after the e-
-            else:
-                # if power is 0, then keep the number as is
-                if power_e == '0':
-                    equation = equation.replace(f'e-{power_e}', '')
-                else:
-                    # make a number that will contain the amount of zeroes we need
-                    # to add before the number
-                    zeroes = ''
-                    for _ in range(int(power_e)-1):
-                        zeroes += '0'
-
-                    # now we replace the e-number with the number of zeroes
-                    # for example 2e-3 will be changed to 0.002
-                    equation = equation.replace(equation[index-1:index+len(power_e)+2]
-                                                ,f'0.{zeroes}{equation[index-1]}')
-                    break
-
-    # if there is no e+ or e- in the equation, return the equation
+    # if there are no more e signs, return the equation
     if 'e' not in equation:
         return equation
+    # else call the function again
     else:
-        # if there is an e+ or e- in the equation, return the equation
-        # after we changed the e+number or e-number to 10 times the number
-        # or 0.1 times the number accordingly
         return convert_e_sign_number(equation)
+
 
 def right_unary_validation(equation="", index=0,
                            right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS) -> None:
