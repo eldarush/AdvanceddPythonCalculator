@@ -364,6 +364,20 @@ def convert_e_sign_number(equation="") -> str:
     :return: the equation with the e+number or e-number changed
     to 10 times the number or 0.1 times the number accordingly
     """
+
+    # first of all we need to check if the function is of the format e+number
+    # or e-number, if it is not, we throw exception because that is invalid syntax
+    for index in range(len(equation)):
+
+        # if the character is e
+        if equation[index] == 'e':
+            # if the character is at the end of the equation
+            # or the next character is not a plus sign or a minus sign
+            # we throw exception
+            if index == len(equation) - 1 or equation[index + 1] not in ['+', '-']:
+                raise SyntaxError('Invalid syntax - invalid character \n'
+                                      f'at index {index}, equation is: {equation}')
+
     # go over the equation and check if there is an e+ or e-
     for index in range(len(equation)):
 
@@ -827,9 +841,7 @@ def print_welcome_message() -> None:
     print('For more information about the calculator, \n'
           'please read the README.md file in the repository \n'
           'at: https://github.com/eldarush/AdvanceddPythonCalculator.git \n'
-          'This calculator supports parentheses,'
-          'and extra spaces between the operators and operands, \n'
-          'but not between the operators themselves.\n'
+          'This calculator supports parentheses, and extra spaces \n'
           'type "exit" or "quit" to exit the program')
 
 
@@ -993,7 +1005,7 @@ def continue_using_calculator() -> None:
     user_input = ''
     try:
         user_input = input('If you want to exit the program,'
-                           ' type "exit" or "quit": ')
+                           ' type "exit" or "quit":')
     except KeyboardInterrupt:
         print('\nProgram was interrupted by user')
         exit(1)

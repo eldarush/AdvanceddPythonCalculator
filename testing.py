@@ -15,35 +15,24 @@ import pytest
 
 def test_syntax_errors():
     """
-    checks that all the syntax errors are caught
-    and that the program exits
+    checks that all the syntax errors are raised correctly
+    when the input is invalid
     """
-    with pytest.raises(SystemExit) as e:
-        calculate("2^*3")
-        calculate("2-+3")
-        calculate("2+3-")
-        calculate("2+*3")
-        calculate("2+/3")
-        calculate("!2+3/")
-        calculate("~2~3!")
-    # we check that the program exits with the correct error code
-    # which is 1 - meaning that the program exited with an error
-    # because the input was wrong
-    assert e.value.code == 1
+    assert pytest.raises(SyntaxError, calculate_equation, "2-+3")
+    assert pytest.raises(SyntaxError, calculate_equation, "2^*3")
+    assert pytest.raises(SyntaxError, calculate_equation, "2+3-")
+    assert pytest.raises(SyntaxError, calculate_equation, "!2+3/")
+    assert pytest.raises(SyntaxError, calculate_equation, "~2~3!")
 
 
 def test_garbage_input():
     """
-    checks that the program exits when the input is wrong
+    checks that all the syntax errors are raised correctly
+    when the input is gibberish
     """
-    with pytest.raises(SystemExit) as e:
-        calculate("omega is not the best")
-        calculate("calculator is easy")
-        calculate("calculator is not working")
-    # we check that the program exits with the correct error code
-    # which is 1 - meaning that the program exited with an error
-    # because the input was wrong
-    assert e.value.code == 1
+    assert pytest.raises(SyntaxError, calculate_equation, "hello world")
+    assert pytest.raises(SyntaxError, calculate_equation, "gibberish equation")
+    assert pytest.raises(SyntaxError, calculate_equation, "this should not be possible")
 
 
 def test_empty_white_space_input():
@@ -82,10 +71,6 @@ def test_operator_valid():
     assert calculate_equation("3!!") == "720"
     assert calculate_equation("99#") == "18"
     assert calculate_equation("99##") == "9"
-    # assert calculate_equation("2^(3-2)") == "2"
-    # assert calculate_equation("~5+5!") == "115.0"
-    # assert calculate_equation("2^3!") == "64"
-    # assert calculate_equation("~(~5)*(5)!") == "600.0"
 
 
 def test_complicated_equations():
@@ -96,13 +81,25 @@ def test_complicated_equations():
     # this test function contains 20 very complicated equations, that
     # make use of all the operators and are at lest 20 characters long
     assert calculate_equation("(122+33*(   4^3! $ (9- 8@33 ) ) )& ( 9*  21! - 93218# )") == "135290.0"
-    assert calculate_equation("(4! - (5.5^3)#)$ (123123@6!)@(~543)") == "30689"
+    assert calculate_equation("(4! - (5.5^3)#)$ (1 231 23@6! )@(~5 43)") == "30689"
     assert calculate_equation("(~-23  4*5  43)#-(543  43^0.1)@69 420$(133 7)") == "-34693.4875938195"
     assert calculate_equation("((~(4^   3!$9-8 @33)  )&9*  21 #-   93218#)@42  069") == "-372162"
     assert calculate_equation("(420-69+1337)# -~((-2)^3)!$(2.5^2@3)  ----82366") == "42069.0"
     assert calculate_equation("731+~(31321)*2 *-321 --- (3!$89@321321$312^0.5)") == "20108412.11971862"
     assert calculate_equation("(~-----(321312*32)%2^31)*76 -- (5---321 +(21)!)") == "5.109094217170944"
     assert calculate_equation("(24$3!)@   1.69+7!   *(0.01^2)#    /12*7  -(.1)") == "2952.745"
-    # TODO: add more complicated equations and test them here
+    assert calculate_equation("((~(4^   3!$9-8 @33)  )&9*  21 #-   93218#)@42  069") == "-372162"
+    assert calculate_equation("--(54  3*0.69  )#/123--(9!-~3@  9$  2^  3) ---(365^(55-(32+23)))")  == "362853.0650406504"
+    assert calculate_equation("((  (  123#)@6  7312  -381#-~-(5!))*0   .1+2^5@69420%2)")  == "3354.114213562373"
+    assert calculate_equation("(8 *8 @  8%8#+8!  ^8/8+88)---   (77^0.77@ 77#-77* 7.7)")  == "-85454316606481.64"
+    assert calculate_equation("(  324%3-  (31^2-19!%89-432+3@1)  *0.69420+  (5^435@1) )  ^0.00069420")  == "1.0006003373947838"
+    assert calculate_equation("(1!  -2@3#   +4$- 5%6^ 7&8* 9) -- 10- ~(11!*-12) ") == "-478854135.5"
+    assert calculate_equation("5318008 +(69 -42*10 )/1&7 ^5%42 @9%2  - (9-0 9090 909. 9 )^1") == "14408557.9"
+    assert calculate_equation("(458%34)-((65-(9!)^0.2)*7%2#-9/7^5)-------(2@2%2$2*2^2)") == "-36.058918339460206"
+    assert calculate_equation("54&2--(542*7^4%34#*2!$2-0.98/76%43)----- -- - (897-(4!)^0.69)") == "2603574.0095242294"
+
+
+
+
 
 
