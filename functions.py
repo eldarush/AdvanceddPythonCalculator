@@ -394,7 +394,6 @@ def check_if_function_is_valid(equation="") -> str:
     # if the equation is valid, return the equation
     return equation
 
-
 def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATORS,
                        unary_operators=UNARY_OPERATORS, priority=PRIORITY,
                        right_unary_operands=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
@@ -411,7 +410,6 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
     :param priority: the priority of the operators
     :return: the result of the equation as a string
     """
-    print(equation)
     # first thing, remove all the white spaces from the equation
     equation = get_rid_of_extra_white_spaces(equation)
 
