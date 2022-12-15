@@ -51,6 +51,11 @@ def subtraction(a: str, b: str) -> str:
     if a == "inf" and b == "inf" or a == "-inf" and b == "-inf":
         raise ValueError("Invalid input: Cannot subtract infinity from infinity.")
 
+    # if the minus is a second minus in a chain of minuses,
+    # then we need to add instead of subtract
+    if a == "-":
+        return "(0+"+b+")"
+
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
         return str(int(float(a)) - int(float(b)))
@@ -283,10 +288,10 @@ def average(a: str, b: str) -> str:
 
 def tilde(a: str) -> str:
     """
-    returns the negative of 'a' inside parantheses
-    for example, if a = 5, returns (-5)
+    returns the negative of 'a'
+    for example, if a = 5, returns -5
     :param a:
-    :return: (-a)
+    :return: -a
     """
     # check if a is infinity
     if a == "inf":
@@ -302,7 +307,7 @@ def tilde(a: str) -> str:
         raise ValueError("Invalid input: Cannot find negative of nan"
               " (Not A number).")
 
-    # if a is an integer, return an integer
+    # if a is an integer, return an integer inside parenthesis
     if a.isdigit():
         return '('+str(-int(float(a)))+')'
 

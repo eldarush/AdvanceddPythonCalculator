@@ -12,3 +12,4 @@ input_equation = get_equation_from_user()
 # run the calculator and print the result
 calculate(input_equation)
 
+
