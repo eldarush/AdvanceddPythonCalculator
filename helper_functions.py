@@ -14,7 +14,8 @@ def is_number(equation="") -> bool:
     :return: true if the string is a number and false otherwise
     """
 
-    # try to convert the string to a float, if it works then it is a number
+    # try to convert the string to a float,
+    # if it works then it is a number
     try:
         float(equation)
         return True
@@ -31,33 +32,42 @@ def contains_invalid_characters(equation="", operators=OPERATORS,
     :param equation: the equation
     :param operators: the operators
     :param operands: the operands
-    :return: True if the equation contains invalid characters, False otherwise
+    :return: True if the equation contains invalid characters,
+     False otherwise
     """
     for index in range(len(equation)):
 
         # if the character is not an operator or operand
         # then it is an invalid character
-        if equation[index] not in operators and equation[index] not in operands:
+        if equation[index] not in operators\
+                and equation[index] not in operands:
 
             # the exception where invalid characters are allowed
-            # is when there is an 'e' after a number, and the e is followed
+            # is when there is an 'e' after a number,
+            # and the e is followed
             # by a + or - and a number
             if equation[index] == 'e':
                 # check if there are even 2 more characters after the e
                 if index + 2 >= len(equation):
-                    raise SyntaxError('Invalid syntax - invalid character \n'
-                                      f'at index {index}, equation is: {equation}')
+                    raise SyntaxError('Invalid syntax -'
+                                      ' invalid character \n'
+                                      f'at index {index},'
+                                      f' equation is: {equation}')
                 elif equation[index - 1].isdigit() \
                     and equation[index + 1] in ['+', '-'] \
                     and equation[index + 2].isdigit():
                     print('here')
                     continue
                 else:
-                    raise SyntaxError('Invalid syntax - invalid character \n'
-                                      f'at index {index}, equation is: {equation}')
+                    raise SyntaxError('Invalid syntax -'
+                                      ' invalid character \n'
+                                      f'at index {index},'
+                                      f' equation is: {equation}')
             else:
-                raise SyntaxError('Invalid syntax - invalid character \n'
-                  f'at index {index}, equation is: {equation}')
+                raise SyntaxError('Invalid syntax -'
+                                  ' invalid character \n'
+                                  f'at index {index},'
+                                  f' equation is: {equation}')
     return equation
 
 def is_negative_number(equation="") -> bool:
@@ -85,7 +95,8 @@ def doesnt_contain_numbers(equation="") -> bool:
     """
     This function checks if an equation contains numbers
     :param equation: the equation
-    :return: True if the equation doesn't contain numbers, False otherwise
+    :return: True if the equation doesn't contain numbers,
+     False otherwise
     """
     for x in equation:
 
@@ -107,7 +118,8 @@ def function_doesnt_contain_numbers(equation="") -> str:
     """
     # check if the equation doesn't contain numbers
     if doesnt_contain_numbers(equation):
-        raise SyntaxError('Invalid syntax - equation does not contain numbers, \n'
+        raise SyntaxError('Invalid syntax - '
+                          'equation does not contain numbers, \n'
               f'equation is: {equation}')
 
     # if the equation contains numbers, then return the equation
@@ -172,15 +184,16 @@ def check_for_number_with_too_many_dots_in_them(equation="") -> str:
     function that checks if there are numbers with too many dots in them
     :param equation: the equation
     :return: equation if there are no numbers with too many dots in them
-    and prints an error message otherwise
+    and raises a syntax error otherwise
     """
-    # go over equation and check if there are numbers with too many dots in them
+    # go over equation and check if
+    # there are numbers with too many dots in them
     # set a flag to check if we already have a dot in the current number
     flag = False
 
     # go over the equation and every time we see a dot, we set the flag to true
     # and if we see another dot, we print an error message if the flag is true
-    # the flag is set to false after we exit the current number
+    # the flag is set to false after we leave the current number
     # meaning that the character is not a digit
 
     for index in range(len(equation)):
@@ -241,7 +254,8 @@ def get_number_to_the_right_of_the_operator(equation="", index=0) -> str:
 
     # if the index is at the end of the equation
     if index == len(equation) - 1:
-        raise SyntaxError('Invalid syntax - the operator is at the end of the equation \n'
+        raise SyntaxError('Invalid syntax - '
+                          'the operator is at the end of the equation \n'
               f'at index {index}, equation is: {equation}')
 
     # if the index is at the second to last character of the equation
@@ -255,9 +269,6 @@ def get_number_to_the_right_of_the_operator(equation="", index=0) -> str:
     # initialize the max sum of minus signs acceptable
     # if we don't set this, the function will return
     # a number with an infinite number of minus signs
-    # for example: 5*-3-3, the function will return
-    # -3-3 instead of -3, because it will keep adding
-    # minus signs to the number
     # so the max sum of minus signs acceptable is 1
     max_num_of_minus_signs = 1
 
@@ -275,6 +286,7 @@ def get_number_to_the_right_of_the_operator(equation="", index=0) -> str:
             # if the current number of minus signs is less than
             # the max number of minus signs acceptable
             # add the minus sign to the number
+
             # also check if we haven't added any numbers to the number
             # we return yet because if we did, we can't add a minus sign
             # to the number
@@ -320,7 +332,8 @@ def get_number_to_the_left_of_the_operator(equation="", index=0) -> str:
     # for a negative number)
     if index == 0:
         if equation[index] != '-':
-            raise SyntaxError('Invalid syntax - the operator is at the start of the equation \n'
+            raise SyntaxError('Invalid syntax -'
+                              ' the operator is at the start of the equation \n'
                   f'at index {index}, equation is: {equation}')
         elif equation[index] == '-':
             # returning 0 minus something is the same as returning
@@ -355,7 +368,7 @@ def get_number_to_the_left_of_the_operator(equation="", index=0) -> str:
 
 def get_expanded_scientific_notation(flt):
     """
-    Convert a number to a string in expanded scientific notation.
+    Convert a number to a string in expanded scientific notation
     :param flt: the number to convert
     :return: the number in expanded scientific notation
     """
@@ -374,7 +387,7 @@ def get_expanded_scientific_notation(flt):
     str_vals = str(flt).split('e')
 
     # get the coefficient and the exponent
-    coef = float(str_vals[0])
+    coefficient = float(str_vals[0])
     exp = int(str_vals[1])
 
     # set return value to empty string
@@ -383,15 +396,18 @@ def get_expanded_scientific_notation(flt):
     # if the exponent is positive
     if int(exp) > 0:
         # replace the 'e' with 'x10^'
-        return_val += str(coef).replace('.', '')
-        return_val += ''.join(['0' for _ in range(0, abs(exp - len(str(coef).split('.')[1])))])
+        return_val += str(coefficient).replace('.', '')
+        return_val +=\
+            ''.join(['0' for _ in range(0,
+                                        abs(exp- len(str(coefficient)
+                                                     .split('.')[1])))])
 
     # if the exponent is negative
     # replace the 'e' with 'x10^'
     elif int(exp) < 0:
         return_val += '0.'
         return_val += ''.join(['0' for _ in range(0, abs(exp) - 1)])
-        return_val += str(coef).replace('.', '')
+        return_val += str(coefficient).replace('.', '')
 
     # if the original number was negative, add the negative sign
     if was_neg:
@@ -405,15 +421,14 @@ def convert_e_sign_number(equation="") -> str:
     this function gets an equation and returns the equation
     with the e+number changed to 10 times the number
     and the e- number changed to 0.1 times the number
-    for example 2e+3 will be changed to 2000 because 2 * 10^3 = 2000
-    and 2e-3 will be changed to 0.002 because 2 * 10^-3 = 0.002
     :param equation: the equation
     :return: the equation with the e+number or e-number changed
     to 10 times the number or 0.1 times the number accordingly
     """
 
     # first of all we need to check if the function is of the format e+number
-    # or e-number, if it is not, we throw exception because that is invalid syntax
+    # or e-number, if it is not,
+    # we throw exception because that is invalid syntax
     for index in range(len(equation)):
 
         # if the character is e
@@ -421,9 +436,12 @@ def convert_e_sign_number(equation="") -> str:
             # if the character is at the end of the equation
             # or the next character is not a plus sign or a minus sign
             # we throw exception
-            if index == len(equation) - 1 or equation[index + 1] not in ['+', '-']:
-                raise SyntaxError('Invalid syntax - invalid character \n'
-                                      f'at index {index}, equation is: {equation}')
+            if index == len(equation) - 1 or\
+                    equation[index + 1] not in ['+', '-']:
+                raise SyntaxError('Invalid syntax -'
+                                  ' invalid character \n'
+                                      f'at index {index},'
+                                  f' equation is: {equation}')
 
     # go over the equation and check if there is an e+ or e-
     for index in range(len(equation)):
@@ -431,15 +449,20 @@ def convert_e_sign_number(equation="") -> str:
         # if the character is e
         if equation[index] == 'e':
             # get the number to the left of the e sign
-            num_to_left_of_e_sign = get_number_to_the_left_of_the_operator(equation, index)
-            # get the number to the right of the e sign and the plus or minus sign
-            num_to_right_of_e_sign = get_number_to_the_right_of_the_operator(equation, index + 1)
+            num_to_left_of_e_sign =\
+                get_number_to_the_left_of_the_operator(equation, index)
+            # get the number to the right of
+            # the e sign and the plus or minus sign
+            num_to_right_of_e_sign =\
+                get_number_to_the_right_of_the_operator(equation, index + 1)
             # get the e and the plus or minus sign
             e_sign = equation[index] + equation[index + 1]
             # combine them together
-            complete_equation = num_to_left_of_e_sign + e_sign + num_to_right_of_e_sign
+            complete_equation =\
+                num_to_left_of_e_sign + e_sign + num_to_right_of_e_sign
             # replace the equation with equation but with the correct notation
-            equation = equation.replace(complete_equation,
+            equation =\
+                equation.replace(complete_equation,
                                         get_expanded_scientific_notation(complete_equation))
 
             # break the loop because we changed the equation
@@ -454,7 +477,8 @@ def convert_e_sign_number(equation="") -> str:
 
 
 def right_unary_validation(equation="", index=0,
-                           right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS) -> None:
+                           right_unary_operators=
+                           RIGHT_ASSOCIATIVE_UNARY_OPERATORS) -> None:
     """
     this function gets an equation and an index of an operator,
     and checks if the operator is a right unary operator is valid or not
@@ -466,14 +490,18 @@ def right_unary_validation(equation="", index=0,
     """
     # check if the right unary operator is after a number
     previous_number = get_number_to_the_left_of_the_operator(equation, index)
-    if not is_number(equation[index - 1]) and equation[index - 1] != ')' and equation[index - 1] not \
+    if not is_number(equation[index - 1]) and equation[index - 1] != ')'\
+            and equation[index - 1] not \
             in right_unary_operators and not is_number(previous_number):
-        raise SyntaxError('Invalid syntax - right unary operator after something'
+        raise SyntaxError('Invalid syntax -'
+                          ' right unary operator after something'
                           ' that is not a number or a closing parentheses \n'
                           f'at index {index}, equation is: {equation}')
+
     # check if the next character is a number or an opening parentheses
     # this check prevents the user from writing something like 5!5
     if index != len(equation) - 1:
+
         # if the right unary operator is not the last character
         # in the equation, check if the next character is a number
         # or an opening parentheses
@@ -493,18 +521,24 @@ def left_unary_validation(equation="", index=0) -> None:
     :return: None if the operator is valid, otherwise raises an error
     """
     # get the next number after the left unary operator
-    next_number = get_number_to_the_right_of_the_operator(equation, index)
-    if not is_number(equation[index + 1]) and equation[index + 1] != '(' \
+    next_number =\
+        get_number_to_the_right_of_the_operator(equation, index)
+    if not is_number(equation[index + 1])\
+            and equation[index + 1] != '(' \
             and not is_negative_number(next_number):
 
         # check if the next number is just a negative sign and if it is,
         # check if the next character is an opening parentheses
         # also check if the next number is not at the end of the equation
-        if next_number == '-' and index + 2 < len(equation) and equation[index + 2] == '(':
+        if next_number == '-' and\
+                index + 2 < len(equation) and\
+                equation[index + 2] == '(':
             pass
         else:
-            raise SyntaxError('Invalid syntax - left unary operator in front of'
-                          ' something that is not a number or an opening parentheses \n'
+            raise SyntaxError('Invalid syntax -'
+                              ' left unary operator in front of'
+                              ' something that is not'
+                              ' a number or an opening parentheses \n'
                           f'at index {index}, equation is: {equation}')
 
     # check if the last character is a number or a closing parentheses
@@ -514,7 +548,8 @@ def left_unary_validation(equation="", index=0) -> None:
         # in the equation, check if the character before it is a number
         # or a closing parentheses
         if is_number(equation[index - 1]) or equation[index - 1] == ')':
-            raise SyntaxError('Invalid syntax - left unary operator following'
+            raise SyntaxError('Invalid syntax -'
+                              ' left unary operator following'
                               ' a number or a closing parentheses \n'
                               f'at index {index}, equation is: {equation}')
 
@@ -526,12 +561,14 @@ def check_for_extra_parentheses(equation="") -> str:
     and if there are, prints error message
     and ends the program
     :param equation: the equation
-    :return: same equation if there are no extra parentheses
+    :return: same equation if there are
+     no extra parentheses
     """
 
     # check if there are extra parentheses
     if '()' in equation:
-        raise SyntaxError("Invalid syntax, extra parentheses in the equation")
+        raise SyntaxError("Invalid syntax -"
+                          " extra parentheses in the equation")
 
     # if there are no extra parentheses, return the equation
     return equation
@@ -539,13 +576,16 @@ def check_for_extra_parentheses(equation="") -> str:
 
 def get_number_after_minus_signs(equation="", index=0) -> str:
     """
-    function that gets an equation and an index of the first minus
-    sign and returns the whole number after all the minus signs
+    function that gets an equation and an
+     index of the first minus
+    sign and returns the whole number after
+     all the minus signs
     :param equation: the equation
     :param index: the index of the first minus sign
     :return: the number after the minus signs
     """
-    # get the index of the first number after all the minus signs
+    # get the index of the first number
+    # after all the minus signs
     # and return the number
     # min index is the index of the first minus sign
     # after the first minus sign
@@ -556,11 +596,15 @@ def get_number_after_minus_signs(equation="", index=0) -> str:
         number += equation[min_index]
         min_index += 1
 
-    # now minIndex is the index of the first number after all the minus signs
-    # we get the complete number after all the minus signs
+    # now minIndex is the index of the
+    # first number after all the minus signs
+    # we get the complete number after
+    # all the minus signs
     # and return it
     while min_index < len(equation) and \
-            (is_number(equation[min_index]) or equation[min_index] == '.'):
+            (is_number(equation[min_index]) or
+             equation[min_index] == '.'):
+
         number += equation[min_index]
         min_index += 1
 
@@ -596,12 +640,17 @@ def is_stronger_than_minus_sign(equation="", index=0) -> bool:
 
 def handle_double_minus_signs(equation="", operands=OPERANDS,
                                  binary_operators=BINARY_OPERATORS,
-                                 right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
-                                 left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
+                                 right_unary_operators=
+                                 RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                                 left_unary_operators=
+                                 LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
-    this is a new function that handles the double minus signs in the equation
-    theis function implements the second algorithm for handling double minus signs,
-    where double minus sign is replaced with + if its acting as a binary operator and
+    this is a function that handles the double minus
+    signs in the equation
+    theis function implements the second algorithm
+    for handling double minus signs,
+    where double minus sign is replaced with +
+    if its acting as a binary operator and
     deleted if its acting as a unary operator (sign change)
     :param equation: the equation
     :param operands: the operands
@@ -611,7 +660,8 @@ def handle_double_minus_signs(equation="", operands=OPERANDS,
     :return: the equation with the double minus signs handled
     """
 
-    # go over the function and check if there are any double minus signs
+    # go over the function and check if there
+    # are any double minus signs
     # depending on the situation
     for x in range(len(equation) - 1):
         # if there are two minus signs in a row
@@ -620,53 +670,65 @@ def handle_double_minus_signs(equation="", operands=OPERANDS,
             # first we check the validity of the double minus sign
             # if the double minus sign is before a closing parentheses
             if equation[x + 2] == ')':
-                # print error message and exit
-                raise SyntaxError("Invalid syntax - extra minus sign before a closing "
+                # raise an error
+                raise SyntaxError("Invalid syntax -"
+                                  " extra minus sign before a closing "
                       "parentheses \n"
                       f"at index {x}, equation is: {equation}")
             # if the double minus sign is before a unary operator
             elif equation[x + 2] in right_unary_operators:
-                # print error message and exit
-                raise SyntaxError("Invalid syntax - extra minus sign before a right "
+                # raise an error
+                raise SyntaxError("Invalid syntax -"
+                                  " extra minus sign before a right "
                       "unary operator \n"
                       f"at index {x}, equation is: {equation}")
             # if the double minus sign is before a binary operator
             # note that --- is valid but caller function already handles it
             elif equation[x + 2] in binary_operators:
-                # print error message and exit
-                raise SyntaxError("Invalid syntax - extra minus sign before a binary "
+                # raise an error
+                raise SyntaxError("Invalid syntax -"
+                                  " extra minus sign before a binary "
                       "operator \n"
                       f"at index {x}, equation is: {equation}")
 
             # if the double sign is at a valid location:
 
 
-            # if the double minus sign is at the beginning of the equation
+            # if the double minus sign is
+            # at the beginning of the equation
             if x == 0:
                 # then we just need to remove the double minus sign
                 equation = equation[2:]
                 # break the loop and start over
                 break
 
-            # else if the double minus sign is after a binary operator or a left unary operator
-            # or an opening parentheses, in this case we need to remove the double minus sign
-            elif equation[x - 1] in binary_operators or equation[x - 1] in left_unary_operators \
+            # else if the double minus sign is after
+            # a binary operator or a left unary operator
+            # or an opening parentheses,
+            # in this case we need to remove the double minus sign
+            elif equation[x - 1] in binary_operators or\
+                    equation[x - 1] in left_unary_operators \
                     or equation[x - 1] == '(':
                 # remove the double minus sign
                 equation = equation[:x] + equation[x + 2:]
                 break
 
-            # else if the double minus sign is after an operand or a right unary operator
-            # or a closing parentheses, in this case we need to replace the double minus sign
+            # else if the double minus sign is after
+            # an operand or a right unary operator
+            # or a closing parentheses, in this case
+            # we need to replace the double minus sign
             # with a plus sign
-            elif equation[x - 1] in operands or equation[x - 1] in right_unary_operators \
-                    or equation[x - 1] == ')' or is_number(equation[x - 1]):
+            elif equation[x - 1] in operands or\
+                    equation[x - 1] in right_unary_operators \
+                    or equation[x - 1] == ')' or\
+                    is_number(equation[x - 1]):
                 # replace the double minus sign with a plus sign
                 equation = equation[:x] + '+' + equation[x + 2:]
                 break
 
     # at the end of the function, we need to return the equation
     return equation
+
 
 def find_closing_parentheses(equation="", index=0) -> int:
     """
@@ -677,20 +739,24 @@ def find_closing_parentheses(equation="", index=0) -> int:
     :param index: the index of the opening parentheses
     :return: the index of the closing parentheses
     """
-    # check if the character at the index is an opening parentheses
+    # check if the character at the index is
+    # an opening parentheses
     if equation[index] != '(':
-        raise SyntaxError('Invalid syntax - the character at the index'
+        raise SyntaxError('Invalid syntax -'
+                          ' the character at the index'
               ' is not an opening parentheses \n'
               f'at index {index}, equation is: {equation}')
 
     # check if the index is in the equation
     if index >= len(equation):
-        raise SyntaxError('Invalid syntax - the index is out of range \n'
+        raise SyntaxError('Invalid syntax -'
+                          ' the index is out of range \n'
               f'at index {index}, equation is: {equation}')
 
     # check if the index is not negative
     if index < 0:
-        raise SyntaxError('Invalid syntax - the index is negative \n'
+        raise SyntaxError('Invalid syntax -'
+                          ' the index is negative \n'
               f'at index {index}, equation is: {equation}')
 
     # counter for the number of opening parentheses
@@ -714,10 +780,10 @@ def find_closing_parentheses(equation="", index=0) -> int:
             # return the index of the closing parentheses
             return x
 
-    # if we reach end and counter is not 0, print error message
+    # if we reach end and counter is not 0, raise an error
     # technically this should never happen because the function
     # is run after the equation is checked for parentheses errors
-    # but just in case we will print an error message
+    # but just in case we will raise an error
     if counter_opening_parentheses != 0:
         raise SyntaxError('Invalid syntax - no closing parentheses'
               ' for the opening parentheses  \n'
@@ -770,17 +836,18 @@ def find_opening_parentheses(equation="", index=0) -> int:
             # return the index of the opening parentheses
             return x
 
-    # if we reach end and counter is not 0, print error message
+    # if we reach end and counter is not 0, raise an error
     # technically this should never happen because the function
     # is run after the equation is checked for parentheses errors
-    # but just in case we will print an error message
+    # but just in case we will raise an error
     if counter_closing_parentheses != 0:
         raise SyntaxError('Invalid syntax - no opening parentheses'
               ' for the closing parentheses  \n'
               f'at index {index}, equation is: {equation}')
 
 
-def count_amount_operators_in_equation(equation="", binary_operators=BINARY_OPERATORS,
+def count_amount_operators_in_equation(equation="",
+                                       binary_operators=BINARY_OPERATORS,
                                        unary_operators=UNARY_OPERATORS) -> int:
     """
     this function gets an equation and returns the amount of
@@ -871,7 +938,8 @@ def check_for_exit_quit(equation="") -> None:
     check if the user typed 'exit' or 'quit'
     if he did, exit the program
     :param equation: the equation
-    :return: exit the program if the user typed 'exit' or 'quit'
+    :return: exit the program if the user typed
+    'exit' or 'quit'
     """
 
     # create equation copy, so we can change it
@@ -882,7 +950,8 @@ def check_for_exit_quit(equation="") -> None:
     equation_copy = equation_copy.strip()
 
     # if the user typed 'exit' or 'quit'
-    if equation_copy.lower() == 'exit' or equation_copy.lower() == 'quit':
+    if equation_copy.lower() == 'exit' or\
+            equation_copy.lower() == 'quit':
         print('Exiting the program...')
         raise SystemExit
 
@@ -943,13 +1012,16 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
         print_welcome_message()
         try:
             input_equation = \
-                input('Please enter the equation you want to calculate:')
+                input('Please enter the equation '
+                      'you want to calculate:')
             # if the user entered an empty string
             # ask him to enter an equation
             while is_blank(input_equation):
                 input_equation = \
-                    input('Seems that you entered a blank equation, '
-                          'Please enter the equation you want to calculate:')
+                    input('Seems that you entered'
+                          ' a blank equation, '
+                          'Please enter the equation'
+                          ' you want to calculate:')
 
             # if the user typed 'exit' or 'quit'
             # exit the program
@@ -961,12 +1033,14 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
             exit(1)
         # if the input is an EOF, exit the program
         except EOFError:
-            print('\nProgram was interrupted by user - input contains EOF')
+            print('\nProgram was interrupted by user -'
+                  ' input contains EOF')
             exit(1)
 
     # if the function is not called for the first time
     else:
-        # different message for when we crashed the program with an error
+        # different message for when we crashed the
+        # program with an error
         # and when we got a result
 
         if previous_result == '':
@@ -976,28 +1050,35 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
             print('\nWelcome back to the calculator!\n'
                   'type "exit" or "quit" to exit the program\n'
                   f'your previous result is: {previous_result}, \n'
-                  'if you want to use the previous result as an operand,\n'
-                  'then type your equation with the operand "p" that will be replaced\n'
+                  'if you want to use the previous'
+                  ' result as an operand,\n'
+                  'then type your equation with the'
+                  ' operand "p" that will be replaced\n'
                   'with the previous result\n')
         try:
             input_equation = \
-                input('Please enter the equation you want to calculate:')
+                input('Please enter the equation'
+                      ' you want to calculate:')
             # if the user entered an empty string
             # ask him to enter an equation
             while is_blank(input_equation):
                 input_equation = \
-                    input('Seems that you entered a blank equation, '
-                          'Please enter the equation you want to calculate:')
+                    input('Seems that you entered'
+                          ' a blank equation, '
+                          'Please enter the equation'
+                          ' you want to calculate:')
 
             # if the user typed 'exit' or 'quit'
             # exit the program
             check_for_exit_quit(input_equation)
 
-            # only replace the 'p' with the previous result if the previous result
+            # only replace the 'p' with the previous
+            # result if the previous result
             # is not an empty string
             if previous_result != '':
                 # replace the 'p' operand with the previous result
-                input_equation = input_equation.replace('p', previous_result)
+                input_equation =\
+                    input_equation.replace('p', previous_result)
         # if the user stops the program via ctrl + c,
         # print a message and exit the program
         except KeyboardInterrupt:
@@ -1005,7 +1086,8 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
             exit(1)
         # if the input is an EOF, exit the program
         except EOFError:
-            print('\nProgram was interrupted by user - input contains EOF')
+            print('\nProgram was interrupted by user'
+                  ' - input contains EOF')
             exit(1)
 
     # return the equation that the user entered
@@ -1014,10 +1096,12 @@ def get_equation_from_user(first_run=1, previous_result='') -> str:
 
 def continue_using_calculator() -> None:
     """
-    function that asks the user if he wants to continue using the calculator
+    function that asks the user if he wants to
+     continue using the calculator
     if he does, call the main function again
     if he doesn't, exit the program
-    :return: the function calls the main function again if the user wants to
+    :return: the function calls the main function
+     again if the user wants to
     """
     print('If you want to continue using the calculator, '
           'type "continue" or "c"')
@@ -1031,7 +1115,8 @@ def continue_using_calculator() -> None:
         print('\nProgram was interrupted by user')
         exit(1)
     except EOFError:
-        print('\nProgram was interrupted by user - input contains EOF')
+        print('\nProgram was interrupted by user'
+              ' - input contains EOF')
         exit(1)
     # go in a loop until the user types 'continue' or 'c'
     # or 'exit' or 'quit'
@@ -1041,6 +1126,7 @@ def continue_using_calculator() -> None:
         check_for_exit_quit(user_input)
         # if the user typed something else
         # ask him to enter 'continue' or 'c'
-        user_input = input('Please type "continue" or "c" to continue '
+        user_input = input('Please type "continue"'
+                           ' or "c" to continue '
                            'using the calculator or "exit"'
                            ' or "quit" to exit the program:')
