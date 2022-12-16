@@ -2,6 +2,7 @@
 # Path: functions.py
 # Author: @Eldar Aslanbeily
 
+# import the helper functions
 from helper_functions import *
 
 
@@ -33,9 +34,9 @@ def parentheses_surrounding_validity(equation="") -> str:
         elif equation[x] == '(' and x != 0:
             check_left_parentheses_validity(equation,x)
 
-        # if there is closing parentheses at the end of the equation
+        # if there is opening parentheses at the start of the equation
         # then we don't need to check if there is invalid character
-        # after the closing parentheses
+        # before the closing parentheses
         elif equation[x] == '(' and x == 0:
             pass
 
@@ -53,6 +54,7 @@ def add_zero_before_and_after_dot_integer(equation="") -> str:
     # go over equation and add a zero before and after a dot
     x = 0
     while x <= len(equation) - 1:
+        # check if the character is a dot
         if equation[x] == '.':
 
             # if the dot is at the beginning of the equation
@@ -78,11 +80,9 @@ def check_balanced_equation(equation="") -> str:
     the function receives the equation and checks,
     if the amount of opening parentheses is the
     same as the amount of closing parentheses
-    and if all the parentheses are balanced
-    meaning all the opening parentheses have a closing parentheses
-    and all the closing parentheses have an opening parentheses
     :param equation: the equation
     :return: equation if it is balanced and exception if not
+    raise syntaxError
     """
 
     # check if the count of opening parentheses is not the
@@ -125,7 +125,7 @@ def check_balanced_equation(equation="") -> str:
               ' parentheses \n is not the'
               f' same in equation {equation}')
 
-    # if we got here, the equation is balanced
+    # return the equation if it is balanced
     return equation
 
 
@@ -155,14 +155,11 @@ def check_validity_of_equation_by_binary_operators(equation="",
               ' of the equation \n'
               f'at index {len(equation) - 1}, equation is: {equation}')
 
-    # it is important to note that this function is run
-    # after the function that checks for extra minus signs
-    # so there is no need to check for extra minus signs here
 
     # check if there is a binary operator after a binary operator
     # where the only exception is the minus operator
     # because the minus operator appear after a binary operator
-    # when it is a negative number
+    # when it is a sign change
     for x in range(len(equation) - 1):
         if equation[x] in binary_operators:
 
@@ -215,26 +212,31 @@ def check_validity_of_equation_by_binary_operators(equation="",
 
 
 def check_validity_of_equation_by_unary_operators(equation="",
-                                                  right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
-                                                  left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
+                                                  right_unary_operators=
+                                                  RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                                                  left_unary_operators=
+                                                  LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     returns the function if all the unary operands
     are valid in it, if not prints error message
-    :param left_unary_operators:
-    :param right_unary_operators:
+    :param left_unary_operators: the left associative unary operators
+    :param right_unary_operators: the right associative unary operators
     :param equation: the equation
     :return: equation if it is valid and exception if not
     """
 
     # check if the function starts with a right unary operator
     if equation[0] in right_unary_operators:
-        raise SyntaxError('Invalid syntax - equation starts with a right unary operator \n'
-              f'at index {0}, equation is: {equation}')
+        raise SyntaxError('Invalid syntax - equation starts with a' 
+                ' right associative unary operator \n'
+                f'at index {0}, equation is: {equation}')
 
     # check if the function ends with a left unary operator
     if equation[-1] in left_unary_operators:
-        raise SyntaxError('Invalid syntax - equation ends with a left unary operator \n'
+        raise SyntaxError('Invalid syntax - equation ends with a'
+                          ' left unary operator \n'
               f'at index {len(equation) - 1}, equation is: {equation}')
+
     # check the validity of unary operators in the equation
 
     # go over the equation and validate the unary operators
@@ -245,7 +247,8 @@ def check_validity_of_equation_by_unary_operators(equation="",
             right_unary_validation(equation, x)
 
         # check if there is a left unary operator that is
-        # in front of something that is not a number or an opening parentheses
+        # in front of something that is not a number
+        # or an opening parentheses
         if equation[x] in left_unary_operators:
             left_unary_validation(equation, x)
 
@@ -253,9 +256,12 @@ def check_validity_of_equation_by_unary_operators(equation="",
     return equation
 
 
-def check_validity_of_equation_by_all_operators(equation="", binary_operators=BINARY_OPERATORS,
-                                                right_unary_operators=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
-                                                left_unary_operators=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
+def check_validity_of_equation_by_all_operators(equation="",
+                                                binary_operators=BINARY_OPERATORS,
+                                                right_unary_operators=
+                                                RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                                                left_unary_operators=
+                                                LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     returns the function if all the binary and unary operands
     are valid in it, if not prints error message
@@ -269,22 +275,22 @@ def check_validity_of_equation_by_all_operators(equation="", binary_operators=BI
     # go over the function and check if there is a binary operator
     # and if there is a unary operator next to each other
     # in a way that is not valid
-    # for example: 5*!5 or 5~*5
-    # if there is such a case print an error message and exit
     for x in range(len(equation) - 1):
-        if equation[x] in binary_operators and \
-                equation[x] != '-':
+        if equation[x] in binary_operators:
             if equation[x + 1] in right_unary_operators:
                 # check if there is a right unary operator after a binary operator
                 raise SyntaxError('Invalid syntax - binary operator before a right'
                       ' unary operator \n'
                       f'at index {x}, equation is: {equation}')
-            elif equation[x - 1] in left_unary_operators:
+            elif equation[x - 1] in left_unary_operators and \
+                    equation[x] != '-':
                 # check if there is a left unary operator before a binary operator
+                # and the binary operator is not a minus operator
                 raise SyntaxError('Invalid syntax - binary operator after a left'
                       ' unary operator \n'
                       f'at index {x}, equation is: {equation}')
 
+    # return the equation if it is valid
     return equation
 
 
@@ -302,21 +308,21 @@ def get_rid_of_extra_minus_signs(equation="") -> str:
     # if there are minus signs at the end of the equation
     # then return error message because it is invalid syntax
     if equation[-1] == '-':
-        raise SyntaxError("Invalid syntax - extra minus sign at the end of the equation \n"
-              f"equation is: {equation}")
-    # go over the equation and check if there are two consecutive minus signs
+        raise SyntaxError('Invalid syntax - extra minus sign'
+                          ' at the end of the equation \n'
+                            f'equation is: {equation}')
+
+    # go over the equation and check if there
+    # are two consecutive minus signs
     # if there are deal with them
     equation = handle_double_minus_signs(equation)
 
-    # if there are no extra minus signs, return the equation
-    # we need this check because we break out of the for loop
-    # when we replace a double minus, but we do that because
-    # if we don't the equation will be changed and the for loop
-    # will not work properly
+    # if there still double minus signs in the equation
+    # then run the function again recursively, if not
+    # return the equation
     if '--' not in equation:
         return equation
     else:
-        # if there are still extra minus signs, call the function again
         return get_rid_of_extra_minus_signs(equation)
 
 
@@ -326,14 +332,14 @@ def get_rid_of_extra_white_spaces(equation="", ) -> str:
     :param equation: the equation
     :return: equation with no extra white spaces
     """
-    # remove extra white spaces
+    # remove extra white spaces, no questions asked
     equation = equation.replace(' ', '')
 
     # return the equation
     return equation
 
 
-def check_if_function_is_valid(equation="") -> str:
+def check_if_equation_is_valid(equation="") -> str:
     """
     This function checks if the equation is valid,
     it runs all the validation functions and returns
@@ -394,10 +400,14 @@ def check_if_function_is_valid(equation="") -> str:
     # if the equation is valid, return the equation
     return equation
 
-def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATORS,
-                       unary_operators=UNARY_OPERATORS, priority=PRIORITY,
-                       right_unary_operands=RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
-                       left_unary_operands=LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
+def calculate_equation(equation="",first_run=1,
+                       binary_operators=BINARY_OPERATORS,
+                       unary_operators=UNARY_OPERATORS,
+                       priority=PRIORITY,
+                       right_unary_operands=
+                       RIGHT_ASSOCIATIVE_UNARY_OPERATORS,
+                       left_unary_operands=
+                       LEFT_ASSOCIATIVE_UNARY_OPERATORS) -> str:
     """
     general function that calculates the equation, this function
     will be run recursively until the equation is solved
@@ -414,11 +424,13 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
     equation = get_rid_of_extra_white_spaces(equation)
 
     # convert the e(+-)number in the equation to the correct format
+    # this is done because e+numbers can be added to the equation
+    # during the calculation process
     equation = convert_e_sign_number(equation)
 
     # if this is the first run of the function, check if the equation is valid
     if first_run:
-        equation = check_if_function_is_valid(equation)
+        equation = check_if_equation_is_valid(equation)
 
     # while there are still parentheses in the equation
     # calculate the sub equation in parentheses
@@ -426,22 +438,29 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
     while '(' in equation:
         for x in range(len(equation)):
             if equation[x] == '(':
-                closing_parentheses_index = find_closing_parentheses(equation, x)
+                closing_parentheses_index =\
+                    find_closing_parentheses(equation, x)
                 # get the equation inside the parentheses
-                equation_inside_parentheses = equation[x + 1:closing_parentheses_index]
+                equation_inside_parentheses =\
+                    equation[x + 1:closing_parentheses_index]
 
-                # save the equation before calculating the equation inside the parentheses
-                saved_equation_inside_parentheses = equation_inside_parentheses
+                # save the equation before calculating
+                # the equation inside the parentheses
+                saved_equation_inside_parentheses =\
+                    equation_inside_parentheses
 
                 # calculate the equation inside the parentheses
-                equation_inside_parentheses = calculate_equation(equation_inside_parentheses,
+                equation_inside_parentheses =\
+                    calculate_equation(equation_inside_parentheses,
                                                                  first_run=0)
                 # replace the equation inside the parentheses with the result
-                equation = equation.replace('(' + saved_equation_inside_parentheses + ')',
+                equation =\
+                    equation.replace('(' + saved_equation_inside_parentheses + ')',
                                             equation_inside_parentheses)
                 # break the loop because we changed the equation's length and run
                 # the function again
                 return calculate_equation(equation, first_run=0)
+
     # if there are no parentheses in the equation
     # calculate the equation by the priority of the operators
     else:
@@ -474,47 +493,60 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
                         if x == 0 and equation[x] == '-':
                             continue
                         # get the number to the left of the operator
-                        num_to_the_left = get_number_to_the_left_of_the_operator(equation, x)
-                        # we need to check if the number to the left is a negative number
-                        # if it is we need to calculate the equation without negative
+                        num_to_the_left =\
+                            get_number_to_the_left_of_the_operator(equation, x)
+                        # we need to check if the number
+                        # to the left is a negative number
+                        # if it is we need to calculate the
+                        # equation without negative
                         # if the number to the left is negative
                         if num_to_the_left[0] == '-':
                             len_of_left = len(num_to_the_left)
                             # if the minus sign functions as a sign change
-                            # then we need to calculate the equation with the minus sign
+                            # then we need to calculate the equation
+                            # with the minus sign
                             # if the minus sign functions as a binary operator
-                            # then we need to calculate the equation without the minus sign
+                            # then we need to calculate the equation
+                            # without the minus sign
 
-                            # first we check if the minus sign is at the beginning of the equation
-                            # if it is we need to calculate the equation with the minus sign
+                            # first we check if the minus sign is at
+                            # the beginning of the equation
+                            # if it is we need to calculate the equation
+                            # with the minus sign
                             if x - len_of_left - 1 < 0:
                                 pass
-                            elif equation[x - len_of_left - 1] in binary_operators:
+                            elif equation[x - len_of_left - 1]\
+                                    in binary_operators:
                                 # in this scenario the minus sign functions as
                                 # a sign change
                                 # calculate the equation with the minus sign
                                 pass
-                            elif not equation[x - len_of_left - 1] in binary_operators:
+                            elif not equation[x - len_of_left - 1]\
+                                     in binary_operators:
                                 # in this scenario the minus sign functions as
                                 # a binary operator
                                 # we need to calculate the
                                 # equation without the minus sign
                                 num_to_the_left = num_to_the_left[1:]
                         # get the number to the right of the operator
-                        num_to_the_right = get_number_to_the_right_of_the_operator(equation, x)
+                        num_to_the_right =\
+                            get_number_to_the_right_of_the_operator(equation, x)
                         # if the number to the right is just a minus sign
                         # then we also grab the number to the right of the minus sign
                         if num_to_the_right == '-':
-                            num_to_the_right += get_number_to_the_right_of_the_operator(equation,
-                                                                                        x + 1)
-                            # the number to the right is now of format --number, so we calculate without
+                            num_to_the_right +=\
+                                get_number_to_the_right_of_the_operator(equation,x + 1)
+                            # the number to the right is now of format --number,
+                            # so we calculate without
                             # the first two minus signs
-                            equation = equation.replace(num_to_the_left + equation[x] +
+                            equation =\
+                                equation.replace(num_to_the_left + equation[x] +
                                                         num_to_the_right,
                                                         calculate_binary_operator(equation[x],
                                                                                   num_to_the_left,
                                                                                   num_to_the_right[2:]))
-                            # break the loop because we changed the equation's length and run
+                            # break the loop because we changed
+                            # the equation's length and run
                             # the function again
                             size_changed = True
                             break
@@ -522,7 +554,8 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
                         # else
                         # calculate the equation
                         # and replace it with the result
-                        equation = equation.replace(num_to_the_left + equation[x] +
+                        equation =\
+                            equation.replace(num_to_the_left + equation[x] +
                                                     num_to_the_right,
                                                     calculate_binary_operator(equation[x],
                                                                               num_to_the_left,
@@ -536,12 +569,16 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
                     elif equation[x] in right_unary_operands and \
                             priority[equation[x]] == current_priority:
                         # get the number to the left of the operator
-                        num_to_the_left = get_number_to_the_left_of_the_operator(equation, x)
+                        num_to_the_left\
+                            = get_number_to_the_left_of_the_operator(equation, x)
                         # in the case that the operator is a right unary operator
-                        # we need to check if the number to the left is a negative number
-                        # if it is we need to calculate the equation without negative
+                        # we need to check if the number
+                        # to the left is a negative number
+                        # if it is we need to calculate
+                        # the equation without negative
                         # if the number to the left is negative
-                        # we need to calculate the equation without the minus sign
+                        # we need to calculate the equation
+                        # without the minus sign
                         if num_to_the_left[0] == '-':
                             len_of_left = len(num_to_the_left)
                             # if the minus sign functions as a sign change
@@ -579,7 +616,8 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
                                 # equation without the minus sign
                                 num_to_the_left = num_to_the_left[1:]
                         # calculate the equation and replace it with the result
-                        equation = equation.replace(num_to_the_left + equation[x],
+                        equation =\
+                            equation.replace(num_to_the_left + equation[x],
                                                     calculate_unary_operator(equation[x],
                                                                              num_to_the_left))
                         # break out of inner and outer loop
@@ -590,23 +628,29 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
                     elif equation[x] in left_unary_operands and \
                             priority[equation[x]] == current_priority:
                         # get the number to the right of the operator
-                        num_to_the_right = get_number_to_the_right_of_the_operator(equation, x)
+                        num_to_the_right =\
+                            get_number_to_the_right_of_the_operator(equation, x)
                         # if the number to the right is a negative sign, also grab the number
                         # to the right of the negative sign
                         if num_to_the_right == '-':
-                            num_to_the_right += get_number_to_the_right_of_the_operator(equation, x + 1)
-                            # the number to the right is now of format --number, so we calculate without
+                            num_to_the_right +=\
+                                get_number_to_the_right_of_the_operator(equation, x + 1)
+                            # the number to the right is now of format
+                            # --number, so we calculate without
                             # the first two minus signs
-                            equation = equation.replace(equation[x] + num_to_the_right,
+                            equation =\
+                                equation.replace(equation[x] + num_to_the_right,
                                                         calculate_unary_operator(equation[x],
                                                                                  num_to_the_right[2:]))
-                            # break the loop because we changed the equation's length and run
+                            # break the loop because we
+                            # changed the equation's length and run
                             # the function again
                             size_changed = True
                             break
 
                         # calculate the equation
-                        equation = equation.replace(equation[x] + num_to_the_right,
+                        equation =\
+                            equation.replace(equation[x] + num_to_the_right,
                                                     calculate_unary_operator(equation[x],
                                                                              num_to_the_right))
                         # break out of inner and outer loop
@@ -625,7 +669,8 @@ def calculate_equation(equation="",first_run=1, binary_operators=BINARY_OPERATOR
     # run the function recursively
     elif count_amount_operators_in_equation(equation) >= 0:
 
-        # run the equation recursively if there are still operators in the equation
+        # run the equation recursively if
+        # there are still operators in the equation
         return calculate_equation(equation, first_run=0)
     else:
         raise SyntaxError('Invalid equation - the equation doesnt have a result \n'
@@ -640,6 +685,7 @@ def calculate(equation="") -> None:
     is accessed by the user
     :param equation: the equation that the user wants to calculate
     :return: result of the equation or error message
+    if the equation is invalid
     """
 
     # check if the equation is empty
@@ -651,7 +697,7 @@ def calculate(equation="") -> None:
     # try and calculate the equation
     try:
         # check if equation is valid
-        equation = check_if_function_is_valid(equation)
+        equation = check_if_equation_is_valid(equation)
 
         # if the equation is run for the first time,
         # set the 'calculate equation' flag to 1
