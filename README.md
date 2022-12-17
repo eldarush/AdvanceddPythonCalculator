@@ -7,7 +7,7 @@
 ###  This calculator while run through the "handler.py" file will <br />
 ###  ask the user to input a function, then the program will calculate the  <br />
 ###  result of the equation that the user inputted, this result can be saved and used again <br />
-###  for further equations as 'ans'. <br />
+###  for further equations as 'p'. <br />
 ###  both input and output of an equation are in str type. <br />
 
 ##  This calculator has unique custom operators. <br />
