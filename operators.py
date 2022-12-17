@@ -36,8 +36,8 @@ def addition(a: str, b: str) -> str:
         return str(int(float(a)) + int(float(b)))
 
     # if either a or b is a float, return a float
-    return str(float(a) + float(b))
-
+    result = float(a) + float(b)
+    return format(result, ".10f")
 
 def subtraction(a: str, b: str) -> str:
     """
@@ -62,7 +62,8 @@ def subtraction(a: str, b: str) -> str:
         return str(int(float(a)) - int(float(b)))
 
     # if either a or b is a float, return a float
-    return str(float(a) - float(b))
+    result = float(a) - float(b)
+    return format(result, ".10f")
 
 
 def multiplication(a: str, b: str) -> str:
@@ -87,7 +88,8 @@ def multiplication(a: str, b: str) -> str:
             return str(int(float(a)) * int(float(b)))
 
         # if either a or b is a float, return a float
-        return str(float(a) * float(b))
+        result = float(a) * float(b)
+        return format(result, ".10f")
     # if the result is too big, return an error message
     except OverflowError:
         raise ValueError("Error: Overflow "
@@ -127,7 +129,8 @@ def division(a: str, b: str) -> str:
         raise ValueError("Invalid input:"
                          " Cannot divide negative infinity by infinity.")
 
-    return str(float(a) / float(b))
+    result = float(a) / float(b)
+    return format(result, ".10f")
 
 
 def modulo(a: str, b: str) -> str:
@@ -154,7 +157,8 @@ def modulo(a: str, b: str) -> str:
         return str(int(float(a)) % int(float(b)))
 
     # if either a or b is a float, return a float
-    return str(float(a) % float(b))
+    result = float(a) % float(b)
+    return format(result, ".10f")
 
 
 def power(a: str, b: str) -> str:
@@ -194,7 +198,8 @@ def power(a: str, b: str) -> str:
             return str(int(pow(float(a), float(b))))
 
         # if either a or b is a float, return a float
-        return str(pow(float(a), float(b)))
+        result = pow(float(a),float(b))
+        return format(result, ".10f")
     # if the result is too big, return an error message
     except OverflowError:
         raise ValueError('Math Error:'
