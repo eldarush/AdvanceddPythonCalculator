@@ -332,8 +332,10 @@ def get_rid_of_extra_white_spaces(equation="", ) -> str:
     :param equation: the equation
     :return: equation with no extra white spaces
     """
-    # remove extra white spaces, no questions asked
+    # remove extra white spaces
     equation = equation.replace(' ', '')
+    equation = equation.replace('\t', '')
+    equation = equation.replace('\n', '')
 
     # return the equation
     return equation

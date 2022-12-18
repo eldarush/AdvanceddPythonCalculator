@@ -24,19 +24,23 @@ def addition(a: str, b: str) -> str:
     :param b:
     :return: a+b
     """
-    # if both a and b are infinite,
-    # but have different signs, print error message
-    if a == "inf" and b == "-inf" or \
-            a == "-inf" and b == "inf":
-        raise ValueError("Invalid input: Cannot add"
-              " infinity and negative infinity.")
+    # if one of the inputs is infinity, raise an error
+    if a == "inf" or b == "inf":
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is {a}+{b}.")
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
+        if str(int(float(a)) + int(float(b))) == "inf":
+            raise ValueError(f"The result is Infinity,"
+                             f" equation is {a}+{b}.")
         return str(int(float(a)) + int(float(b)))
 
     # if either a or b is a float, return a float
     result = float(a) + float(b)
+    if result == float("inf"):
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is {a}+{b}.")
     return format(result, ".10f")
 
 def subtraction(a: str, b: str) -> str:
@@ -48,9 +52,9 @@ def subtraction(a: str, b: str) -> str:
     """
 
     # if both a and b are infinite, print error message
-    if a == "inf" and b == "inf" or a == "-inf" and b == "-inf":
-        raise ValueError("Invalid input: Cannot"
-                         " subtract infinity from infinity.")
+    if a == "inf" or b == "inf":
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is {a}-{b}.")
 
     # if the minus is a second minus in a chain of minuses,
     # then we need to add instead of subtract
@@ -59,10 +63,16 @@ def subtraction(a: str, b: str) -> str:
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
+        if str(int(float(a)) - int(float(b))) == "inf":
+            raise ValueError(f"The result is Infinity,"
+                             f" equation is {a}-{b}.")
         return str(int(float(a)) - int(float(b)))
 
     # if either a or b is a float, return a float
     result = float(a) - float(b)
+    if result == float("inf"):
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is {a}-{b}.")
     return format(result, ".10f")
 
 
@@ -74,21 +84,25 @@ def multiplication(a: str, b: str) -> str:
     :return: a*b
     """
 
-    # if one of the numbers is infinity,
-    # and the other is zero, print error message
-    if (a == "inf" or a == "-inf") and b == "0" or \
-            (b == "inf" or b == "-inf") and a == "0":
-        raise ValueError("Invalid input:"
-                         " Cannot multiply infinity by zero.")
+    # if one of the inputs is infinity, raise an error
+    if a == "inf" or b == "inf":
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is {a}*{b}.")
 
     # try and multiply a and b
     try:
         # if both a and b are integers, return an integer
         if a.isdigit() and b.isdigit():
+            if str(int(float(a)) * int(float(b))) == "inf":
+                raise ValueError(f"The result is Infinity,"
+                                 f" equation is {a}*{b}.")
             return str(int(float(a)) * int(float(b)))
 
         # if either a or b is a float, return a float
         result = float(a) * float(b)
+        if result == float("inf"):
+            raise ValueError(f"The result is Infinity,"
+                             f" equation is {a}*{b}.")
         return format(result, ".10f")
     # if the result is too big, return an error message
     except OverflowError:
@@ -109,27 +123,15 @@ def division(a: str, b: str) -> str:
         raise ValueError("Math Error: Division by zero is "
               f"not allowed at Token: {a}/{b}.")
 
-    # if both a and b are infinite, print error message
-    if a == "inf" and b == "inf":
-        raise ValueError("Invalid input:"
-                         " Cannot divide infinity by infinity.")
-
-    # if both a and b are negative infinite, print error message
-    if a == "-inf" and b == "-inf":
-        raise ValueError("Invalid input: Cannot divide negative"
-              " infinity by negative infinity.")
-
-    # if a is infinite and b is negative infinite, print error message
-    if a == "inf" and b == "-inf":
-        raise ValueError("Invalid input:"
-                         " Cannot divide infinity by negative infinity.")
-
-    # if a is negative infinite and b is infinite, print error message
-    if a == "-inf" and b == "inf":
-        raise ValueError("Invalid input:"
-                         " Cannot divide negative infinity by infinity.")
+    # if one of the inputs is infinity, raise an error
+    if a == "inf" or b == "inf":
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is {a}/{b}.")
 
     result = float(a) / float(b)
+    if result == float("inf"):
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is {a}/{b}.")
     return format(result, ".10f")
 
 
@@ -154,10 +156,16 @@ def modulo(a: str, b: str) -> str:
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
+        if str(int(float(a)) % int(float(b))) == "inf":
+            raise ValueError(f"The result is Infinity,"
+                             f" equation is {a}%{b}.")
         return str(int(float(a)) % int(float(b)))
 
     # if either a or b is a float, return a float
     result = float(a) % float(b)
+    if result == float("inf"):
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is {a}%{b}.")
     return format(result, ".10f")
 
 
@@ -195,10 +203,16 @@ def power(a: str, b: str) -> str:
     try:
         # if both a and b are integers, return an integer
         if a.isdigit() and b.isdigit():
+            if str(int(float(a)) ** int(float(b))) == "inf":
+                raise ValueError(f"The result is Infinity,"
+                                 f" equation is {a}^{b}.")
             return str(int(pow(float(a), float(b))))
 
         # if either a or b is a float, return a float
         result = pow(float(a),float(b))
+        if result == float("inf"):
+            raise ValueError(f"The result is Infinity,"
+                             f" equation is {a}^{b}.")
         return format(result, ".10f")
     # if the result is too big, return an error message
     except OverflowError:
@@ -225,28 +239,24 @@ def maximum(a: str, b: str) -> str:
 
     # check if one of the numbers is infinity
     if a == "inf" or b == "inf":
-        return "inf"
-
-    # check if one of the numbers is negative infinity
-    if a == "-inf" or b == "-inf":
-        return "-inf"
-
-    # check if one of the numbers is not a number
-    if a == "nan" or b == "nan":
-        # print error message if one of the numbers
-        # is not a number
         raise ValueError("Invalid input:"
-                         " Cannot find maximum of nan"
-              " (Not A number).")
+                         " Cannot find maximum of infinity.")
+
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
+        if str(max(int(float(a)), int(float(b)))) == "inf":
+            raise ValueError(f"The result is Infinity,"
+                             f" equation is max({a},{b}).")
         return str(int(float(a))
                    if float(a) > float(b) else int(float(b)))
 
     # if either a or b is a float, return a float
-    return str(float(a)
-               if float(a) > float(b) else float(b))
+    result = max(float(a), float(b))
+    if result == float("inf"):
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is max({a},{b}).")
+    return format(result, ".10f")
 
 
 def minimum(a: str, b: str) -> str:
@@ -257,32 +267,25 @@ def minimum(a: str, b: str) -> str:
     :return: if a < b, return a, else return b
     """
 
-    # check if one of the numbers is infinity
-    if a == "inf" and b != "inf":
-        return b
-    elif b == "inf" and a != "inf":
-        return a
-
-    # check if one of the numbers is negative infinity
-    if a == "-inf" or b == "-inf":
-        return "-inf"
-
-    # check if one of the numbers is not a number
-    if a == "nan" or b == "nan":
-        # print error message if one of the numbers
-        # is not a number
+    # if one of the numbers is infinity, return an error
+    if a == "inf" or b == "inf":
         raise ValueError("Invalid input:"
-                         " Cannot find minimum of nan"
-              " (Not A number).")
+                         " Cannot find minimum of infinity.")
 
     # if both a and b are integers, return an integer
     if a.isdigit() and b.isdigit():
+        if str(min(int(float(a)), int(float(b)))) == "inf":
+            raise ValueError(f"The result is Infinity,"
+                             f" equation is min({a},{b}).")
         return str(int(float(a))
                    if float(a) < float(b) else int(float(b)))
 
     # if either a or b is a float, return a float
-    return str(float(a)
-               if float(a) < float(b) else float(b))
+    result = min(float(a), float(b))
+    if result == float("inf"):
+        raise ValueError(f"The result is Infinity,"
+                         f" equation is min({a},{b}).")
+    return format(result, ".10f")
 
 
 def average(a: str, b: str) -> str:
@@ -292,6 +295,12 @@ def average(a: str, b: str) -> str:
     :param b:
     :return: a+b/2
     """
+    # if one of the numbers is infinity, return an error
+    if a == "inf" or b == "inf":
+        raise ValueError("Invalid input:"
+                         " Cannot find average of infinity."
+                         f" equation is average({a},{b}).")
+
     # try and divide a+b by 2
     try:
         # return the average as a float
@@ -316,18 +325,9 @@ def tilde(a: str) -> str:
     """
     # check if a is infinity
     if a == "inf":
-        return "-inf"
-
-    # check if a is negative infinity
-    if a == "-inf":
-        return "inf"
-
-    # check if a is not a number
-    if a == "nan":
-        # print error message if a is not a number
         raise ValueError("Invalid input:"
-                         " Cannot find negative of nan"
-                        " (Not A number).")
+                         " Cannot find negative of infinity."
+                         f" equation is ~{a}.")
 
     # if a is an integer, return an integer inside parenthesis
     if a.isdigit():
@@ -372,6 +372,9 @@ def factorial(a: str) -> str:
     # if a is greater than 1, return a!
     # calling factorial recursively until a = 1
     else:
+        if a == "inf":
+            raise ValueError(f'Invalid input for factorial: {a},'
+                    ' factorial() not defined for values larger than 171')
         return str(int(float(a)) *
                    int(float(factorial(str(float(a) - 1)))))
 
@@ -389,11 +392,9 @@ def sum_digits(equation: str) -> str:
 
     # check if the input is infinity
     if equation == "inf":
-        return "inf"
-
-    # check if the input is negative infinity
-    if equation == "-inf":
-        return "-inf"
+        raise ValueError("Invalid input:"
+                         " Cannot find sum of digits of infinity."
+                         f" equation is {equation}#.")
 
     # check if the input is not a number
     if equation == "nan":
