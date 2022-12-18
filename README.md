@@ -49,3 +49,7 @@
 
 ##  This calculator only accepts digits (0-9) not variables (a-z) etc.  <br />
 ##  This calculator only accepts round parentheses (), not any other kind - [] {}. <br />
+##  Note that this calculator rounds the floating point numbers at the 10th place after the  <br />
+##  decimal point to avoid issues with the 'float' type convertion in python, so results may vary  <br />
+##  On the scale of 10^(-10).  <br />
+##  This calculator is also capble of handling equation with sceintific notation 'e+/e-'  <br />
