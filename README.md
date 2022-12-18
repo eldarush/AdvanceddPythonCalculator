@@ -4,10 +4,10 @@
 ## Language: Python <br />
 ## Interpritor: Python-3.7 <br />
 
-###  This calculator while run through the "main.py" file will <br />
+###  This calculator while run through the "handler.py" file will <br />
 ###  ask the user to input a function, then the program will calculate the  <br />
 ###  result of the equation that the user inputted, this result can be saved and used again <br />
-###  for further equations as 'ans'. <br />
+###  for further equations as 'p'. <br />
 ###  both input and output of an equation are in str type. <br />
 
 ##  This calculator has unique custom operators. <br />
@@ -49,3 +49,7 @@
 
 ##  This calculator only accepts digits (0-9) not variables (a-z) etc.  <br />
 ##  This calculator only accepts round parentheses (), not any other kind - [] {}. <br />
+##  Note that this calculator rounds the floating point numbers at the 10th place after the  <br />
+##  decimal point to avoid issues with the 'float' type convertion in python, so results may vary  <br />
+##  On the scale of 10^(-10).  <br />
+##  This calculator is also capble of handling equation with sceintific notation 'e+/e-'  <br />

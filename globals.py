@@ -17,6 +17,7 @@ from operators import *
 OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!', '(', ')', '#')
 OPERANDS = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ', '\t', '\n')
 
+
 # tuple of binary operators
 # meaning that they take two operands in order to work
 BINARY_OPERATORS = ('+', '-', '*', '/', '^', '%', '$', '&', '@')

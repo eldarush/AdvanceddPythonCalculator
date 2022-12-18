@@ -332,8 +332,10 @@ def get_rid_of_extra_white_spaces(equation="", ) -> str:
     :param equation: the equation
     :return: equation with no extra white spaces
     """
-    # remove extra white spaces, no questions asked
+    # remove extra white spaces
     equation = equation.replace(' ', '')
+    equation = equation.replace('\t', '')
+    equation = equation.replace('\n', '')
 
     # return the equation
     return equation
@@ -663,6 +665,15 @@ def calculate_equation(equation="",first_run=1,
     # final check to see if the equation is a number
     # if it is a number, return it
     if is_number(equation) or is_negative_number(equation):
+        # if the number is a float but all the numbers after the decimal are 0
+        # then we round the number to the nearest integer and add a .0 to the end
+        # to make it a float
+        if '.' in equation:
+            equation = equation.rstrip('0')
+            # if we stripped all the numbers after the decimal
+            # then we add a .0 to the end
+            if equation[-1] == '.':
+                equation += '0'
         return equation
     # check if there are still operators in the equation
     # if there are still operators in the equation
