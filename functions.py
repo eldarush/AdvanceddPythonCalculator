@@ -733,17 +733,6 @@ def calculate(equation="") -> None:
         # ask him to enter an equation
         calculate(get_equation_from_user(first_run=0))
 
-        # if any other unexpected error occurs, print the error message
-        # and run the program again
-    except Exception as error:
-        print(f"\nUnexpected error: {error}\n")
-        # ask the user if he wants to continue using the calculator
-        continue_using_calculator()
-
-        # if the user wants to continue using the calculator,
-        # ask him to enter an equation
-        calculate(get_equation_from_user(first_run=0))
-
     # print the result of the equation
     print('\nResult: {}\n'.format(result_of_calc))
 
